@@ -1,0 +1,7 @@
+<ul>
+  <% @people.each do |person|%>
+    <li>
+      <%= link_to person.username, :controller=>"measures", :action=>"index", :person_id=>person.id %>
+    </li>
+  <% end %>
+</ul>

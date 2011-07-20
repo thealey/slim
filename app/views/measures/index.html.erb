@@ -1,0 +1,72 @@
+<% title "Measures - " + @person.username  %>
+<% floatformat = "%.2f" %>
+
+<center>
+  <table>
+    <tr>
+      <td>
+        <img src=<%= @lcurlall %>/>
+      </td>
+      <td>
+        <img src=<%= @lcurl30 %>/>
+      </td>
+      <td>
+        <img src=<%= @lcurl7 %>/>
+      </td>
+      <td>
+        <div id="bigger">
+          <ul>
+            <li>
+              Trend 7 days: <%= floatformat % @last7 if @last7 %>
+            </li>
+            <li>
+              Trend 14 days: <%= floatformat % @last14 if @last14 %>
+            </li>
+            <li>
+              Trend 30 days: <%= floatformat % @last30 if @last30 %>
+            </li>
+            <li>
+              Goal of <%= @person.goal_weight %> met at this rate:<br/> <%= @goaldate %>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <p/>
+  </center>
+
+  <table width='80%'>
+    <tr>
+      <th>#</th>
+      <th>Weight</th>
+      <th>Trend</th>
+      <th>Delta</th>
+      <th>From goal</th>
+      <th>User</th>
+      <th>Measure Date</th>
+      <th>Ago</th>
+      <th>Fat %</th>
+    </tr>
+    <% counter = 1 %>
+    <% for measure in @measures %>
+      <tr>
+        <td><%= counter %><% counter = counter + 1 %></td>
+        <td><%= floatformat % measure.weight %></td>
+        <td><%= floatformat % measure.trend if measure.trend %></td>
+        <td><%= '+' if measure.delta and measure.delta > 0 %><%= floatformat % measure.delta if measure.delta %></td>
+        <td><%= floatformat % (measure.trend - @goal_weight) %></td>
+        <td><%= measure.person.username %></td>
+        <td><%= measure.measure_date.to_s(:long) %></td>
+        <td><%= time_ago_in_words(measure.measure_date) %></td>
+        <td><%= floatformat % (measure.fat / measure.weight * 100) if measure.fat %></td>
+        <td><%= link_to "Edit", edit_measure_path(measure) %></td>
+        <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= will_paginate @measures %>
+  <%= page_entries_info @measures %> 
+
+

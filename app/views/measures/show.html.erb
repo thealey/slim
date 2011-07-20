@@ -1,0 +1,24 @@
+<% title "Measure" %>
+
+<p>
+  <strong>Weight:</strong>
+  <%= @measure.weight %>
+</p>
+<p>
+  <strong>Person:</strong>
+  <%= @measure.person.username %>
+</p>
+<p>
+  <strong>Measure Date:</strong>
+  <%= @measure.measure_date %>
+</p>
+<p>
+  <strong>Fat:</strong>
+  <%= @measure.fat %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_measure_path(@measure) %> |
+  <%= link_to "Destroy", @measure, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", measures_path %>
+</p>

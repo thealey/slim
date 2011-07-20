@@ -1,0 +1,43 @@
+<%= form_for @person do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :username %><br />
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label :email, "Email Address" %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :password_confirmation, "Confirm Password" %><br />
+    <%= f.password_field :password_confirmation %>
+  </p>
+  <p>
+    <%= f.label :withings_id %> User ID<br />
+    <%= f.text_field :withings_id %>
+  </p>
+  <p>
+    <%= f.label :withings_api_key %><br />
+    <%= f.text_field :withings_api_key %>
+  </p>
+  <p>
+    <%= f.label :goal_weight %><br />
+    <%= f.text_field :goal_weight %>
+  </p>
+  <p>
+    <%= f.label :height_feet %><br />
+    <%= f.text_field :height_feet %>
+  </p>
+  <p>
+    <%= f.label :height_inches %><br />
+    <%= f.text_field :height_inches %>
+  </p>
+  <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") %></p>
+<% end %>
+
+<%= link_to "Delete All Measures (careful!)", :controller=>"measures", :action=>"deleteall" %>
+

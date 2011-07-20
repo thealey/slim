@@ -1,0 +1,19 @@
+<%= form_for @measure do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :weight %><br />
+    <%= f.text_field :weight %>
+  </p>
+  <p>
+    <%= f.hidden_field :person_id, :value=>current_person.id %>
+  </p>
+  <p>
+    <%= f.label :measure_date %><br />
+    <%= f.datetime_select :measure_date %>
+  </p>
+  <p>
+    <%= f.label :fat %><br />
+    <%= f.text_field :fat %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>
