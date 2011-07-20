@@ -9,6 +9,9 @@ class MeasuresController < ApplicationController
       if params['person_id']
         person_id = Person.find params['person_id']
         @person = Person.find person_id
+        if @person.private
+          redirect_to people_url, :notice => "Sorry that data is private."
+        end
       end
 
       @measures = Measure.where(:person_id => @person.id).order('measure_date desc').paginate :per_page=> 7, :page => params[:page]

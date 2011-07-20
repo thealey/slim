@@ -1,7 +1,7 @@
 <ul>
   <% @people.each do |person|%>
     <li>
-      <%= link_to person.username, :controller=>"measures", :action=>"index", :person_id=>person.id %>
+      <%= link_to person.username, :controller=>"measures", :action=>"index", :person_id=>person.id %> <%= image_tag("lock-icon-small.png") if person.private %>
     </li>
   <% end %>
 </ul>

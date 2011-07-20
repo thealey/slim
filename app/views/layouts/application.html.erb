@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Slim" %></title>
     <%= stylesheet_link_tag "blueprint/screen.css" %>
     <%= javascript_include_tag :defaults %>
     <%= csrf_meta_tag %>
@@ -45,5 +45,8 @@
       </div>
       <%= yield %>
     </div>
+    @2011 Ted Healey<br/>
+    Powered by the <a href="http://www.withings.com/">Withings Body Scale</a><br/>
+    Codes at <a href="https://github.com/thealey/slim">https://github.com/thealey/slim</a>
   </body>
 </html>

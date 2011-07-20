@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110719132708) do
+ActiveRecord::Schema.define(:version => 20110720161702) do
 
   create_table "measures", :force => true do |t|
     t.integer  "person_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20110719132708) do
     t.integer  "height_feet"
     t.integer  "height_inches"
     t.integer  "goal_weight"
+    t.boolean  "private"
   end
 
 end
