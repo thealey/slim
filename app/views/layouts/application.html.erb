@@ -17,27 +17,29 @@
       <div class="nav">
         <table>
           <tr>
-            <td>
-              <% if logged_in? %>
-                Logged in as  <%= link_to current_person.username, :controller=>"people", :action=>"edit" %>.
-                <%= link_to "Log out", logout_path %>
-              <% else %>
-                <%= link_to "Sign up", signup_path %> or
-                <%= link_to "log in", login_path %>.
-              <% end %>
-            </td>
-            <td>
-              <%= link_to "New Measure", new_measure_path %>
-            </td>
-            <td>
-              <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
-            </td>
-            <td>
-              <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
-            </td>
-            <td>
-              <%= link_to "Update Trend",  :controller=>"measures", :action=>"update_trend" %>
-            </td>
+            <% if logged_in? %>
+              <td>
+                <% if logged_in? %>
+                  Logged in as  <%= link_to current_person.username, :controller=>"people", :action=>"edit" %>.
+                  <%= link_to "Log out", logout_path %>
+                <% else %>
+                  <%= link_to "Sign up", signup_path %> or
+                  <%= link_to "log in", login_path %>.
+                <% end %>
+              </td>
+              <td>
+                <%= link_to "New Measure", new_measure_path %>
+              </td>
+              <td>
+                <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
+              </td>
+              <td>
+                <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
+              </td>
+              <td>
+                <%= link_to "Update Trend",  :controller=>"measures", :action=>"update_trend" %>
+              </td>
+            <% end %>
           </tr>
         </table>
       </div>
