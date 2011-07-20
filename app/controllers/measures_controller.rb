@@ -78,7 +78,7 @@ class MeasuresController < ApplicationController
 
     GoogleChart::LineChart.new('320x200', title, false) do |lc|
       lc.show_legend = false
-      lc.data "Trend", scaled_trends, '9981'
+      lc.data "Trend", scaled_trends, 'D80000'
       lc.data "Weight", scaled_weights, '667B99'
       lc.axis :y, :range => [min_weight, max_weight], :color => '667B99', :font_size => 10, :alignment => :center
       lc.axis :x, :range => [daylimit,1], :color => '667B99', :font_size => 10, :alignment => :center
