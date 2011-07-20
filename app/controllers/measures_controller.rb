@@ -15,20 +15,22 @@ class MeasuresController < ApplicationController
       end
 
       @measures = Measure.where(:person_id => @person.id).order('measure_date desc').paginate :per_page=> 7, :page => params[:page]
+      @allmeasures = Measure.where(:person_id => @person.id)
 
-      if @measures[0] and @measures[6]
-        @last7 = @measures[0].trend - @measures[6].trend
+      if @allmeasures[0] and @allmeasures[6]
+        @last7 = @allmeasures[0].trend - @allmeasures[6].trend
       else
         @last7 = nil 
       end
 
-      if @measures[14]
-        @last14 = @measures[0].trend - @measures[14].trend
+      if @allmeasures[14]
+        @last14 = @allmeasures[0].trend - @allmeasures[14].trend
       else
         @last14 = nil
       end
-      if @measures[30]
-        @last30 = @measures[0].trend - @measures[30].trend
+
+      if @allmeasures[30]
+        @last30 = @allmeasures[0].trend - @allmeasures[30].trend
       else
         @last30 = nil
       end
@@ -46,10 +48,10 @@ class MeasuresController < ApplicationController
         @goaldate = "Not enough data"
       end
 
-      week_measures = Measure.order('measure_date desc').limit(7)
+      week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
       @lcurl7 = getchart(week_measures, "7 Day Trend", 7)
 
-      month_measures = Measure.order('measure_date desc').limit(30)
+      month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
       @lcurl30 = getchart(month_measures, "30 Day Trend", 30)
 
       all_measures = Measure.order('measure_date desc').limit(200)
@@ -157,8 +159,7 @@ class MeasuresController < ApplicationController
       end while measurements.size > 0
     end
     update_trend
-    @measures = Measure.all
-    render :action => 'index'
+    redirect_to measures_url, :notice => "Successfully updated."
   end
 
   def updateall
