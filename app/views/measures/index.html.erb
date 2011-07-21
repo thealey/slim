@@ -8,34 +8,39 @@
         <%= image_tag @person.gravatar_url %><br/>
         &nbsp;
         <%= @person.username %>
+        <table>
+          <tr>
+            <td>
+              Goal of <strong><%= @person.goal_weight %></strong>.
+              <p/><p/>
+              Trend weight <br/>
+              in 3 months:<br/>
+              <strong><%= floatformat % @in3months if @in3months %></strong>.
+            </td>
+          </tr>
+        </table>
       </td>
       <td>
         <img src=<%= @lcurl7 %>/>
-        <br/>
-        7 days: <%= floatformat % @last7 if @last7 %>
       </td>
       <td>
         <img src=<%= @lcurl30 %>/>
-        <br/>
-        30 days: <%= floatformat % @last30 if @last30 %>
       </td>
       <td>
         <img src=<%= @lcurlall %>/>
-        <br/>
-        100 days: <%= floatformat % @last100 if @last100 %>
       </td>
     </tr>
   </table>
 
   <p/>
   </center>
-  Goal of <strong><%= @person.goal_weight %></strong>. Predicted weight in 3 months: <strong><%= floatformat % @in3months if @in3months %></strong>. &nbsp;Karma = % off goal weight + weight loss speed 100 being the goal.
+
   <table width='80%'>
     <tr>
       <th>#</th>
       <th>Weight</th>
       <th>Trend</th>
-      <th>Karma</th>
+      <th>Karma *</th>
       <th>Delta</th>
       <th>From goal</th>
       <th>User</th>
@@ -64,5 +69,7 @@
     <% end %>
   </table>
   <%= will_paginate @measures %>
-
-
+  <small>  
+    *Karma measures how effective is the trend towards the goal weight. 100 / top line of chart being the goal.
+  </small>
+  <p/>

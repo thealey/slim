@@ -5,6 +5,7 @@ class MeasuresController < ApplicationController
   @@max_days = 100
 
   def index
+    Time.zone = "Eastern Time (US & Canada)"
     if current_person or params["person_id"]
       @person = current_person if current_person
       if params['person_id']
@@ -52,16 +53,20 @@ class MeasuresController < ApplicationController
       end
 
       week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
-      @lcurl7 = getchart(week_measures, "7 Day Trend", 7, @person)
+      @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
 
       month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
-      @lcurl30 = getchart(month_measures, "30 Day Trend", 30, @person)
+      @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
 
       all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(@@max_days)
-      @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend", @@max_days, @person)
+      @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@last100), @@max_days, @person)
     else
       redirect_to people_url, :notice => "Select a person."
     end
+  end
+
+  def floatstringlbs(f)
+    return "%.2f" % f.to_s + "lbs" 
   end
 
   def getchart(measures, title, daylimit, person)
@@ -86,14 +91,14 @@ class MeasuresController < ApplicationController
     max_weight = max_weight + 1
 
     min_weight = person.goal_weight - person.goal_weight * 0.02 if daylimit == @@max_days
-    
+
     scaled_trends = scale_array(trends, min_weight, max_weight)
     scaled_weights = scale_array(weights, min_weight, max_weight)
     scaled_karmas = karmas.reverse!
     scaled_goals = scale_array(goals, min_weight, max_weight)
     #debugger
 
-    GoogleChart::LineChart.new('250x200', title, false) do |lc|
+    GoogleChart::LineChart.new('320x200', title, false) do |lc|
       lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
       lc.data "Weight", scaled_weights, '667B99'
