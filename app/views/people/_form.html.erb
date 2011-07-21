@@ -1,47 +1,60 @@
 <%= form_for @person do |f| %>
   <%= f.error_messages %>
-  <p>
-    <%= f.label :username %><br />
-    <%= f.text_field :username %>
-  </p>
-  <p>
-    <%= f.label :private %><br />
-    <%= f.check_box :private %>
-  </p>
-  <p>
-    <%= f.label :email, "Email Address" %><br />
-    <%= f.text_field :email %>
-  </p>
-  <p>
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
-  </p>
-  <p>
-    <%= f.label :password_confirmation, "Confirm Password" %><br />
-    <%= f.password_field :password_confirmation %>
-  </p>
-  <p>
-    <%= f.label :withings_id %> User ID<br />
-    <%= f.text_field :withings_id %>
-  </p>
-  <p>
-    <%= f.label :withings_api_key %><br />
-    <%= f.text_field :withings_api_key %>
-  </p>
-  <p>
-    <%= f.label :goal_weight %><br />
-    <%= f.text_field :goal_weight %>
-  </p>
-  <p>
-    <%= f.label :height_feet %><br />
-    <%= f.text_field :height_feet %>
-  </p>
-  <p>
-    <%= f.label :height_inches %><br />
-    <%= f.text_field :height_inches %>
-  </p>
-  <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") %></p>
+  <table>
+    <tr align='top'>
+      <td>
+        <p>
+          <%= f.label :username %><br />
+          <%= f.text_field :username %>
+        </p>
+        <p>
+          <%= f.label :private %><br />
+          <%= f.check_box :private %>
+        </p>
+        <p>
+          <%= f.label :email, "Email Address" %><br />
+          <%= f.text_field :email %>
+        </p>
+        <p>
+          <%= f.label :password %><br />
+          <%= f.password_field :password %>
+        </p>
+        <p>
+          <%= f.label :password_confirmation, "Confirm Password" %><br />
+          <%= f.password_field :password_confirmation %>
+        </p>
+      </td>
+      <td>
+        <p>
+          <%= f.label :goal_weight %><br />
+          <%= f.text_field :goal_weight %>
+        </p>
+        <p>
+          <%= f.label :height_feet %><br />
+          <%= f.text_field :height_feet %>
+        </p>
+        <p>
+          <%= f.label :height_inches %><br />
+          <%= f.text_field :height_inches %>
+        </p>
+      </td>
+      <td>
+        To get your withings data, hit the Share button in your dashboard, and pick the Share on the web option.
+        <p>
+          <%= f.label :withings_id %> User ID<br />
+          <%= f.text_field :withings_id %>
+        </p>
+        <p>
+          <%= f.label :withings_api_key %><br />
+          <%= f.text_field :withings_api_key %>
+        <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") %></p>
+        </p>
+      </td>
+    </tr>
+  </table>
 <% end %>
+
+Avatars from <a href="http://en.gravatar.com/">gravatar.com</a><br/>
 
 <%= link_to "Delete All Measures (careful!)", :controller=>"measures", :action=>"deleteall" %>
 

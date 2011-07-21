@@ -1,41 +1,34 @@
-<% title "Measures - " + @person.username  %>
+
 <% floatformat = "%.2f" %>
 
 <center>
   <table>
     <tr>
-      <td>
-        <img src=<%= @lcurlall %>/>
-      </td>
-      <td>
-        <img src=<%= @lcurl30 %>/>
+      <td style="vertical-align:middle">
+        <%= image_tag @person.gravatar_url %><br/>
+        &nbsp;
+        <%= @person.username %>
       </td>
       <td>
         <img src=<%= @lcurl7 %>/>
+        <br/>
+        7 days: <%= floatformat % @last7 if @last7 %>
       </td>
       <td>
-        <div id="bigger">
-          <ul>
-            <li>
-              Trend 7 days: <%= floatformat % @last7 if @last7 %>
-            </li>
-            <li>
-              Trend 14 days: <%= floatformat % @last14 if @last14 %>
-            </li>
-            <li>
-              Trend 30 days: <%= floatformat % @last30 if @last30 %>
-            </li>
-            <li>
-              Goal of <%= @person.goal_weight %> met at this rate:<br/> <%= @goaldate %>
-            </li>
-          </ul>
-        </div>
+        <img src=<%= @lcurl30 %>/>
+        <br/>
+        30 days: <%= floatformat % @last30 if @last30 %>
+      </td>
+      <td>
+        <img src=<%= @lcurlall %>/>
+        <br/>
       </td>
     </tr>
   </table>
 
   <p/>
   </center>
+  Goal of <%= @person.goal_weight %> met at this rate: <%= @goaldate %>
 
   <table width='80%'>
     <tr>

@@ -28,6 +28,9 @@
             </td>
             <% if logged_in? %>
               <td>
+                <%= link_to "Home", @measure_url %>
+              </td>
+              <td>
                 <%= link_to "New Measure", new_measure_path %>
               </td>
               <td>

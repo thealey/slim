@@ -10,6 +10,7 @@ gem 'simplificator-withings'
 gem 'nifty-generators'
 gem 'gchartrb'
 gem 'will_paginate'
+gem 'gravtastic'
 
 # Use unicorn as the web server
 # gem 'unicorn'
