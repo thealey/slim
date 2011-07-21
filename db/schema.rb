@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110720161702) do
+ActiveRecord::Schema.define(:version => 20110721144753) do
 
   create_table "measures", :force => true do |t|
     t.integer  "person_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20110720161702) do
     t.float    "trend"
     t.float    "forecast"
     t.float    "delta"
+    t.float    "karma"
   end
 
   create_table "people", :force => true do |t|

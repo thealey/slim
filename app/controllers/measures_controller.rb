@@ -2,6 +2,7 @@ require 'withings'
 include Withings
 
 class MeasuresController < ApplicationController
+  @@max_days = 100
 
   def index
     if current_person or params["person_id"]
@@ -23,8 +24,8 @@ class MeasuresController < ApplicationController
         @last7 = nil 
       end
 
-      if @allmeasures[100]
-        @last100 = @allmeasures[0].trend - @allmeasures[100].trend
+      if @allmeasures[@@max_days]
+        @last100 = @allmeasures[0].trend - @allmeasures[@@max_days].trend
       else
         @last100 = nil
       end
@@ -36,6 +37,8 @@ class MeasuresController < ApplicationController
       end
 
       @goal_weight = @person.goal_weight
+
+      @in3months = @measures[0].weight + (@last7 * 4 * 3) if @last7 and @measures[0]
 
       if @measures[0] and @last7
         if @goal_weight < @measures[0].weight
@@ -49,21 +52,24 @@ class MeasuresController < ApplicationController
       end
 
       week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
-      @lcurl7 = getchart(week_measures, "7 Day Trend", 7)
+      @lcurl7 = getchart(week_measures, "7 Day Trend", 7, @person)
 
       month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
-      @lcurl30 = getchart(month_measures, "30 Day Trend", 30)
+      @lcurl30 = getchart(month_measures, "30 Day Trend", 30, @person)
 
-      all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(100)
-      @lcurlall = getchart(all_measures, "100 Day Trend", 100)
+      all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(@@max_days)
+      @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend", @@max_days, @person)
     else
       redirect_to people_url, :notice => "Select a person."
     end
   end
 
-  def getchart(measures, title, daylimit)
+  def getchart(measures, title, daylimit, person)
     trends = Array.new
     weights = Array.new
+    goals = Array.new
+    karmas = Array.new
+
     max_weight = 0
     min_weight = 1000
     lcurl = ''
@@ -72,19 +78,27 @@ class MeasuresController < ApplicationController
       return '' if measure.trend.nil?
       trends << measure.trend
       weights << measure.weight
+      goals << person.goal_weight
+      karmas << measure.karma
       min_weight = measure.weight if measure.weight < min_weight
       max_weight = measure.weight if measure.weight > max_weight
     end
     max_weight = max_weight + 1
 
+    min_weight = person.goal_weight - person.goal_weight * 0.02 if daylimit == @@max_days
+    
     scaled_trends = scale_array(trends, min_weight, max_weight)
     scaled_weights = scale_array(weights, min_weight, max_weight)
+    scaled_karmas = karmas.reverse!
+    scaled_goals = scale_array(goals, min_weight, max_weight)
     #debugger
 
-    GoogleChart::LineChart.new('320x200', title, false) do |lc|
-      lc.show_legend = false
+    GoogleChart::LineChart.new('250x200', title, false) do |lc|
+      lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
       lc.data "Weight", scaled_weights, '667B99'
+      lc.data "Goal", scaled_goals, '667B99'
+      lc.data "Karma", scaled_karmas, 'B8B8B8'
       lc.axis :y, :range => [min_weight, max_weight], :color => '667B99', :font_size => 10, :alignment => :center
       lc.axis :x, :range => [daylimit,1], :color => '667B99', :font_size => 10, :alignment => :center
       lc.grid :x_step => 5, :y_step => 5, :length_segment => 1, :length_blank => 0
@@ -195,36 +209,48 @@ class MeasuresController < ApplicationController
   end
 
   def update_trend
-    @measures = Measure.order('measure_date asc')
-    counter = 0
-    trend_days = 6
-    alpha = 0.1
-    trend = 0
-    delta = 0
+    Person.all.each do |person|
+      @measures = Measure.where(:person_id=>person.id).order('measure_date asc')
+      counter = 0
+      trend_days = 6
+      alpha = 0.1
+      weightmult = 2
+      trendmult = 10
 
-    @measures.each do |measure|
-      if counter == 0
-        #debugger
-        forecast = 0
-        @measures[0..6].each do |m|
-          forecast+= m.weight
+      trend = 0
+      delta = 0
+      karma = 0
+      previous_trend = 0
+
+      @measures.each do |measure|
+        if counter == 0
+          #debugger
+          forecast = 0
+          @measures[0..6].each do |m|
+            forecast+= m.weight
+          end
+          forecast = forecast / 7
+          measure.forecast = forecast
+        else
+          forecast = @measures[counter - 1].trend
         end
-        forecast = forecast / 7
+        #debugger
+
+        trend = (alpha * measure.weight) + (1 - alpha) * forecast
+        trenddiff = (trend - previous_trend)
+        weightdiff = measure.weight - person.goal_weight
+        measure.karma = 100 - (weightdiff * weightmult) - (trenddiff * trendmult) unless counter == 0
+
+        measure.trend = trend
+        previous_trend = trend
+
+        delta = measure.weight - forecast
         measure.forecast = forecast
-      else
-        forecast = @measures[counter - 1].trend
+        measure.delta = delta
+        measure.save
+        counter = counter + 1
       end
-
-      trend = (alpha * measure.weight) + (1 - alpha) * forecast
-      delta = measure.weight - forecast
-      measure.forecast = forecast
-      measure.trend = trend
-      measure.delta = delta
-      measure.save
-
-      counter = counter + 1
     end
 
-    #redirect_to measures_url, :notice => "Successfully updated trend data."
   end
 end

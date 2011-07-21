@@ -26,6 +26,11 @@ class Person < ActiveRecord::Base
     BCrypt::Engine.hash_secret(pass, password_salt)
   end
 
+  def get_bmi(weight)
+    height = height_feet * 12 + height_inches
+    return (weight * 703 / height**2)
+  end
+
   private
 
   def prepare_password
@@ -34,4 +39,5 @@ class Person < ActiveRecord::Base
       self.password_hash = encrypt_password(password)
     end
   end
+
 end
