@@ -23,10 +23,10 @@ class MeasuresController < ApplicationController
         @last7 = nil 
       end
 
-      if @allmeasures[14]
-        @last14 = @allmeasures[0].trend - @allmeasures[14].trend
+      if @allmeasures[100]
+        @last100 = @allmeasures[0].trend - @allmeasures[100].trend
       else
-        @last14 = nil
+        @last100 = nil
       end
 
       if @allmeasures[30]
@@ -54,8 +54,8 @@ class MeasuresController < ApplicationController
       month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
       @lcurl30 = getchart(month_measures, "30 Day Trend", 30)
 
-      all_measures = Measure.order('measure_date desc').limit(200)
-      @lcurlall = getchart(all_measures, "200 Day Trend", 200)
+      all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(100)
+      @lcurlall = getchart(all_measures, "100 Day Trend", 100)
     else
       redirect_to people_url, :notice => "Select a person."
     end
