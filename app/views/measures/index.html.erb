@@ -29,8 +29,7 @@
 
   <p/>
   </center>
-  Goal of <%= @person.goal_weight %>. Predicted weight in 3 months: <%= floatformat % @in3months if @in3months %>
-
+  Goal of <strong><%= @person.goal_weight %></strong>. Predicted weight in 3 months: <strong><%= floatformat % @in3months if @in3months %></strong>. &nbsp;Karma = % off goal weight + weight loss speed 100 being the goal.
   <table width='80%'>
     <tr>
       <th>#</th>
