@@ -42,6 +42,9 @@ class MeasuresController < ApplicationController
       @in3months = @measures[0].weight + (@last7 * 4 * 3) if @last7 and @measures[0]
 
       if @measures[0] and @last7
+        week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
+        @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
+
         if @goal_weight < @measures[0].weight
           togo = @measures[0].weight - @goal_weight
           @goaldate = (Time.now + (togo / -@last7).weeks).to_s(:long)
@@ -52,21 +55,31 @@ class MeasuresController < ApplicationController
         @goaldate = "Not enough data"
       end
 
-      week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
-      @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
+      if @last30
+        month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
+        @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
+      end
 
-      month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
-      @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
-
-      all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(@@max_days)
-      @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@last100), @@max_days, @person)
+      if @last100
+        all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(@@max_days)
+        @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@last100), @@max_days, @person)
+      end
     else
       redirect_to people_url, :notice => "Select a person."
+    end
+
+    karmas = Measure.order('karma desc')
+    kcount = 1
+    karmas.all.each do |k|
+      if @measures[0].measure_date == k.measure_date
+        @krank = kcount
+      end
+      kcount = kcount + 1
     end
   end
 
   def floatstringlbs(f)
-    return "%.2f" % f.to_s + "lbs" 
+    return "%.2f" % f.to_s + "lbs" if f 
   end
 
   def getchart(measures, title, daylimit, person)
