@@ -64,17 +64,18 @@ class MeasuresController < ApplicationController
         all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(@@max_days)
         @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@last100), @@max_days, @person)
       end
+
+      karmas = Measure.order('karma desc')
+      kcount = 1
+      karmas.all.each do |k|
+        if @measures[0].measure_date == k.measure_date
+          @krank = kcount
+        end
+        kcount = kcount + 1
+      end
+
     else
       redirect_to people_url, :notice => "Select a person."
-    end
-
-    karmas = Measure.order('karma desc')
-    kcount = 1
-    karmas.all.each do |k|
-      if @measures[0].measure_date == k.measure_date
-        @krank = kcount
-      end
-      kcount = kcount + 1
     end
   end
 
