@@ -16,7 +16,7 @@ class MeasuresController < ApplicationController
         end
       end
 
-      @measures = @person.measures.order('measure_date desc').limit(7)
+      @measures = @person.measures.order('measure_date desc').limit(7).paginate :per_page=> 7, :page => params[:page]
       @allmeasures = @person.measures
 
       @last7 = @person.last(7)
@@ -24,7 +24,6 @@ class MeasuresController < ApplicationController
       @last100 = @person.last(@@max_days)
       @goal_weight = @person.goal_weight
       @in3months = @person.in3months
-
       if @measures[0] and @last7
         week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
         @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
@@ -49,7 +48,7 @@ class MeasuresController < ApplicationController
   end
 
   def floatstringlbs(f)
-    return "%.2f" % f.to_s + "lbs" if f 
+    return "%.2f" % f.to_s + "lbs/week" if f 
   end
 
   def getchart(measures, title, daylimit, person)
@@ -67,7 +66,7 @@ class MeasuresController < ApplicationController
       trends << measure.trend
       weights << measure.weight
       goals << person.goal_weight
-      karmas << measure.karma
+      karmas << measure.karma - 10
       min_weight = measure.weight if measure.weight < min_weight
       max_weight = measure.weight if measure.weight > max_weight
     end
@@ -77,16 +76,17 @@ class MeasuresController < ApplicationController
 
     scaled_trends = scale_array(trends, min_weight, max_weight)
     scaled_weights = scale_array(weights, min_weight, max_weight)
-    scaled_karmas = karmas.reverse!
+    scaled_karmas = scale_array(karmas, 0, 100)
+    #scaled_karmas.reverse!
     scaled_goals = scale_array(goals, min_weight, max_weight)
     #debugger
 
     GoogleChart::LineChart.new('320x200', title, false) do |lc|
       lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
-      lc.data "Weight", scaled_weights, '667B99'
-      lc.data "Goal", scaled_goals, '667B99'
-      lc.data "Karma", scaled_karmas, 'B8B8B8'
+      lc.data "Weight", scaled_weights, 'BDBDBD'
+      lc.data "Goal", scaled_goals, '254117'
+      #lc.data "Karma", scaled_karmas, 'B8B8B8'
       lc.axis :y, :range => [min_weight, max_weight], :color => '667B99', :font_size => 10, :alignment => :center
       lc.axis :x, :range => [daylimit,1], :color => '667B99', :font_size => 10, :alignment => :center
       lc.grid :x_step => 5, :y_step => 5, :length_segment => 1, :length_blank => 0

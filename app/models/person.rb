@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   before_save :prepare_password
 
   has_many      :measures
-  
+
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :allow_blank => true
   validates_format_of :username, :with => /^[-\w\._@]+$/i, :allow_blank => true, :message => "should only contain letters, numbers, or .-_@"
@@ -34,27 +34,30 @@ class Person < ActiveRecord::Base
   end
 
   def last(days)
-      if measures[0] and measures[days - 1]
-        last = measures[0].trend - measures[days - 1].trend
-      else
-        last = nil 
-      end
+    if measures[0] and measures[days - 1]
+      diff = measures[0].trend - measures[days - 1].trend
+      last = diff / (days / 7)
+    else
+      last = nil 
+    end
+    return last
   end
 
   def in3months
-      @in3months = measures[0].weight + (last(7) * 4 * 3) if last(7) and measures[0]
+    @in3months = measures[0].weight + (last(7) * 4 * 3) if last(7) and measures[0]
   end
- 
+
   def karma_rank
-    return 1
-      kcount = 1
-      Measure.where(:person_id => self.id).order('karma desc').each do |k|
-        if measures[0].measure_date == k.measure_date
-          karma_rank = kcount
-        end
-        kcount = kcount + 1
+    kcount = 1
+    karma_rank = 0
+    karmas = Measure.where(:person_id => self.id).order('karma desc')
+    karmas.each do |karma|
+      if measures[0].measure_date == karma.measure_date
+        karma_rank = kcount
       end
-      return karma_rank
+      kcount = kcount + 1
+    end
+    return karma_rank
   end
 
   private

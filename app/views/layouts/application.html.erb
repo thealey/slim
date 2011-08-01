@@ -59,11 +59,13 @@
           </tr>
         </table>
       </div>
+      <center>
       <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, :id => "flash_#{name}" %>
       <% end %>
       <%= content_tag :h1, yield(:title) if show_title? %>
       <%= yield %>
+    </center>
     </div>
     @2011 Ted Healey<br/>
     Powered by the <a href="http://www.withings.com/">Withings Body Scale</a><br/>
