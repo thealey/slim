@@ -39,7 +39,7 @@
             </td>
             <% if logged_in? %>
               <td>
-                <%= link_to "Home", @measure_url %>
+                <%= link_to "Home", :controller=>"measures", :action=>"updateall" %>
               </td>
               <td>
                 <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>

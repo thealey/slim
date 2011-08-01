@@ -16,41 +16,18 @@ class MeasuresController < ApplicationController
         end
       end
 
-      @measures = Measure.where(:person_id => @person.id).order('measure_date desc').paginate :per_page=> 7, :page => params[:page]
-      @allmeasures = Measure.where(:person_id => @person.id)
+      @measures = @person.measures.order('measure_date desc').limit(7)
+      @allmeasures = @person.measures
 
-      if @allmeasures[0] and @allmeasures[6]
-        @last7 = @allmeasures[0].trend - @allmeasures[6].trend
-      else
-        @last7 = nil 
-      end
-
-      if @allmeasures[@@max_days]
-        @last100 = @allmeasures[0].trend - @allmeasures[@@max_days].trend
-      else
-        @last100 = nil
-      end
-
-      if @allmeasures[30]
-        @last30 = @allmeasures[0].trend - @allmeasures[30].trend
-      else
-        @last30 = nil
-      end
-
+      @last7 = @person.last(7)
+      @last30 = @person.last(30)
+      @last100 = @person.last(@@max_days)
       @goal_weight = @person.goal_weight
-
-      @in3months = @measures[0].weight + (@last7 * 4 * 3) if @last7 and @measures[0]
+      @in3months = @person.in3months
 
       if @measures[0] and @last7
         week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
         @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
-
-        if @goal_weight < @measures[0].weight
-          togo = @measures[0].weight - @goal_weight
-          @goaldate = (Time.now + (togo / -@last7).weeks).to_s(:long)
-        else
-          @goaldate = "At or below goal weight"
-        end
       else
         @goaldate = "Not enough data"
       end
@@ -65,15 +42,7 @@ class MeasuresController < ApplicationController
         @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@last100), @@max_days, @person)
       end
 
-      karmas = Measure.order('karma desc')
-      kcount = 1
-      karmas.all.each do |k|
-        if @measures[0].measure_date == k.measure_date
-          @krank = kcount
-        end
-        kcount = kcount + 1
-      end
-
+      @karma_rank = @person.karma_rank
     else
       redirect_to people_url, :notice => "Select a person."
     end
@@ -176,7 +145,7 @@ class MeasuresController < ApplicationController
       page = 1
 
       begin 
-        measurements = wuser.measurement_groups(:per_page => 20, :page => page, :end_at => Time.now)
+        measurements = wuser.measurement_groups(:per_page => 50, :page => page, :end_at => Time.now)
 
         measurements.each do |measurement|
           if measurement.weight and measurement.fat and measurement.taken_at
@@ -199,7 +168,7 @@ class MeasuresController < ApplicationController
     if (logged_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
-      measurements = wuser.measurement_groups(:start_at=>Measure.first.measure_date + 1.minute, :end_at => Time.now)
+      measurements = wuser.measurement_groups(:start_at=>Measure.first.measure_date + 5.minute, :end_at => Time.now)
 
       measurements.each do |measurement|
         measure = Measure.new

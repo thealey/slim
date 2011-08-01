@@ -17,7 +17,7 @@
                   in 3 months:<br/>
                   <strong><%= floatformat % @in3months if @in3months %></strong>.
                   <p/>
-                    Karma rank: <strong><%= @krank %></strong>
+                    Karma rank: <strong><%= @karma_rank %></strong>
                   </td>
                 </tr>
               </table>
@@ -76,7 +76,6 @@
             </tr>
           <% end %>
         </table>
-        <%= will_paginate @measures %>
         <small>  
           *Karma measures how effective is the trend towards the goal weight. 100 / top line of chart being the goal.
         </small>

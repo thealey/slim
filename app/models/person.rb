@@ -8,6 +8,8 @@ class Person < ActiveRecord::Base
   attr_accessor :password
   before_save :prepare_password
 
+  has_many      :measures
+  
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :allow_blank => true
   validates_format_of :username, :with => /^[-\w\._@]+$/i, :allow_blank => true, :message => "should only contain letters, numbers, or .-_@"
@@ -29,6 +31,29 @@ class Person < ActiveRecord::Base
   def get_bmi(weight)
     height = height_feet * 12 + height_inches
     return (weight * 703 / height**2)
+  end
+
+  def last(days)
+      if measures[0] and measures[days - 1]
+        last = measures[0].trend - measures[days - 1].trend
+      else
+        last = nil 
+      end
+  end
+
+  def in3months
+      @in3months = measures[0].weight + (last(7) * 4 * 3) if last(7) and measures[0]
+  end
+ 
+  def karma_rank
+      kcount = 1
+      Measure.where(:person_id => self.id).order('karma desc').each do |k|
+        if measures[0].measure_date == k.measure_date
+          karma_rank = kcount
+        end
+        kcount = kcount + 1
+      end
+      return karma_rank
   end
 
   private
