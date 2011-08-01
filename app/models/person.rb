@@ -46,6 +46,7 @@ class Person < ActiveRecord::Base
   end
  
   def karma_rank
+    return 1
       kcount = 1
       Measure.where(:person_id => self.id).order('karma desc').each do |k|
         if measures[0].measure_date == k.measure_date
