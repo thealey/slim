@@ -3,7 +3,7 @@ class Person < ActiveRecord::Base
   is_gravtastic
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
-  attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal_weight,:private
+  attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal_weight,:private, :alpha
 
   attr_accessor :password
   before_save :prepare_password

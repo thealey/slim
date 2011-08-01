@@ -201,7 +201,7 @@ class MeasuresController < ApplicationController
       @measures = Measure.where(:person_id=>person.id).order('measure_date asc')
       counter = 0
       trend_days = 6
-      alpha = 0.1
+      alpha = person.alpha
       weightmult = 2
       trendmult = 10
 
