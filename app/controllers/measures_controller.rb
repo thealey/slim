@@ -22,7 +22,6 @@ class MeasuresController < ApplicationController
       @last7 = @person.last(7)
       @last30 = @person.last(30)
       @last100 = @person.last(@@max_days)
-      @goal_weight = @person.goal_weight
       @in3months = @person.in3months
       if @measures[0] and @last7
         week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)

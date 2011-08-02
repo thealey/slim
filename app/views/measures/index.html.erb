@@ -45,17 +45,28 @@
 
         <table>
           <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th colspan='2'>Trend</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
             <th>#</th>
             <th>Weight</th>
             <th>Trend</th>
             <th>Karma *</th>
+            <th>Fat %</th>
+            <th>BMI</th>
             <th>Delta</th>
             <th>From goal</th>
             <th>User</th>
             <th>Measure Date</th>
             <th>Ago</th>
-            <th>Fat %</th>
-            <th>BMI</th>
           </tr>
           <% counter = 1 %>
           <% for measure in @measures %>
@@ -64,13 +75,13 @@
               <td><%= floatformat % measure.weight %></td>
               <td><%= floatformat % measure.trend if measure.trend %></td>
               <td><%= floatformat % measure.karma %></td>
+              <td><%= floatformat % (measure.fat / measure.weight * 100) if measure.fat %></td>
+              <td><%= floatformat % @person.get_bmi(measure.trend) %></td>
               <td><%= '+' if measure.delta and measure.delta > 0 %><%= floatformat % measure.delta if measure.delta %></td>
-              <td><%= floatformat % (measure.trend - @goal_weight) %></td>
+              <td><%= floatformat % (measure.trend - @person.goal_weight) %></td>
               <td><%= measure.person.username %></td>
               <td><%= measure.measure_date.to_s(:long) %></td>
               <td><%= time_ago_in_words(measure.measure_date) %></td>
-              <td><%= floatformat % (measure.fat / measure.weight * 100) if measure.fat %></td>
-              <td><%= floatformat % @person.get_bmi(measure.trend) %></td>
               <td><%= link_to "Edit", edit_measure_path(measure) %></td>
               <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
             </tr>
