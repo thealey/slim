@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110801200327) do
+ActiveRecord::Schema.define(:version => 20110802194942) do
 
   create_table "measures", :force => true do |t|
     t.integer  "person_id"
@@ -36,9 +36,10 @@ ActiveRecord::Schema.define(:version => 20110801200327) do
     t.string   "withings_api_key"
     t.integer  "height_feet"
     t.integer  "height_inches"
-    t.integer  "goal_weight"
+    t.integer  "goal"
     t.boolean  "private"
     t.float    "alpha",            :default => 0.1
+    t.string   "goal_type",        :default => "lbs"
   end
 
 end

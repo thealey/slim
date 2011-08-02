@@ -26,8 +26,13 @@
       </td>
       <td>
         <p>
-          <%= f.label :goal_weight %><br />
-          <%= f.text_field :goal_weight %>
+          <%= f.label :goal_type %><br />
+          <%= f.radio_button :goal_type, "lbs" %> lbs<br/>
+          <%= f.radio_button :goal_type, "%fat" %> %fat
+        </p>
+        <p>
+          <%= f.label :goal %><br />
+          <%= f.text_field :goal %>
         </p>
         <p>
           <%= f.label :height_feet %><br />

@@ -8,20 +8,20 @@
       &nbsp;
       <%= @person.username %>
       <small>
-      <table>
-        <tr>
-          <td>
-            Goal of <strong><%= @person.goal_weight %></strong>.
-            <p/><p/>
-                Trend weight <br/>
-                in 3 months:<br/>
-                <strong><%= floatformat % @in3months if @in3months %></strong>.
-                <p/>
-                  Karma rank: <strong><%= @karma_rank %></strong>
-                </td>
-              </tr>
-            </table>
-          </small>
+        <table>
+          <tr>
+            <td>
+              Goal of <strong><%= @person.goal.to_s + " " + @person.goal_type %></strong>.
+              <p/><p/>
+                  Trend weight <br/>
+                  in 3 months:<br/>
+                  <strong><%= floatformat % @in3months if @in3months %></strong>.
+                  <p/>
+                    Karma rank: <strong><%= @karma_rank %></strong>
+                  </td>
+                </tr>
+              </table>
+            </small>
           </td>
           <td>
             <% if @lcurl7 %>
@@ -75,20 +75,22 @@
               <td><%= floatformat % measure.weight %></td>
               <td><%= floatformat % measure.trend if measure.trend %></td>
               <td><%= floatformat % measure.karma %></td>
-              <td><%= floatformat % (measure.fat / measure.weight * 100) if measure.fat %></td>
+              <td><%= floatformat % measure.fatpercentage if measure.fat %></td>
               <td><%= floatformat % @person.get_bmi(measure.trend) %></td>
               <td><%= '+' if measure.delta and measure.delta > 0 %><%= floatformat % measure.delta if measure.delta %></td>
-              <td><%= floatformat % (measure.trend - @person.goal_weight) %></td>
-              <td><%= measure.person.username %></td>
-              <td><%= measure.measure_date.to_s(:long) %></td>
-              <td><%= time_ago_in_words(measure.measure_date) %></td>
-              <td><%= link_to "Edit", edit_measure_path(measure) %></td>
-              <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
-            </tr>
-          <% end %>
-        </table>
-        <%= will_paginate @measures %>
-        <small>  
-          *Karma measures how effective is the trend towards the goal weight. 100 / top line of chart being the goal.
-        </small>
-        <p/>
+              <% if @person.goal_type == 'lbs' %>
+              <td><%= floatformat % (measure.trend - @person.goal) %></td>
+            <% end %>
+            <td><%= measure.person.username %></td>
+            <td><%= measure.measure_date.to_s(:long) %></td>
+            <td><%= time_ago_in_words(measure.measure_date) %></td>
+            <td><%= link_to "Edit", edit_measure_path(measure) %></td>
+            <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
+          </tr>
+        <% end %>
+      </table>
+      <%= will_paginate @measures %>
+      <small>  
+        *Karma measures how effective is the trend towards the goal weight. 100 / top line of chart being the goal.
+      </small>
+      <p/>

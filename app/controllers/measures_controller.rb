@@ -47,46 +47,65 @@ class MeasuresController < ApplicationController
   end
 
   def floatstringlbs(f)
-    return "%.2f" % f.to_s + "lbs/week" if f 
+    return "%.2f" % f.to_s + "/week" if f 
   end
 
   def getchart(measures, title, daylimit, person)
     trends = Array.new
     weights = Array.new
+    fats = Array.new
     goals = Array.new
     karmas = Array.new
 
-    max_weight = 0
-    min_weight = 1000
+    max = 0
+    min = 1000
     lcurl = ''
 
     measures.each do |measure|
       return '' if measure.trend.nil?
       trends << measure.trend
+      fats << measure.fatpercentage
       weights << measure.weight
-      goals << person.goal_weight
       karmas << measure.karma - 10
-      min_weight = measure.weight if measure.weight < min_weight
-      max_weight = measure.weight if measure.weight > max_weight
+
+      if person.goal_type == "lbs"
+        min = measure.weight if measure.weight < min
+        max = measure.weight if measure.weight > max
+        goals << person.goal
+      end
+      if person.goal_type == "%fat"
+        min = measure.fatpercentage if measure.weight < min
+        max = measure.fatpercentage if measure.weight > max
+        goals << person.goal
+      end
     end
-    max_weight = max_weight + 1
+    max = max + 1
 
-    min_weight = person.goal_weight - person.goal_weight * 0.02 if daylimit == @@max_days
+    goalminscale = 0.02 if person.goal_type == 'lbs'
+    goalminscale = 0.02 if person.goal_type == '%fat'
 
-    scaled_trends = scale_array(trends, min_weight, max_weight)
-    scaled_weights = scale_array(weights, min_weight, max_weight)
+    min = person.goal - person.goal * goalminscale if daylimit == @@max_days
+
+    scaled_trends = scale_array(trends, min, max)
+    scaled_weights = scale_array(weights, min, max)
+    scaled_fats = scale_array(fats, min, max)
     scaled_karmas = scale_array(karmas, 0, 100)
     #scaled_karmas.reverse!
-    scaled_goals = scale_array(goals, min_weight, max_weight)
+    scaled_goals = scale_array(goals, min, max)
     #debugger
 
     GoogleChart::LineChart.new('320x200', title, false) do |lc|
       lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
-      lc.data "Weight", scaled_weights, 'BDBDBD'
+      if person.goal_type == 'lbs'
+        lc.data "Weight", scaled_weights, 'BDBDBD'
+      end
+      if person.goal_type == '%fat'
+        lc.data "%Fat", scaled_fats, 'BDBDBD'
+      end
       lc.data "Goal", scaled_goals, '254117'
       #lc.data "Karma", scaled_karmas, 'B8B8B8'
-      lc.axis :y, :range => [min_weight, max_weight], :color => '667B99', :font_size => 10, :alignment => :center
+      lc.axis :y, :range => [min, max], :color => '667B99', :font_size => 10, :alignment => :center
       lc.axis :x, :range => [daylimit,1], :color => '667B99', :font_size => 10, :alignment => :center
       lc.grid :x_step => 5, :y_step => 5, :length_segment => 1, :length_blank => 0
       lcurl = lc.to_url(:chds=>'a')
@@ -211,27 +230,25 @@ class MeasuresController < ApplicationController
 
       @measures.each do |measure|
         if counter == 0
-          #debugger
           forecast = 0
           @measures[0..6].each do |m|
-            forecast+= m.weight
+            forecast+= m.item
           end
           forecast = forecast / 7
           measure.forecast = forecast
         else
           forecast = @measures[counter - 1].trend
         end
-        #debugger
 
-        trend = (alpha * measure.weight) + (1 - alpha) * forecast
+        trend = (alpha * measure.item) + (1 - alpha) * forecast
         trenddiff = (trend - previous_trend)
-        weightdiff = measure.weight - person.goal_weight
-        measure.karma = 100 - (weightdiff * weightmult) - (trenddiff * trendmult) unless counter == 0
+        diff = measure.item - person.goal
+        measure.karma = 100 - (diff * weightmult) - (trenddiff * trendmult) unless counter == 0
 
         measure.trend = trend
         previous_trend = trend
 
-        delta = measure.weight - forecast
+        delta = measure.item - forecast
         measure.forecast = forecast
         measure.delta = delta
         measure.save
