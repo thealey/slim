@@ -44,7 +44,7 @@ class Person < ActiveRecord::Base
   end
 
   def in3months
-    @in3months = measures[0].weight + (last(7) * 4 * 3) if last(7) and measures[0]
+    @in3months = measures[0].item + (last(7) * 4 * 3) if last(7) and measures[0]
   end
 
   def karma_rank
@@ -58,6 +58,10 @@ class Person < ActiveRecord::Base
       kcount = kcount + 1
     end
     return karma_rank
+  end
+
+  def leanbodymass
+    weight - fat
   end
 
   private

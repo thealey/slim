@@ -11,10 +11,10 @@
         <table>
           <tr>
             <td>
-              Goal of <strong><%= @person.goal.to_s + " " + @person.goal_type %></strong>.
+              Goal of <strong><%= @person.goal.to_s +  @person.goal_type %></strong>.
               <p/><p/>
-                  Trend weight <br/>
-                  in 3 months:<br/>
+                  Trend in<br/>
+                  3 months:<br/>
                   <strong><%= floatformat % @in3months if @in3months %></strong>.
                   <p/>
                     Karma rank: <strong><%= @karma_rank %></strong>

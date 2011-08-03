@@ -68,23 +68,13 @@ class MeasuresController < ApplicationController
       weights << measure.weight
       karmas << measure.karma - 10
 
-      if person.goal_type == "lbs"
-        min = measure.weight if measure.weight < min
-        max = measure.weight if measure.weight > max
-        goals << person.goal
-      end
-      if person.goal_type == "%fat"
-        min = measure.fatpercentage if measure.weight < min
-        max = measure.fatpercentage if measure.weight > max
-        goals << person.goal
-      end
+      min = measure.item if measure.item < min
+      max = measure.item if measure.item > max
+      goals << person.goal
     end
     max = max + 1
 
-    goalminscale = 0.02 if person.goal_type == 'lbs'
-    goalminscale = 0.02 if person.goal_type == '%fat'
-
-    min = person.goal - person.goal * goalminscale if daylimit == @@max_days
+    min = person.goal - person.goal * 0.02 if daylimit == @@max_days
 
     scaled_trends = scale_array(trends, min, max)
     scaled_weights = scale_array(weights, min, max)
@@ -92,7 +82,6 @@ class MeasuresController < ApplicationController
     scaled_karmas = scale_array(karmas, 0, 100)
     #scaled_karmas.reverse!
     scaled_goals = scale_array(goals, min, max)
-    #debugger
 
     GoogleChart::LineChart.new('320x200', title, false) do |lc|
       lc.show_legend = true
@@ -255,5 +244,6 @@ class MeasuresController < ApplicationController
         counter = counter + 1
       end
     end
+    redirect_to measures_url
   end
 end
