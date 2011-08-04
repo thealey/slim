@@ -168,14 +168,13 @@ class MeasuresController < ApplicationController
       end while measurements.size > 0
     end
     update_trend
-    redirect_to measures_url, :notice => "Successfully updated."
   end
 
   def updateall
     if (logged_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
-      measurements = wuser.measurement_groups(:start_at=>Measure.first.measure_date + 5.minute, :end_at => Time.now)
+      measurements = wuser.measurement_groups(:start_at=>current_person.latest_measure.measure_date + 5.minute, :end_at => Time.now)
 
       measurements.each do |measurement|
         measure = Measure.new
@@ -187,9 +186,7 @@ class MeasuresController < ApplicationController
       end    
     end
     update_trend
-    redirect_to measures_url, :notice => "Successfully updated."
   end
-
 
   def deleteall
     Measure.destroy_all
@@ -200,7 +197,6 @@ class MeasuresController < ApplicationController
     @measure = Measure.find(params[:id])
     @measure.destroy
     update_trend
-    redirect_to measures_url, :notice => "Successfully destroyed measure."
   end
 
   def update_trend
