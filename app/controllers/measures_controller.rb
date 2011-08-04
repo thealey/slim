@@ -2,7 +2,7 @@ require 'withings'
 include Withings
 
 class MeasuresController < ApplicationController
-  @@max_days = 100
+  @@max_days = 150
 
   def index
     Time.zone = "Eastern Time (US & Canada)"
@@ -18,6 +18,7 @@ class MeasuresController < ApplicationController
 
       @measures = @person.measures.order('measure_date desc').limit(7).paginate :per_page=> 7, :page => params[:page]
       @allmeasures = @person.measures
+      @@max_days = @person.measures.size
 
       @last7 = @person.last(7)
       @last30 = @person.last(30)
@@ -66,7 +67,7 @@ class MeasuresController < ApplicationController
       trends << measure.trend
       fats << measure.fatpercentage
       weights << measure.weight
-      karmas << measure.karma - 10
+      karmas << measure.karma - 10 if measure.karma
 
       min = measure.item if measure.item < min
       max = measure.item if measure.item > max
