@@ -1,6 +1,6 @@
 class Person < ActiveRecord::Base
-  include Gravtastic
-  is_gravtastic
+  #include Gravtastic
+  #is_gravtastic
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
   attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha
@@ -22,6 +22,10 @@ class Person < ActiveRecord::Base
   def self.authenticate(login, pass)
     person = find_by_username(login) || find_by_email(login)
     return person if person && person.password_hash == person.encrypt_password(pass)
+  end
+
+  def gravatar_url
+    return 'http://actualdownload.com/pictures/icon/software-icons---professional-xp-icons-for-software-and-web-12649.gif'
   end
 
   def latest_measure
