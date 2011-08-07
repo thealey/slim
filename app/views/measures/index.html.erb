@@ -42,57 +42,56 @@
       </table>
 
       <p/>
-
         <table>
           <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th colspan='2'>Trend</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-          <tr>
-            <th>#</th>
-            <th>Weight</th>
-            <th>Trend</th>
-            <th>Karma *</th>
-            <th>Fat %</th>
-            <th>BMI</th>
-            <th>Delta</th>
-            <th>From goal</th>
-            <th>User</th>
-            <th>Measure Date</th>
-            <th>Ago</th>
-          </tr>
-          <% counter = 1 %>
-          <% for measure in @measures %>
-            <tr>
-              <td><%= counter %><% counter = counter + 1 %></td>
-              <td><%= floatformat % measure.weight %></td>
-              <td><%= floatformat % measure.trend if measure.trend %></td>
-              <td><%= floatformat % measure.karma %></td>
-              <td><%= floatformat % measure.fatpercentage if measure.fat %></td>
-              <td><%= floatformat % @person.get_bmi(measure.trend) %></td>
-              <td><%= '+' if measure.delta and measure.delta > 0 %><%= floatformat % measure.delta if measure.delta %></td>
-              <% if @person.goal_type == 'lbs' %>
-              <td><%= floatformat % (measure.trend - @person.goal) %></td>
-            <% end %>
-            <td><%= measure.person.username %></td>
-            <td><%= measure.measure_date.to_s(:long) %></td>
-            <td><%= time_ago_in_words(measure.measure_date) %></td>
-            <% if logged_in? and current_person == @person %>
-              <td><%= link_to "Edit", edit_measure_path(measure) %></td>
-              <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </table>
-      <%= will_paginate @measures %>
-      <small>  
-        *Karma measures how effective is the trend towards the goal weight. 100 / top line of chart being the goal.
-      </small>
-      <p/>
+            <td>
+              <table>
+                <tr>
+                  <th>#</th>
+                  <th>Weight</th>
+                  <th>Trend</th>
+                  <th>Karma *</th>
+                  <th>Fat %</th>
+                  <th>BMI</th>
+                  <th>Measure Date</th>
+                  <th>Ago</th>
+                </tr>
+                <% counter = 1 %>
+                <% for measure in @measures %>
+                  <tr>
+                    <td><%= counter %><% counter = counter + 1 %></td>
+                    <td><%= floatformat % measure.weight %></td>
+                    <td><%= floatformat % measure.trend if measure.trend %></td>
+                    <td><%= floatformat % measure.karma %></td>
+                    <td><%= floatformat % measure.fatpercentage if measure.fat %></td>
+                    <td><%= floatformat % @person.get_bmi(measure.trend) %></td>
+                    <td><%= measure.measure_date.to_s(:short) %></td>
+                    <td><%= time_ago_in_words(measure.measure_date) %></td>
+                    <% if logged_in? and current_person == @person %>
+                      <td><%= link_to "Edit", edit_measure_path(measure) %></td>
+                      <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </table>
+            </td>
+            <td>
+              <strong>
+                Posts
+              </strong>
+              <% if @posts.size %>
+                <ul>
+                  <% @posts.each do |post| %>
+                    <li>
+                      <%= link_to post.name, post %>
+                    </li>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          </table>
+          <%= will_paginate @measures %>
+          <small>  
+            *Karma measures how effective is the trend towards the goal weight. 100 / top line of chart being the goal.
+          </small>
+          <p/>

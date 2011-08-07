@@ -3,15 +3,14 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Body</th>
     <th>Person</th>
+    <th>Date</th>
   </tr>
   <% for post in @posts %>
     <tr>
-      <td><%= post.name %></td>
-      <td><%= post.body %></td>
-      <td><%= post.person_id %></td>
-      <td><%= link_to "Show", post %></td>
+      <td><%= link_to post.name, post %></td>
+      <td><%= post.person.username %></td>
+      <td><%= post.created_at.to_s(:long) %></td>
       <td><%= link_to "Edit", edit_post_path(post) %></td>
       <td><%= link_to "Destroy", post, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>

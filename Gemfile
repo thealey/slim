@@ -13,6 +13,7 @@ gem 'gchartrb'
 gem 'will_paginate'
 gem 'gravtastic'
 gem 'thin'
+gem 'rdiscount'
 
 # Use unicorn as the web server
 # gem 'unicorn'

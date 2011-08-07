@@ -16,6 +16,7 @@ class MeasuresController < ApplicationController
         end
       end
 
+      @posts = Post.where(:person_id=>@person.id).order('created_at desc').limit(5)
       @measures = @person.measures.order('measure_date desc').limit(7).paginate :per_page=> 7, :page => params[:page]
       @allmeasures = @person.measures
       @@max_days = @person.measures.size

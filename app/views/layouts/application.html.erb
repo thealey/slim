@@ -37,6 +37,12 @@
                 <%= link_to "log in", login_path %>.
               <% end %>
             </td>
+              <td>
+                <%= link_to "People", :controller=>"people", :action=>"index" %>
+              </td>
+              <td>
+                <%= link_to "Posts", :controller=>"posts", :action=>"index" %>
+              </td>
             <% if logged_in? %>
               <td>
                 <%= link_to "Home", :controller=>"measures", :action=>"index" %>

@@ -15,7 +15,7 @@
   </tr>
   <tr>
     <td>
-      <%= @post.body %>
+  <%= raw RDiscount.new(@post.body).to_html %>
     </td>
   </tr>
 </table>
