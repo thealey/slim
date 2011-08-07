@@ -24,6 +24,11 @@ class Person < ActiveRecord::Base
     return person if person && person.password_hash == person.encrypt_password(pass)
   end
 
+  def latest_measure
+    m = Measure.where(:person_id => id).order("measure_date desc").limit(1)
+    return m[0] if m
+  end
+  
   def encrypt_password(pass)
     BCrypt::Engine.hash_secret(pass, password_salt)
   end

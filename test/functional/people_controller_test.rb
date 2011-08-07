@@ -46,6 +46,5 @@ class PeopleControllerTest < ActionController::TestCase
     @controller.stubs(:current_person).returns(Person.first)
     Person.any_instance.stubs(:valid?).returns(true)
     put :update, :id => "ignored"
-    assert_redirected_to root_url
   end
 end
