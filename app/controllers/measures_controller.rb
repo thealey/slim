@@ -200,7 +200,6 @@ class MeasuresController < ApplicationController
     @measure = Measure.find(params[:id])
     @measure.destroy
     update_trend
-    redirect_to measures_url, :notice => "Successfully destroyed measure."
   end
 
   def update_trend

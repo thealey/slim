@@ -1,0 +1,9 @@
+one:
+  name: MyString
+  body: MyText
+  person_id: 1
+
+two:
+  name: MyString
+  body: MyText
+  person_id: 1

@@ -1,0 +1,27 @@
+<% title "Post" %>
+
+<table width='80%'>
+  <tr>
+    <td>
+      <strong>
+        <%= @post.name %>
+      </strong>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= @post.person.username %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= @post.body %>
+    </td>
+  </tr>
+</table>
+
+<p>
+  <%= link_to "Edit", edit_post_path(@post) %> |
+  <%= link_to "Destroy", @post, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", posts_path %>
+</p>

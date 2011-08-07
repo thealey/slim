@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110802194942) do
+ActiveRecord::Schema.define(:version => 20110807123240) do
 
   create_table "measures", :force => true do |t|
     t.integer  "person_id"
@@ -40,6 +40,14 @@ ActiveRecord::Schema.define(:version => 20110802194942) do
     t.boolean  "private"
     t.float    "alpha",            :default => 0.1
     t.string   "goal_type",        :default => "lbs"
+  end
+
+  create_table "posts", :force => true do |t|
+    t.string   "name"
+    t.text     "body"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
