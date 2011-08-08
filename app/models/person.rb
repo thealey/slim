@@ -18,7 +18,6 @@ class Person < ActiveRecord::Base
   validates_confirmation_of :password
   validates_length_of :password, :minimum => 4, :allow_blank => true
 
-  # login can be either username or email address
   def self.authenticate(login, pass)
     person = find_by_username(login) || find_by_email(login)
     return person if person && person.password_hash == person.encrypt_password(pass)
@@ -28,11 +27,6 @@ class Person < ActiveRecord::Base
     return 'http://actualdownload.com/pictures/icon/software-icons---professional-xp-icons-for-software-and-web-12649.gif'
   end
 
-  def latest_measure
-    m = Measure.where(:person_id => id).order("measure_date desc").limit(1)
-    return m[0] if m
-  end
-  
   def encrypt_password(pass)
     BCrypt::Engine.hash_secret(pass, password_salt)
   end
@@ -51,22 +45,24 @@ class Person < ActiveRecord::Base
     else
       last = nil 
     end
-    return last
+    return 0 - last
   end
 
   def in3months
-    @in3months = measures[0].item + (last(7) * 4 * 3) if last(7) and measures[0]
+    @in3months = current_measure.item + (last(7) * 4 * 3) if last(7) and current_measure
   end
 
+def current_measure
+    measures = Measure.where(:person_id => self.id).order('measure_date desc').limit(1)
+    return measures[0]
+end
+
   def karma_rank
-    kcount = 1
-    karma_rank = 0
-    karmas = Measure.where(:person_id => self.id).order('karma desc')
-    karmas.each do |karma|
-      if measures[0].measure_date == karma.measure_date
-        karma_rank = kcount
-      end
-      kcount = kcount + 1
+    karma_rank = 1
+    measures = Measure.where(:person_id => self.id)
+
+    measures.each do |measure|
+      karma_rank = karma_rank + 1 if measure.karma and measure.karma > current_measure.karma
     end
     return karma_rank
   end
