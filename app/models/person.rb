@@ -43,8 +43,10 @@ class Person < ActiveRecord::Base
   end
 
   def last(days)
-    if measures[0] and measures[days - 1]
-      diff = measures[0].trend - measures[days - 1].trend
+    m = Measure.where(:person_id=>self.id).order('measure_date desc')
+
+    if m[0] and m[days - 1]
+      diff = m[days - 1].trend - m[0].trend
       last = diff / (days / 7)
     else
       last = nil 
