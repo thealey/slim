@@ -45,7 +45,7 @@ class Person < ActiveRecord::Base
     else
       last = nil 
     end
-    return 0 - last
+    return 0 - last if last
   end
 
   def in3months
