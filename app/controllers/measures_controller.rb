@@ -2,8 +2,6 @@ require 'withings'
 include Withings
 
 class MeasuresController < ApplicationController
-  @@max_days = 150
-
   def index
     Time.zone = "Eastern Time (US & Canada)"
     if current_person or params["person_id"]
@@ -23,7 +21,7 @@ class MeasuresController < ApplicationController
 
       @last7 = @person.last(7)
       @last30 = @person.last(30)
-      @last100 = @person.last(@@max_days)
+      @lastmax = @person.last(@@max_days)
       @in3months = @person.in3months
       if @measures[0] and @last7
         week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
@@ -37,9 +35,9 @@ class MeasuresController < ApplicationController
         @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
       end
 
-      if @last100
-        all_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(@@max_days)
-        @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@last100), @@max_days, @person)
+      if @lastmax
+        all_measures = Measure.where(:person_id => @person.id).order('measure_date desc')
+        @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@lastmax), @@max_days, @person)
       end
 
       @karma_rank = @person.karma_rank
@@ -127,7 +125,6 @@ class MeasuresController < ApplicationController
     @measure = Measure.new(params[:measure])
     if @measure.save
       update_trend
-      redirect_to measures_url, :notice => "Successfully created measure."
     else
       render :action => 'new'
     end
