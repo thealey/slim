@@ -173,7 +173,7 @@ class MeasuresController < ApplicationController
     if (logged_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
-      measurements = wuser.measurement_groups(:start_at=>current_person.latest_measure.measure_date + 5.minute, :end_at => Time.now)
+      measurements = wuser.measurement_groups(:start_at=>current_person.current_measure.measure_date + 5.minute, :end_at => Time.now)
 
       measurements.each do |measurement|
         measure = Measure.new
