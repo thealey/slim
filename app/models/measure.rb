@@ -17,6 +17,10 @@ class Measure < ActiveRecord::Base
   end
 
   def fatpercentage
-    fat / weight * 100
+    if fat and weight
+      fat / weight * 100 
+    else 
+      return 0
+    end
   end     
 end

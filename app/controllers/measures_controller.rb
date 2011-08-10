@@ -227,7 +227,10 @@ class MeasuresController < ApplicationController
         trend = (alpha * measure.item) + (1 - alpha) * forecast
         trenddiff = (trend - previous_trend)
         diff = measure.item - person.goal
-        measure.karma = 100 - (diff * weightmult) - (trenddiff * trendmult) unless counter == 0
+        unless counter == 0
+          measure.karma = 100 - (diff * weightmult) - (trenddiff * trendmult)
+          measure.karma = 100 if measure.karma > 100
+        end
 
         measure.trend = trend
         previous_trend = trend

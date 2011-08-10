@@ -31,6 +31,35 @@ class Person < ActiveRecord::Base
     BCrypt::Engine.hash_secret(pass, password_salt)
   end
 
+  def karma_grade(measure)
+    case measure.karma
+    when 90..100
+      karma_grade = 'A'
+      remainder = measure.karma - 90
+    when 80..90
+      karma_grade = 'B'
+      remainder = measure.karma - 80
+    when 70..80
+      karma_grade = 'C'
+      remainder = measure.karma - 70
+    when 60..70
+      karma_grade = 'D'
+      remainder = measure.karma - 60
+    else
+      karma_grade = 'F'
+      remainder = 5
+    end
+
+    case remainder
+    when 7..10
+      karma_grade += '+'
+    when 0..4
+      karma_grade += '-'
+    end 
+
+    return karma_grade
+  end
+
   def get_bmi(weight)
     height = height_feet * 12 + height_inches
     return (weight * 703 / height**2)
@@ -52,10 +81,10 @@ class Person < ActiveRecord::Base
     @in3months = current_measure.item + (last(7) * 4 * 3) if last(7) and current_measure
   end
 
-def current_measure
+  def current_measure
     measures = Measure.where(:person_id => self.id).order('measure_date desc').limit(1)
     return measures[0]
-end
+  end
 
   def karma_rank
     karma_rank = 1
