@@ -72,7 +72,7 @@ class MeasuresController < ApplicationController
       max = measure.item if measure.item > max
       goals << person.goal
     end
-    max = max + 1
+    #max = max + 1
 
     min = person.goal - person.goal * 0.02 if daylimit == @@max_days
 
@@ -90,7 +90,7 @@ class MeasuresController < ApplicationController
         lc.data "Weight", scaled_weights, 'BDBDBD'
       end
       if person.goal_type == '%fat'
-        lc.data "%Fat", scaled_fats, 'BDBDBD'
+        #lc.data "%Fat", scaled_fats, 'BDBDBD'
       end
       lc.data "Goal", scaled_goals, '254117'
       #lc.data "Karma", scaled_karmas, 'B8B8B8'
@@ -170,6 +170,7 @@ class MeasuresController < ApplicationController
   end
 
   def updateall
+
     if (logged_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
