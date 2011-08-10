@@ -32,6 +32,8 @@ class Person < ActiveRecord::Base
   end
 
   def karma_grade(measure)
+    # unless measure return "NA"
+
     case measure.karma
     when 90..100
       karma_grade = 'A'

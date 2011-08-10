@@ -17,7 +17,7 @@
                   3 months:<br/>
                   <strong><%= floatformat % @in3months if @in3months %></strong>
                   <p/>
-                    Karma rank: <strong><%= @karma_rank %></strong></br>
+                    Karma rank: <strong><%= @karma_rank if @karma_rank %></strong></br>
                     Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
                   </td>
                 </tr>
