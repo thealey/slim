@@ -32,7 +32,9 @@ class Person < ActiveRecord::Base
   end
 
   def karma_grade(measure)
-    # unless measure return "NA"
+    if measure == nil
+      return "NA"
+    end
 
     case measure.karma
     when 90..100
