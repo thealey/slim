@@ -19,28 +19,30 @@ class MeasuresController < ApplicationController
       @allmeasures = @person.measures
       @@max_days = @person.measures.size
 
-      @last7 = @person.last(7)
-      @last30 = @person.last(30)
-      @lastmax = @person.last(@@max_days)
-      @in3months = @person.in3months
-      if @measures[0] and @last7
-        week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
-        @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
-      else
-        @goaldate = "Not enough data"
-      end
+      if @person.measures.size > 6
+        @last7 = @person.last(7)
+        @last30 = @person.last(30)
+        @lastmax = @person.last(@@max_days)
+        @in3months = @person.in3months
+        if @measures[0] and @last7
+          week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
+          @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
+        else
+          @goaldate = "Not enough data"
+        end
 
-      if @last30
-        month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
-        @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
-      end
+        if @last30
+          month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
+          @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
+        end
 
-      if @lastmax
-        all_measures = Measure.where(:person_id => @person.id).order('measure_date desc')
-        @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@lastmax), @@max_days, @person)
-      end
+        if @lastmax
+          all_measures = Measure.where(:person_id => @person.id).order('measure_date desc')
+          @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@lastmax), @@max_days, @person)
+        end
 
-      @karma_rank = @person.karma_rank
+        @karma_rank = @person.karma_rank
+      end
     else
       redirect_to people_url, :notice => "Select a person."
     end
@@ -200,6 +202,7 @@ class MeasuresController < ApplicationController
   end
 
   def update_trend
+    ActiveRecord::Base.connection.execute('update measures set trend = null, karma=null, trend = null, delta=null;')
     Person.all.each do |person|
       @measures = Measure.where(:person_id=>person.id).order('measure_date asc')
       counter = 0
@@ -213,34 +216,36 @@ class MeasuresController < ApplicationController
       karma = 0
       previous_trend = 0
 
-      @measures.each do |measure|
-        if counter == 0
-          forecast = 0
-          @measures[0..6].each do |m|
-            forecast+= m.item
+      if @measures.size > 6
+        @measures.each do |measure|
+          if counter == 0
+            forecast = 0
+            @measures[0..6].each do |m|
+              forecast+= m.item
+            end
+            forecast = forecast / 7
+            measure.forecast = forecast
+          else
+            forecast = @measures[counter - 1].trend
           end
-          forecast = forecast / 7
+
+          trend = (alpha * measure.item) + (1 - alpha) * forecast
+          trenddiff = (trend - previous_trend)
+          diff = measure.item - person.goal
+          unless counter == 0
+            measure.karma = 100 - (diff * weightmult) - (trenddiff * trendmult)
+            measure.karma = 100 if measure.karma > 100
+          end
+
+          measure.trend = trend
+          previous_trend = trend
+
+          delta = measure.item - forecast
           measure.forecast = forecast
-        else
-          forecast = @measures[counter - 1].trend
+          measure.delta = delta
+          measure.save
+          counter = counter + 1
         end
-
-        trend = (alpha * measure.item) + (1 - alpha) * forecast
-        trenddiff = (trend - previous_trend)
-        diff = measure.item - person.goal
-        unless counter == 0
-          measure.karma = 100 - (diff * weightmult) - (trenddiff * trendmult)
-          measure.karma = 100 if measure.karma > 100
-        end
-
-        measure.trend = trend
-        previous_trend = trend
-
-        delta = measure.item - forecast
-        measure.forecast = forecast
-        measure.delta = delta
-        measure.save
-        counter = counter + 1
       end
     end
     redirect_to measures_url

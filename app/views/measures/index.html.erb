@@ -1,6 +1,6 @@
 <% floatformat = "%.2f" %>
 <% floatformat_no_decimals = "%.0f" %>
-
+<%= @lastmax %>
 <table>
   <tr>
     <td style="vertical-align:middle">
@@ -25,6 +25,7 @@
             </small>
           </td>
           <td>
+            <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
             <% if @lcurl7 %>
               <img src=<%= @lcurl7 %>/>
             <% end %>
@@ -63,9 +64,9 @@
                     <td><%= counter %><% counter = counter + 1 %></td>
                     <td><%= floatformat % measure.weight %></td>
                     <td><%= floatformat % measure.trend if measure.trend %></td>
-                    <td><%= floatformat % measure.karma %> &nbsp; <strong><%= @person.karma_grade measure %></strong></td>
+                    <td><%= floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
                     <td><%= floatformat % measure.fatpercentage if measure.fat %></td>
-                    <td><%= floatformat % @person.get_bmi(measure.trend) %></td>
+                    <td><%= floatformat % @person.get_bmi(measure.trend) if measure.trend %></td>
                     <td><%= measure.measure_date.to_s(:short) %></td>
                     <td><%= time_ago_in_words(measure.measure_date) %></td>
                     <% if logged_in? and current_person == @person %>

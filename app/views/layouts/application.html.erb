@@ -54,6 +54,9 @@
                 <%= link_to "New Measure", new_measure_path %>
               </td>
               <td>
+                <%= link_to "Update trends",  :controller=>"measures", :action=>"update_trend" %>
+              </td>
+              <td>
                 <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
               </td>
               <!--
