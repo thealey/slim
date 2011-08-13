@@ -1,0 +1,3 @@
+<%= @measures.size %>
+<%= @measuredate.to_s(:long) %>
+<img src=<%=  getchart(@max_days, @measures, "7 Day Trend " + Utility.floatstringlbs(@last.to_s), @limit, @person) %>/>

@@ -10,6 +10,7 @@ Slim::Application.routes.draw do
   match 'person/edit' => 'people#edit', :as => :edit_current_person
 
   match 'signup' => 'people#new', :as => :signup
+  match 'chart' => 'measures#chart'
 
   match 'logout' => 'sessions#destroy', :as => :logout
 
