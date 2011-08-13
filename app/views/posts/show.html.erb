@@ -4,7 +4,8 @@
   <tr>
     <td>
       <strong>
-        <%= @post.name %>
+        <%= @post.name %><br/>
+        <%= @post.created_at.to_s(:long) %>
       </strong>
     </td>
   </tr>
