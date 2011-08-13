@@ -47,12 +47,14 @@ class MeasuresController < ApplicationController
 
   def chart
     @person = Person.find params[:person_id]
+    #TODO deal with what if the persons data is private, only show it to them
+
     @measuredate = Date.parse(params[:measuredate])
     @limit = 7 unless params[:limit]
     @max_days = @person.measures.size
     @last = @person.last(@limit)
 
-    @measures = Measure.where('person_id = :person_id and measure_date >= :measuredate', :person_id => @person.id, :measuredate=>@measuredate).order('measure_date').limit(@limit)
+    @measures = Measure.where('person_id = :person_id and measure_date <= :measuredate', :person_id => @person.id, :measuredate=>@measuredate).order('measure_date desc').limit(@limit)
   end
 
   def show

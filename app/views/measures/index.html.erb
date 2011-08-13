@@ -1,5 +1,3 @@
-<% floatformat = "%.2f" %>
-<% floatformat_no_decimals = "%.0f" %>
 <table>
   <tr>
     <td style="vertical-align:middle">
@@ -14,7 +12,7 @@
               <p/><p/>
                   Trend in<br/>
                   3 months:<br/>
-                  <strong><%= floatformat % @in3months if @in3months %></strong>
+                  <strong><%= Utility.floatformat % @in3months if @in3months %></strong>
                   <p/>
                     Karma rank: <strong><%= @karma_rank if @karma_rank %></strong></br>
                     Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
@@ -42,55 +40,20 @@
         </tr>
       </table>
 
-      <p/>
-        <table>
-          <tr>
-            <td>
-              <table>
-                <tr>
-                  <th>#</th>
-                  <th>Weight</th>
-                  <th>Trend</th>
-                  <th>Karma *</th>
-                  <th>Fat %</th>
-                  <th>BMI</th>
-                  <th>Measure Date</th>
-                  <th>Ago</th>
-                </tr>
-                <% counter = 1 %>
-                <% for measure in @measures %>
-                  <tr>
-                    <td><%= counter %><% counter = counter + 1 %></td>
-                    <td><%= floatformat % measure.weight %></td>
-                    <td><%= floatformat % measure.trend if measure.trend %></td>
-                    <td><%= floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
-                    <td><%= floatformat % measure.fatpercentage if measure.fat %></td>
-                    <td><%= floatformat % @person.get_bmi(measure.trend) if measure.trend %></td>
-                    <td><%= measure.measure_date.to_s(:short) %></td>
-                    <td><%= time_ago_in_words(measure.measure_date) %></td>
-                    <% if logged_in? and current_person == @person %>
-                      <td><%= link_to "Edit", edit_measure_path(measure) %></td>
-                      <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </table>
-            </td>
-            <td>
-              <strong>
-                Posts
-              </strong>
-              <% if @posts.size %>
-                <ul>
-                  <% @posts.each do |post| %>
-                    <li>
-                      <%= link_to post.name, post %>
-                    </li>
-                  <% end %>
-                <% end %>
-              </td>
-            </tr>
-          </table>
+      <%= render 'measures_table' %>
+      <strong>
+        Posts
+      </strong>
+      <% if @posts.size %>
+        <ul>
+          <% @posts.each do |post| %>
+            <li>
+              <%= link_to post.name, post %>
+            </li>
+          <% end %>
+        <% end %>
+
+        <p/>
           <%= will_paginate @measures %>
           <small>  
             *Karma: If you are at your goal weight and not gaining you will have a karma of 100.</br>
