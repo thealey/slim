@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
-  #include Gravtastic
-  #is_gravtastic
+  include Gravtastic
+  is_gravtastic
+  
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
   attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha
@@ -17,10 +18,10 @@ class Person < ActiveRecord::Base
   validates_presence_of :password, :on => :create
   validates_confirmation_of :password
   validates_length_of :password, :minimum => 4, :allow_blank => true
-validates_numericality_of :goal, :greater_than => 50, :less_than => 450
-validates_numericality_of :height_feet, :greater_than => 3, :less_than => 8
-validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
-validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
+  validates_numericality_of :goal, :greater_than => 50, :less_than => 450
+  validates_numericality_of :height_feet, :greater_than => 3, :less_than => 8
+  validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
+  validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
 
 
   def self.authenticate(login, pass)
@@ -28,10 +29,6 @@ validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than =
     return person if person && person.password_hash == person.encrypt_password(pass)
   end
 
-  def gravatar_url
-    return 'http://actualdownload.com/pictures/icon/software-icons---professional-xp-icons-for-software-and-web-12649.gif'
-  end
-  
   def has_trend
     self.measures.size > 6
   end
