@@ -17,6 +17,7 @@ gem 'rdiscount'
 gem 'heroku'
 gem 'rake', '0.8.7'
 gem 'taps'
+gem 'newrelic_rpm'
 
 # Use unicorn as the web server
 # gem 'unicorn'

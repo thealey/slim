@@ -40,18 +40,26 @@
         </tr>
       </table>
 
-      <%= render 'measures_table' %>
-      <strong>
-        Posts
-      </strong>
-      <% if @posts.size %>
-        <ul>
-          <% @posts.each do |post| %>
-            <li>
-              <%= link_to post.name, post %>
-            </li>
-          <% end %>
-        <% end %>
+      <table>
+        <tr>
+          <td>
+            <%= render 'measures_table' %>
+          </td>
+          <td>
+            <strong>
+              Posts
+            </strong>
+            <% if @posts.size %>
+              <ul>
+                <% @posts.each do |post| %>
+                  <li>
+                    <%= link_to post.name, post %>
+                  </li>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        </table>
 
         <p/>
           <%= will_paginate @measures %>
