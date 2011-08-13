@@ -17,6 +17,11 @@ class Person < ActiveRecord::Base
   validates_presence_of :password, :on => :create
   validates_confirmation_of :password
   validates_length_of :password, :minimum => 4, :allow_blank => true
+validates_numericality_of :goal, :greater_than => 50, :less_than => 450
+validates_numericality_of :height_feet, :greater_than => 3, :less_than => 8
+validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
+validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
+
 
   def self.authenticate(login, pass)
     person = find_by_username(login) || find_by_email(login)
@@ -25,6 +30,10 @@ class Person < ActiveRecord::Base
 
   def gravatar_url
     return 'http://actualdownload.com/pictures/icon/software-icons---professional-xp-icons-for-software-and-web-12649.gif'
+  end
+  
+  def has_trend
+    self.measures.size > 6
   end
 
   def encrypt_password(pass)
@@ -102,6 +111,10 @@ class Person < ActiveRecord::Base
 
   def leanbodymass
     weight - fat
+  end
+
+  def get_measures(num)
+    Measure.where(:person_id => self.id).order('measure_date desc').limit(num)
   end
 
   private

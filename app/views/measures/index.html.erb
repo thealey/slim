@@ -25,18 +25,18 @@
           </td>
           <td>
             <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
-            <% if @lcurl7 %>
-              <img src=<%= @lcurl7 %>/>
+            <% if @last7 %>
+              <img src=<%=  getchart(@max_days, @week_measures, "7 Day Trend " + Utility.floatstringlbs(@last7.to_s), 7, @person) %>/>
             <% end %>
           </td>
           <td>
-            <% if @lcurl30 %>
-              <img src=<%= @lcurl30 %>/>
+            <% if @last30 %>
+              <img src=<%=  getchart(@max_days, @month_measures, "30 Day Trend " + Utility.floatstringlbs(@last30.to_s), 30, @person) %>/>
             <% end %>
           </td>
           <td>
-            <% if @lcurlall %>
-              <img src=<%= @lcurlall %>/>
+            <% if @lastall %>
+              <img src=<%=  getchart(@max_days, @all_measures, @max_days.to_s + " Day Trend " + Utility.floatstringlbs(@lastall.to_s), @max_days, @person) %>/>
             <% end %>
           </td>
         </tr>

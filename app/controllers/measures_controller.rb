@@ -2,8 +2,9 @@ require 'withings'
 include Withings
 
 class MeasuresController < ApplicationController
+  helper :measures
+
   def index
-    Time.zone = "Eastern Time (US & Canada)"
     if current_person or params["person_id"]
       @person = current_person if current_person
       if params['person_id']
@@ -17,28 +18,24 @@ class MeasuresController < ApplicationController
       @posts = Post.where(:person_id=>@person.id).order('created_at desc').limit(5)
       @measures = @person.measures.order('measure_date desc').limit(7).paginate :per_page=> 7, :page => params[:page]
       @allmeasures = @person.measures
-      @@max_days = @person.measures.size
+      @max_days = @person.measures.size
 
-      if @person.measures.size > 6
+      if @person.has_trend
         @last7 = @person.last(7)
         @last30 = @person.last(30)
-        @lastmax = @person.last(@@max_days)
+        @lastall = @person.last(@max_days)
         @in3months = @person.in3months
+
         if @measures[0] and @last7
-          week_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(7)
-          @lcurl7 = getchart(week_measures, "7 Day Trend " + floatstringlbs(@last7.to_s), 7, @person)
+          @week_measures = @person.get_measures(7)
         else
           @goaldate = "Not enough data"
         end
 
-        if @last30
-          month_measures = Measure.where(:person_id => @person.id).order('measure_date desc').limit(30)
-          @lcurl30 = getchart(month_measures, "30 Day Trend " + floatstringlbs(@last30), 30, @person)
-        end
+          @month_measures = @person.get_measures(30) if @last30
 
-        if @lastmax
-          all_measures = Measure.where(:person_id => @person.id).order('measure_date desc')
-          @lcurlall = getchart(all_measures, @@max_days.to_s + " Day Trend " + floatstringlbs(@lastmax), @@max_days, @person)
+        if @lastall
+          @all_measures = @person.get_measures(@person.measures.size)
         end
 
         @karma_rank = @person.karma_rank
@@ -48,72 +45,6 @@ class MeasuresController < ApplicationController
     end
   end
 
-  def floatstringlbs(f)
-    return "%.2f" % f.to_s + "/week" if f 
-  end
-
-  def getchart(measures, title, daylimit, person)
-    trends = Array.new
-    weights = Array.new
-    fats = Array.new
-    goals = Array.new
-    karmas = Array.new
-
-    max = 0
-    min = 1000
-    lcurl = ''
-
-    measures.each do |measure|
-      return '' if measure.trend.nil?
-      trends << measure.trend
-      fats << measure.fatpercentage
-      weights << measure.weight
-      karmas << measure.karma - 10 if measure.karma
-
-      min = measure.item if measure.item < min
-      max = measure.item if measure.item > max
-      goals << person.goal
-    end
-    #max = max + 1
-
-    min = person.goal - person.goal * 0.02 if daylimit == @@max_days
-
-    scaled_trends = scale_array(trends, min, max)
-    scaled_weights = scale_array(weights, min, max)
-    scaled_fats = scale_array(fats, min, max)
-    scaled_karmas = scale_array(karmas, 0, 100)
-    #scaled_karmas.reverse!
-    scaled_goals = scale_array(goals, min, max)
-
-    GoogleChart::LineChart.new('320x200', title, false) do |lc|
-      lc.show_legend = true
-      lc.data "Trend", scaled_trends, 'D80000'
-      if person.goal_type == 'lbs'
-        lc.data "Weight", scaled_weights, 'BDBDBD'
-      end
-      if person.goal_type == '%fat'
-        #lc.data "%Fat", scaled_fats, 'BDBDBD'
-      end
-      lc.data "Goal", scaled_goals, '254117'
-      #lc.data "Karma", scaled_karmas, 'B8B8B8'
-      lc.axis :y, :range => [min, max], :color => '667B99', :font_size => 10, :alignment => :center
-      lc.axis :x, :range => [daylimit,1], :color => '667B99', :font_size => 10, :alignment => :center
-      lc.grid :x_step => 5, :y_step => 5, :length_segment => 1, :length_blank => 0
-      lcurl = lc.to_url(:chds=>'a')
-    end
-    return lcurl
-  end
-
-  def scale_array(myarray, min, max)
-    scaled_array = Array.new
-    old_range = (max - min)
-    myarray.reverse!
-
-    myarray.each do |item|
-      scaled_array << (((item - min) * 100) / old_range)
-    end
-    return scaled_array
-  end  
 
   def show
     @measure = Measure.find(params[:id])

@@ -16,6 +16,7 @@ gem 'thin'
 gem 'rdiscount'
 gem 'heroku'
 gem 'rake', '0.8.7'
+gem 'taps'
 
 # Use unicorn as the web server
 # gem 'unicorn'
