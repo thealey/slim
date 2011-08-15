@@ -1,71 +1,40 @@
-<<<<<<< HEAD
 <table>
   <tr>
-    <th>#</th>
-    <th>Weight</th>
-    <th>Trend</th>
-    <th>Karma *</th>
-    <th>Fat %</th>
-    <th>BMI</th>
-    <th>Measure Date</th>
-    <th>Ago</th>
-  </tr>
-  <% counter = 1 %>
-  <% for measure in @measures %>
-    <tr>
-      <td><%= counter %><% counter = counter + 1 %></td>
-      <td><%= Utility.floatformat % measure.weight %></td>
-      <td><%= Utility.floatformat % measure.trend if measure.trend %></td>
-      <td><%= Utility.floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
-      <td><%= Utility.floatformat % measure.fatpercentage if measure.fat %></td>
-      <td><%= Utility.floatformat % @person.get_bmi(measure.trend) if measure.trend %></td>
-      <td><%= measure.measure_date.to_s(:short) %></td>
-      <td><%= time_ago_in_words(measure.measure_date) %></td>
-      <% if logged_in? and current_person == @person %>
-        <td><%= link_to "Edit", edit_measure_path(measure) %></td>
-        <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
-  <%= will_paginate @measures %>
-=======
-        <table>
+    <td>
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Weight</th>
+          <th>Trend</th>
+          <th>Karma *</th>
+          <th>Trend %</th>
+          <th>Fat %</th>
+          <th>BMI</th>
+          <th>Measure Date</th>
+          <th>Ago</th>
+        </tr>
+        <% counter = 1 %>
+        <% @measures.each do |measure| %>
           <tr>
-            <td>
-              <table>
-                <tr>
-                  <th>#</th>
-                  <th>Weight</th>
-                  <th>Trend</th>
-                  <th>Karma *</th>
-                  <th>Fat %</th>
-                  <th>BMI</th>
-                  <th>Measure Date</th>
-                  <th>Ago</th>
-                </tr>
-                <% counter = 1 %>
-                <% for measure in @measures %>
-                  <tr>
-                    <td><%= counter %><% counter = counter + 1 %></td>
-                    <td <%= "style='binge'" if measure.is_binge> %>><%= Utility.floatformat % measure.weight %></td>
-                    <td><%= Utility.floatformat % measure.trend if measure.trend %></td>
-                    <td><%= Utility.floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
-                    <td><%= Utility.floatformat % measure.fatpercentage if measure.fat %></td>
-                    <td><%= Utility.floatformat % @person.get_bmi(measure.trend) if measure.trend %></td>
-                    <td><%= measure.measure_date.to_s(:short) %></td>
-                    <td><%= time_ago_in_words(measure.measure_date) %></td>
-                    <% if logged_in? and current_person == @person %>
-                      <td><%= link_to "Edit", edit_measure_path(measure) %></td>
-                      <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </table>
-            </td>
-            <td>
-              </td>
-            </tr>
-          </table>
-
->>>>>>> 3bd59ec2182a458b62eb39519f9b5bb236602b74
+            <td><%= counter %><% counter = counter + 1 %></td>
+            <td <%= "class='binge'" if measure and measure.is_binge? %>><%= Utility.floatformat % measure.weight %></td>
+            <td><%= Utility.floatformat % measure.trend if measure.trend %></td>
+            <td><%= Utility.floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
+            <td><%= Utility.floatformat % measure.trend_percentage if measure %></td>
+            <td><%= Utility.floatformat % measure.fatpercentage if measure.fat %></td>
+            <td><%= Utility.floatformat % @person.get_bmi(measure.trend) if measure.trend %></td>
+            <td><%= measure.measure_date.to_s(:short) %></td>
+            <td><%= time_ago_in_words(measure.measure_date) %></td>
+            <% if logged_in? and current_person == @person %>
+              <td><%= link_to "Edit", edit_measure_path(measure) %></td>
+              <td><%= link_to "Destroy", measure, :confirm => 'Are you sure?', :method => :delete %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    </td>
+    <td>
+    </td>
+  </tr>
+</table>
+<%= will_paginate @measures %>

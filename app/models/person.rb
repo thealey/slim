@@ -4,7 +4,7 @@ class Person < ActiveRecord::Base
   
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
-  attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha
+  attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage
 
   attr_accessor :password
   before_save :prepare_password
@@ -22,6 +22,7 @@ class Person < ActiveRecord::Base
   validates_numericality_of :height_feet, :greater_than => 3, :less_than => 8
   validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
   validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
+  validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
 
 
   def self.authenticate(login, pass)

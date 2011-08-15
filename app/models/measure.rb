@@ -15,9 +15,13 @@ class Measure < ActiveRecord::Base
     end
     return nil
   end
+  
+  def trend_percentage
+    ((self.trend / self.weight) * 100)  
+  end
 
   def is_binge?
-    if ((measure.trend / measure.weight) * 100) < measure.person.binge_percentage
+    if trend_percentage < self.person.binge_percentage
       return true
     else
       return false
