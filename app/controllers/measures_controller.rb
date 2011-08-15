@@ -16,7 +16,7 @@ class MeasuresController < ApplicationController
       end
 
       @posts = Post.where(:person_id=>@person.id).order('created_at desc').limit(5)
-      @measures = @person.measures.order('measure_date desc').limit(7).paginate :per_page=> 7, :page => params[:page]
+      @measures = @person.measures.order('measure_date desc').limit(14).paginate :per_page=> 14, :page => params[:page]
       @allmeasures = @person.measures
       @max_days = @person.measures.size
 
@@ -32,11 +32,8 @@ class MeasuresController < ApplicationController
           @goaldate = "Not enough data"
         end
 
-          @month_measures = @person.get_measures(30) if @last30
-
-        if @lastall
-          @all_measures = @person.get_measures(@person.measures.size)
-        end
+        @month_measures = @person.get_measures(30) if @last30
+        @all_measures = @person.get_measures(@person.measures.size) if @lastall
 
         @karma_rank = @person.karma_rank
       end
