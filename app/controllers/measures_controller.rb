@@ -111,7 +111,6 @@ class MeasuresController < ApplicationController
   end
 
   def updateall
-
     if (logged_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()

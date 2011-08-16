@@ -1,0 +1,21 @@
+<table border='1'>
+  <tr>
+    <td>
+      <strong>
+        Posts
+      </strong>
+      <% if @posts.size %>
+        <ul>
+          <% @posts.each do |post| %>
+            <li>
+              <small>
+              <%= link_to post.name, post %>
+            </small>
+            </li>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+
+

@@ -32,7 +32,7 @@ module MeasuresHelper
     #scaled_karmas.reverse!
     scaled_goals = scale_array(goals, min, max)
 
-    GoogleChart::LineChart.new('320x200', title, false) do |lc|
+    GoogleChart::LineChart.new('300x150', title, false) do |lc|
       lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
       if person.goal_type == 'lbs'
