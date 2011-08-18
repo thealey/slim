@@ -1,7 +1,9 @@
 class Person < ActiveRecord::Base
   include Gravtastic
   is_gravtastic
-  
+  has_many :client_applications
+  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
+
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
   attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage

@@ -18,6 +18,8 @@ gem 'heroku'
 gem 'rake', '0.8.7'
 gem 'taps'
 gem 'newrelic_rpm'
+gem 'oauth'
+gem "oauth-plugin", ">= 0.4.0.pre1"
 
 # Use unicorn as the web server
 # gem 'unicorn'
