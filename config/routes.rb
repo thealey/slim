@@ -1,5 +1,6 @@
 Slim::Application.routes.draw do
   resources :posts
+  devise_for :people, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   match 'measures/deleteall' => 'measures#deleteall'
   match 'measures/importall' => 'measures#importall'

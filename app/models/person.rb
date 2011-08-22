@@ -1,6 +1,8 @@
 class Person < ActiveRecord::Base
   include Gravtastic
   is_gravtastic
+  devise :omniauthable
+
   has_many :client_applications
   has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
 
@@ -30,6 +32,15 @@ class Person < ActiveRecord::Base
   def self.authenticate(login, pass)
     person = find_by_username(login) || find_by_email(login)
     return person if person && person.password_hash == person.encrypt_password(pass)
+  end
+
+  def self.find_for_google_oauth(access_token, signed_in_resource=nil)
+    data = access_token['extra']['user_hash']
+    if person = User.find_by_email(data["email"])
+      person
+    else # Create a user with a stub password. 
+      Person.create(:email => data["email"], :password => Devise.friendly_token[0,20]) 
+    end
   end
 
   def has_trend

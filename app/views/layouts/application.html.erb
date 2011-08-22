@@ -37,6 +37,10 @@
                 <%= link_to "log in", login_path %>.
               <% end %>
             </td>
+            <td>
+              <%= link_to "Sign in with Google", person_omniauth_authorize_path(:google) 
+            %>
+            </td>
               <td>
                 <%= link_to "People", :controller=>"people", :action=>"index" %>
               </td>
