@@ -36,7 +36,7 @@
   </tr>
   <tr>
     <td colspan='7'>
-      <%= will_paginate @measures %>
+      <%= will_paginate @measures if @measures.kind_of?(Array)%>
       <p>
         <small>  
           <ul>
