@@ -1,46 +1,44 @@
-<table>
-  <tr>
-    <td width='100'>
-      <%= image_tag @person.gravatar_url %><br/>
-      &nbsp;
-      <%= @person.username %>
-      <small>
-        <table class='topalign'>
-          <tr>
-            <td>
-              Goal: <strong><%= @person.goal.to_s +  @person.goal_type %></strong>.
-              <p/><p/>
-                  Trend in<br/>
-                  3 months:<br/>
-                  <strong><%= Utility.floatformat % @in3months if @in3months %></strong>
-                  <p/>
-                    Karma rank: <strong><%= @karma_rank if @karma_rank %></strong></br>
-                    Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
-                  </td>
-                </tr>
-              </table>
-            </small>
-            <%= render 'posts' %>
-          </td>
-          <td>
-            <%= render 'measures_table' %>
-          </td>
-          <td>
-            <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
-            <% if @last7 %>
-              <img src=<%=  getchart(@max_days, @week_measures, "7 Day Trend " + Utility.floatstringlbs(@last7.to_s), 7, @person) %>/>
-            <% end %>
-          </br>
-            <% if @last30 %>
-              <img src=<%=  getchart(@max_days, @month_measures, "30 Day Trend " + Utility.floatstringlbs(@last30.to_s), 30, @person) %>/>
-            <% end %>
-          </br>
-            <% if @lastall %>
-              <img src=<%=  getchart(@max_days, @all_measures, @max_days.to_s + " Day Trend " + Utility.floatstringlbs(@lastall.to_s), @max_days, @person) %>/>
-            <% end %>
-          </br>
-        </tr>
-      </table>
-        <p/>
-            <p/>
+<div class='row'>
+  <div class='span4 columns'>
+    <%= image_tag @person.gravatar_url %><br/>
+    &nbsp;
+    <%= @person.username %>
+    <small>
+      Goal: <strong><%= @person.goal.to_s +  @person.goal_type %></strong>.
+      <p>
+        <br>
+        Trend in
+        <br>
+        <br>
+        3 months:
+        </br>
+        <p>
+          <strong>
+            <%= Utility.floatformat % @in3months if @in3months %>
+          </strong>
+        </p>
+        Karma rank: <strong><%= @karma_rank if @karma_rank %></strong></br>
+        Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
+      </small>
+      <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
+      <% if @last7 %>
+        <img src=<%=  getchart(@max_days, @week_measures, "7 Day Trend " + Utility.floatstringlbs(@last7.to_s), 7, @person) %>/>
+      <% end %>
+      </br>
+      <% if @last30 %>
+        <img src=<%=  getchart(@max_days, @month_measures, "30 Day Trend " + Utility.floatstringlbs(@last30.to_s), 30, @person) %>/>
+      <% end %>
+      </br>
+      <% if @lastall %>
+        <img src=<%=  getchart(@max_days, @all_measures, @max_days.to_s + " Day Trend " + Utility.floatstringlbs(@lastall.to_s), @max_days, @person) %>/>
+      <% end %>
+      </br>
+    </div>
+    <div class='span8 columns>
+      <%= render 'measures_table' %>
+    </div>
+    <div class='span4 columns'>
+    </div>
+  </div>
+  <%= render 'posts' %>
 

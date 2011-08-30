@@ -19,7 +19,7 @@ gem 'rake', '0.8.7'
 gem 'taps'
 gem 'newrelic_rpm'
 #gem 'omniauth'
-gem "oa-oauth", :require => "omniauth/oauth"
+#gem "oa-oauth", :require => "omniauth/oauth"
 gem 'devise'
 
 # Use unicorn as the web server
