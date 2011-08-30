@@ -35,6 +35,11 @@ Devise.setup do |config|
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.
   config.case_insensitive_keys = [ :email ]
+  
+  # Configure which authentication keys should have whitespace stripped.
+  # These keys will have whitespace before and after removed upon creating or
+  # modifying a user and when used to authenticate or find a user. Default is :email.
+  config.strip_whitespace_keys = [ :email ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true
@@ -48,13 +53,18 @@ Devise.setup do |config|
   # The realm used in Http Basic Authentication. "Application" by default.
   # config.http_authentication_realm = "Application"
 
+  # It will change confirmation, password recovery and other workflows
+  # to behave the same regardless if the e-mail provided was right or wrong.
+  # Does not affect registerable.
+  # config.paranoid = true
+
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.
   config.stretches = 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = "bee6127d9575e8988b37d6076f07184f2c3f3bb7c4df3bd72223022bb188dac3f52ab367f85c369f7d2d8afa3f54a200de4d6a36ca23edf5b4821c6f084c8c33"
+  # config.pepper = "c3d6dba9b6af23f622fa2c7bd05ba0d93de89ba53931b6ccbe841c4175e4280f3505d00c86be3845264268556e133d19b9370e5dc8a40fe13e8ed08654334145"
 
   # ==> Configuration for :confirmable
   # The time you want to give your user to confirm his account. During this time
@@ -70,7 +80,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :rememberable
   # The time the user will be remembered without asking for credentials again.
-  # config.remember_for = 2.weeks
+   config.remember_for = 4.weeks
 
   # If true, a valid remember token can be re-used between multiple browsers.
   # config.remember_across_browsers = true
@@ -174,15 +184,13 @@ Devise.setup do |config|
   # Explorer requests.
   # config.navigational_formats = [:"*/*", "*/*", :html]
 
-  # The default HTTP method used to sign out a resource. Default is :get.
-  # config.sign_out_via = :get
+  # The default HTTP method used to sign out a resource. Default is :delete.
+  config.sign_out_via = :delete
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  config.omniauth :google, 'slim.flunkyism.com', 'yvZGa-l7c_dLO6bg7-bL6UcS', :scope => 'user,public_repo'
-
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

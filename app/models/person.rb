@@ -1,17 +1,22 @@
 class Person < ActiveRecord::Base
   include Gravtastic
-  is_gravtastic
-  devise :omniauthable
 
-  has_many :client_applications
-  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  is_gravtastic
+
+#  has_many :client_applications
+#  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
 
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
-  attr_accessible :username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage
+  attr_accessible :remember_me,:username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage
 
-  attr_accessor :password
-  before_save :prepare_password
+ # attr_accessor :password
+ # before_save :prepare_password
 
   has_many      :measures
 
@@ -27,21 +32,6 @@ class Person < ActiveRecord::Base
   validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
   validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
   validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
-
-
-  def self.authenticate(login, pass)
-    person = find_by_username(login) || find_by_email(login)
-    return person if person && person.password_hash == person.encrypt_password(pass)
-  end
-
-  def self.find_for_google_oauth(access_token, signed_in_resource=nil)
-    data = access_token['extra']['user_hash']
-    if person = User.find_by_email(data["email"])
-      person
-    else # Create a user with a stub password. 
-      Person.create(:email => data["email"], :password => Devise.friendly_token[0,20]) 
-    end
-  end
 
   def has_trend
     self.measures.size > 6

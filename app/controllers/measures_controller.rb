@@ -38,7 +38,8 @@ class MeasuresController < ApplicationController
         @karma_rank = @person.karma_rank
       end
     else
-      redirect_to people_url, :notice => "Select a person."
+      redirect_to people_url
+      #redirect_to people_url, :notice => "Select a person."
     end
   end
 
@@ -85,7 +86,7 @@ class MeasuresController < ApplicationController
   end
 
   def importall
-    if (logged_in?)
+    if (person_signed_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
 
@@ -111,7 +112,7 @@ class MeasuresController < ApplicationController
   end
 
   def updateall
-    if (logged_in?)
+    if (person_signed_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
       measurements = wuser.measurement_groups(:start_at=>current_person.current_measure.measure_date + 5.minute, :end_at => Time.now)

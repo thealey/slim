@@ -1,6 +1,7 @@
 Slim::Application.routes.draw do
+  devise_for :people
+  resources :people
   resources :posts
-  devise_for :people, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   match 'measures/deleteall' => 'measures#deleteall'
   match 'measures/importall' => 'measures#importall'
@@ -10,16 +11,10 @@ Slim::Application.routes.draw do
   resources :measures
   match 'person/edit' => 'people#edit', :as => :edit_current_person
 
-  match 'signup' => 'people#new', :as => :signup
   match 'chart' => 'measures#chart'
 
-  match 'logout' => 'sessions#destroy', :as => :logout
+  #resources :sessions
 
-  match 'login' => 'sessions#new', :as => :login
-
-  resources :sessions
-
-  resources :people
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -70,7 +65,7 @@ Slim::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "measures#index"
+  root :to => "people#index"
 
   # See how all your routes lay out with "rake routes"
 

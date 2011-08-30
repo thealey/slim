@@ -1,10 +1,11 @@
 class PeopleController < ApplicationController
-  before_filter :login_required, :except => [:new, :create, :index]
+# before_filter :authenticate_person!
+  skip_before_filter :authenticate_person!, :only => [:view]
 
   def index
     @people = Person.all
   end
-  
+
   def new
     @person = Person.new
   end
@@ -12,11 +13,14 @@ class PeopleController < ApplicationController
   def create
     @person = Person.new(params[:person])
     if @person.save
-      session[:person_id] = @person.id
+      #session[:person_id] = @person.id
       redirect_to root_url, :notice => "Thank you for signing up! You are now logged in."
     else
       render :action => 'new'
     end
+  end
+
+  def show
   end
 
   def edit

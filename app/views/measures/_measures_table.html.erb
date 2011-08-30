@@ -25,7 +25,7 @@
             <td><%= Utility.floatformat % @person.get_bmi(measure.trend) if measure.trend %></td>
             <td><%= measure.measure_date.to_s(:short) %></td>
             <td><%= time_ago_in_words(measure.measure_date) %></td>
-            <% if logged_in? and current_person == @person %>
+            <% if person_signed_in? and current_person == @person %>
               <td><%= link_to "Edit", edit_measure_path(measure) %></td>
               <td><%= link_to "Delete", measure, :confirm => 'Are you sure?', :method => :delete %></td>
             <% end %>

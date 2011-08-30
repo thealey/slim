@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110818192836) do
+ActiveRecord::Schema.define(:version => 20110830015138) do
 
   create_table "consumer_tokens", :force => true do |t|
     t.integer  "user_id"
@@ -47,10 +47,21 @@ ActiveRecord::Schema.define(:version => 20110818192836) do
     t.integer  "height_inches"
     t.integer  "goal"
     t.boolean  "private"
-    t.float    "alpha",            :default => 0.1
-    t.string   "goal_type",        :default => "lbs"
-    t.integer  "binge_percentage", :default => 99
+    t.float    "alpha",                  :default => 0.1
+    t.string   "goal_type",              :default => "lbs"
+    t.integer  "binge_percentage",       :default => 99
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "encrypted_password"
   end
+
+  add_index "people", ["reset_password_token"], :name => "index_people_on_reset_password_token", :unique => true
 
   create_table "posts", :force => true do |t|
     t.string   "name"
