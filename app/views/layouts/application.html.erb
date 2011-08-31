@@ -20,58 +20,74 @@
        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
        })();
 
-  </script>
+</script>
 
-  </head>
-  <body>
-    <div id="container">
-      <div class="nav">
-        <table>
-          <tr>
-            <% if person_signed_in? %>
-              <td>
-                <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>
-              </td>
-              <td>
-                <%= link_to "Home", :controller=>"measures", :action=>"index" %>
-              </td>
-              <td>
-                <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
-              </td>
-              <td>
-                <%= link_to "New Measure", new_measure_path %>
-              </td>
-              <td>
-                <%= link_to "Update trends",  :controller=>"measures", :action=>"update_trend" %>
-              </td>
-              <td>
-                <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
-              </td>
-              <td>
-                <%= link_to "Sign out", '/people/sign_out', :method=>:delete %>
-              </td>
-            <% else %>
-              <td>
-                <%= link_to "Sign in", :controller=>'devise/sessions', :action=>'new' %>
-              </td>
-              <td>
-                <%= link_to "Sign up", :controller=>'devise/registrations', :action=>'new' %>
-              </td>
-            <% end %>
-          </tr>
-        </table>
-      </div>
-      <center>
-      <% flash.each do |name, msg| %>
-        <%= content_tag :div, msg, :id => "flash_#{name}" %>
-      <% end %>
-      <%= content_tag :h1, yield(:title) if show_title? %>
-      <%= yield %>
-    <center>
-    </div>
-    @2011 Ted Healey<br/>
-    <%= Dir.pwd %><br/>
-    Powered by the <a href="http://www.withings.com/">Withings Body Scale</a><br/>
-    Codes at <a href="https://github.com/thealey/slim">https://github.com/thealey/slim</a>
-  </body>
-</html>
+   </head>
+   <body>
+     <div class="topbar">
+       <div class="fill">
+         <div id="container">
+           <table>
+             <tr>
+               <td>
+                 <h3>
+                   <a href="#">
+                     Slim
+                   </a>
+                 </h3>
+               </td>
+               <% if person_signed_in? %>
+                 <td>
+                   <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>
+                 </td>
+                 <td>
+                   <%= link_to "Home", :controller=>"measures", :action=>"index" %>
+                 </td>
+                 <td>
+                   <%= link_to "People", :controller=>"people", :action=>"index" %>
+                 </td>
+                 <td>
+                   <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
+                 </td>
+                 <td>
+                   <%= link_to "New Measure", new_measure_path %>
+                 </td>
+                 <td>
+                   <%= link_to "Update trends",  :controller=>"measures", :action=>"update_trend" %>
+                 </td>
+                 <td>
+                   <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
+                 </td>
+                 <td>
+                   <%= link_to "Sign out", '/people/sign_out', :method=>:delete %>
+                 </td>
+               <% else %>
+                 <td>
+                   <%= link_to "Sign in", :controller=>'devise/sessions', :action=>'new' %>
+                 </td>
+                 <td>
+                   <%= link_to "Sign up", :controller=>'devise/registrations', :action=>'new' %>
+                 </td>
+               <% end %>
+             </tr>
+           </table>
+         </div>
+       </div>
+     </div>
+
+     &nbsp;
+
+     <div class='container'>
+       <% flash.each do |name, msg| %>
+         <%= content_tag :div, msg, :id => "flash_#{name}" %>
+       <% end %>
+       <%= content_tag :h1, yield(:title) if show_title? %>
+       <%= yield %>
+       <hr/>
+       @2011 Ted Healey<br/>
+       <%= Dir.pwd %><br/>
+       Powered by the <a href="http://www.withings.com/">Withings Body Scale</a><br/>
+       Codes at <a href="https://github.com/thealey/slim">https://github.com/thealey/slim</a>
+     </div>
+   </body>
+ </html>

@@ -1,34 +1,34 @@
+<div class="page-header"> 
+  <h1><%= image_tag @person.gravatar_url %>&nbsp;<%= @person.username %>&nbsp;<small>Goal:<strong> <%= @person.goal.to_s %></strong>. 
+      Trend in 3 months:<strong><%= Utility.floatformat % @in3months if @in3months %></strong>
+      Karma rank: <strong><%= @karma_rank if @karma_rank %></strong>. 
+      Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
+    </small> 
+  </h1> 
+</div> 
 <div class='row'>
-  <div class='span6 columns'>
-    <%= image_tag @person.gravatar_url %><br/>
-    <%= @person.username %>
-    <small>
-      Goal: <strong><%= @person.goal.to_s +  @person.goal_type %></strong>.
-      <p>
-        <br>
-        Trend in 3 months:<strong><%= Utility.floatformat % @in3months if @in3months %></strong>
-      </p>
-        Karma rank: <strong><%= @karma_rank if @karma_rank %></strong> 
-        Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
-      </small>
-      <hr/>
-      <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
-      <% if @last7 %>
-        <img src=<%=  getchart(@max_days, @week_measures, "7 Day Trend " + Utility.floatstringlbs(@last7.to_s), 7, @person) %>/>
-      <% end %>
-      </br>
-      <% if @last30 %>
-        <img src=<%=  getchart(@max_days, @month_measures, "30 Day Trend " + Utility.floatstringlbs(@last30.to_s), 30, @person) %>/>
-      <% end %>
-      </br>
+  <div class='span5 columns'>
+    <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
+    <% if @last7 %>
+      <img src=<%=  getchart(@max_days, @week_measures, "7 Day Trend " + Utility.floatstringlbs(@last7.to_s), 7, @person) %>/>
+    <% end %>
+  </div>
+  <div class='span5 columns'>
+    <% if @last30 %>
+      <img src=<%=  getchart(@max_days, @month_measures, "30 Day Trend " + Utility.floatstringlbs(@last30.to_s), 30, @person) %>/>
+    <% end %>
+  </div>
+    <div class='span5 columns'>
       <% if @lastall %>
         <img src=<%=  getchart(@max_days, @all_measures, @max_days.to_s + " Day Trend " + Utility.floatstringlbs(@lastall.to_s), @max_days, @person) %>/>
       <% end %>
-      </br>
     </div>
-    <div class='span10 columns'>
+  </div>
+  <div class='row'> 
+    <div class='span16 columns'>
       <%= render 'measures_table' %>
     </div>
   </div>
-  <%= render 'posts' %>
+</div>
+<%= render 'posts' %>
 
