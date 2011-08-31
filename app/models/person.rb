@@ -27,7 +27,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :password, :on => :create
   validates_confirmation_of :password
   validates_length_of :password, :minimum => 4, :allow_blank => true
-  validates_numericality_of :goal, :greater_than => 50, :less_than => 450
+  validates_numericality_of :goal, :greater_than => 0, :less_than => 450
   validates_numericality_of :height_feet, :greater_than => 3, :less_than => 8
   validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
   validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
