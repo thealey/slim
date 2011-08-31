@@ -2,8 +2,7 @@
   <div class='span6 columns'>
     <%= image_tag @person.gravatar_url %><br/>
     &nbsp;
-    <%= @person.username %>
-    <small>
+    <%= @person.username %><small>
       Goal: <strong><%= @person.goal.to_s +  @person.goal_type %></strong>.
       <p>
         <br>
