@@ -1,5 +1,5 @@
 <%= form_for @person do |f| %>
-  <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") %></p>
+  <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") , :class=>'btn large primary' %></p>
   <%= f.error_messages %>
   <table>
     <tr align='top'>
@@ -64,7 +64,7 @@
             <p>
               <%= f.label :withings_api_key %><br />
               <%= f.text_field :withings_api_key %>
-              <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") %></p>
+              <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") , :class=>'btn large primary' %></p>
             </p>
           </td>
         </tr>
