@@ -61,3 +61,21 @@ table,tr, td {
 th {
   white-space: nowrap;
 }
+
+form label {
+  float:none;
+}
+
+body {
+  padding:50px;
+}
+
+form input[type="text"], form textarea {
+    width: auto;
+}
+
+form select {
+   width: auto;
+   height: auto;
+}
+
