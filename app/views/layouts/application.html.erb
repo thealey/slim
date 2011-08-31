@@ -36,18 +36,12 @@
                    </a>
                  </h3>
                </td>
-               <% if person_signed_in? %>
-                 <td>
-                   <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>
-                 </td>
-                 <td>
-                   <%= link_to "Home", :controller=>"measures", :action=>"index" %>
-                 </td>
                  <td>
                    <%= link_to "People", :controller=>"people", :action=>"index" %>
                  </td>
+               <% if person_signed_in? %>
                  <td>
-                   <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
+                   <%= link_to "Me", :controller=>"measures", :action=>"index" %>
                  </td>
                  <td>
                    <%= link_to "New Measure", new_measure_path %>
@@ -56,7 +50,10 @@
                    <%= link_to "Update trends",  :controller=>"measures", :action=>"update_trend" %>
                  </td>
                  <td>
-                   <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
+                   <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
+                 </td>
+                 <td>
+                   <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>
                  </td>
                  <td>
                    <%= link_to "Sign out", '/people/sign_out', :method=>:delete %>

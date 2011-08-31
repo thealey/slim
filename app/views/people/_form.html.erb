@@ -72,6 +72,7 @@
     <% end %>
 
     Avatars from <a href="http://en.gravatar.com/">gravatar.com</a><br/>
-
+    <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
+    <br/>
     <%= link_to "Delete All Measures (careful!)", :controller=>"measures", :action=>"deleteall" %>
 
