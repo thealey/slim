@@ -3,6 +3,7 @@
     <th>#</th>
     <th>Weight</th>
     <th>Trend</th>
+    <th>Up/Dn</th>
     <th>Karma *</th>
     <th>Trend %</th>
     <th>Fat %</th>
@@ -16,6 +17,11 @@
       <td><%= counter %><% counter = counter + 1 %></td>
       <td <%= "class='binge'" if measure and measure.is_binge? %>><%= Utility.floatformat % measure.weight %></td>
       <td><%= Utility.floatformat % measure.trend if measure.trend %></td>
+      <% if measure.weight < measure.trend %>
+      <td> <%= image_tag 'green_arrow.jpg', :size=>'20x20' %></td>
+    <% else %>
+      <td> <%= image_tag 'red_arrow.jpg', :size=>'20x20' %></td>
+    <% end %>
       <td><%= Utility.floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
       <td><%= Utility.floatformat % measure.trend_percentage if measure %></td>
       <td><%= Utility.floatformat % measure.fatpercentage if measure.fat %></td>
