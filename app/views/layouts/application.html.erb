@@ -37,7 +37,10 @@
                  </h3>
                </td>
                  <td>
-                   <%= link_to "People", :controller=>"people", :action=>"index" %>
+                   <%= link_to "People", '/people' %>
+                 </td>
+                 <td>
+                   <%= link_to "Posts", '/posts' %>
                  </td>
                <% if person_signed_in? %>
                  <td>
