@@ -1,0 +1,7 @@
+* In production RVM does not always load properly
+* Try rvm info.. if it's all in HOME it's OK.. if /usr/bin it's not
+* Go to ~ and source bash_profile
+* Try rvm info again
+* To see which instance is hot look in the footer for /slim vs /slim2
+* To switch em up run misc/nginx/use_slim1 or use_slim2
+* They run on 3000 and 3100
