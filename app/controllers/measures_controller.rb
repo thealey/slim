@@ -123,7 +123,7 @@ class MeasuresController < ApplicationController
         measure.weight = measurement.weight * 2.20462262
         measure.fat = measurement.fat * 2.20462262
         measure.measure_date = measurement.taken_at if measurement.taken_at
-        measure.save
+        measure.save if measurement.taken_at
       end    
     end
     update_trend
