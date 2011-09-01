@@ -122,7 +122,7 @@ class MeasuresController < ApplicationController
         measure.person_id = current_person.id
         measure.weight = measurement.weight * 2.20462262
         measure.fat = measurement.fat * 2.20462262
-        measure.measure_date = measurement.taken_at
+        measure.measure_date = measurement.taken_at if measurement.taken_at
         measure.save
       end    
     end
