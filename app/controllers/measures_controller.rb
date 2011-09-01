@@ -16,7 +16,7 @@ class MeasuresController < ApplicationController
       end
 
       @posts = Post.where(:person_id=>@person.id).order('created_at desc').limit(5)
-      @measures = @person.measures.order('measure_date desc').paginate :per_page=> (current_person.measures_to_show || 7), :page => params[:page]
+      @measures = @person.measures.order('measure_date desc').paginate :per_page=> (@person.measures_to_show || 7), :page => params[:page]
       @allmeasures = @person.measures
       @max_days = @person.measures.size
 
@@ -115,18 +115,23 @@ class MeasuresController < ApplicationController
     if (person_signed_in?)
       wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
       wuser.share()
-      measurements = wuser.measurement_groups(:start_at=>current_person.current_measure.measure_date + 5.minute, :end_at => Time.now)
 
-      measurements.each do |measurement|
-        measure = Measure.new
-        measure.person_id = current_person.id
-        measure.weight = measurement.weight * 2.20462262
-        measure.fat = measurement.fat * 2.20462262
-        measure.measure_date = measurement.taken_at if measurement.taken_at
-        measure.save if measurement.taken_at
-      end    
+      if (current_person.current_measure)
+        measurements = wuser.measurement_groups(:start_at=>current_person.current_measure.measure_date + 5.minute, :end_at => Time.now)
+        measurements.each do |measurement|
+          measure = Measure.new
+          measure.person_id = current_person.id
+          measure.weight = measurement.weight * 2.20462262
+          measure.fat = measurement.fat * 2.20462262
+          measure.measure_date = measurement.taken_at if measurement.taken_at
+          measure.save if measurement.taken_at
+        end    
+      end
+      update_trend
+    else
+      redirect_to measures_url, :notice => "You must import before you can update."
     end
-    update_trend
+
   end
 
   def deleteall
