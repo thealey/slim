@@ -1,5 +1,4 @@
 class PostsController < ApplicationController
-  before_filter :login_required, :except => [:index, :show]
 
   def index
     @posts = Post.order('created_at desc')
@@ -10,6 +9,9 @@ class PostsController < ApplicationController
   end
 
   def new
+    unless person_signed_in?
+      redirect_to :posts, :notice => "You must be logged in."
+    end
     @post = Post.new
   end
 
@@ -24,6 +26,9 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
+    unless person_signed_in?
+      redirect_to @post, :notice => "You must be logged in."
+    end
   end
 
   def update
@@ -37,6 +42,9 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
+    unless person_signed_in?
+      redirect_to :posts, :notice => "You must be logged in."
+    end
     @post.destroy
     redirect_to posts_url, :notice => "Successfully destroyed post."
   end

@@ -13,7 +13,7 @@ class Person < ActiveRecord::Base
 
   # new columns need to be added here to be writable through mass assignment
   #attr_accessible :username, :email, :password, :password_confirmation
-  attr_accessible :remember_me,:username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage
+  attr_accessible :remember_me,:username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage, :measures_to_show
 
  # attr_accessor :password
  # before_save :prepare_password
