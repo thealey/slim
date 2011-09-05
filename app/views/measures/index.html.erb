@@ -4,8 +4,16 @@
       Karma rank: <strong><%= @karma_rank if @karma_rank %></strong>. 
       Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
     </small> 
-  </h1> 
+  </h1>
 </div> 
+<% if person_signed_in? && current_person == @person %>
+  <% if @measures.size == 0 %>
+    <div class="alert-message"> 
+      If you have no measures yet you might want to <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
+
+    </div>
+  <% end %>
+<% end %>
 <div class='row'>
   <div class='span5 columns'>
     <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
@@ -18,8 +26,8 @@
       <img src=<%=  getchart(@max_days, @month_measures, "30 Day Trend " + Utility.floatstringlbs(@last30.to_s), 30, @person) %>/>
     <% end %>
   </div>
-    <div class='span5 columns'>
-      <% if @lastall %>
+  <div class='span5 columns'>
+    <% if @lastall %>
         <img src=<%=  getchart(@max_days, @all_measures, @max_days.to_s + " Day Trend " + Utility.floatstringlbs(@lastall.to_s), @max_days, @person) %>/>
       <% end %>
     </div>
