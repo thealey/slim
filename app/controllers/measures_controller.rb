@@ -85,21 +85,11 @@ class MeasuresController < ApplicationController
     end
   end
 
-  def importall
+  def refresh
     if (person_signed_in?)
-      current_person.importall
+      current_person.refresh
     end
     update_trend
-  end
-
-  def updateall
-    if (person_signed_in?)
-      
-      update_trend
-    else
-      redirect_to measures_url, :notice => "You must import before you can update."
-    end
-
   end
 
   def deleteall

@@ -31,13 +31,13 @@
                    <%= link_to "Me", :controller=>"measures", :action=>"index" %>
                  </td>
                  <td>
+                   <%= link_to "Update Withings", :controller=>"measures", :action=>"refresh"   %>
+                 </td>
+                 <td>
                    <%= link_to "New Measure", new_measure_path %>
                  </td>
                  <td>
                    <%= link_to "Update trends",  :controller=>"measures", :action=>"update_trend" %>
-                 </td>
-                 <td>
-                   <%= link_to "Update Withings", :controller=>"measures", :action=>"updateall"   %>
                  </td>
                  <td>
                    <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>

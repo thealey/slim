@@ -110,14 +110,18 @@ class Person < ActiveRecord::Base
     Measure.where(:person_id => self.id).order('measure_date desc').limit(num)
   end
 
-  def importall
+  def refresh
     wuser = Withings::User.info(self.withings_id, self.withings_api_key)
     wuser.share()
 
     page = 1
 
     begin 
-      measurements = wuser.measurement_groups(:per_page => 50, :page => page, :end_at => Time.now)
+      if self.current_measure
+        measurements = wuser.measurement_groups(:start_at=>self.current_measure.measure_date + 5.minute, :end_at => Time.now)
+      else
+        measurements = wuser.measurement_groups(:per_page => 50, :page => page, :end_at => Time.now)
+      end
 
       measurements.each do |measurement|
         if measurement.weight and measurement.fat and measurement.taken_at
@@ -131,23 +135,6 @@ class Person < ActiveRecord::Base
       end    
       page = page + 1
     end while measurements.size > 0
-  end
-
-  def updateall
-    wuser = Withings::User.info(self.withings_id, self.withings_api_key)
-    wuser.share()
-
-    if (self.current_measure)
-      measurements = wuser.measurement_groups(:start_at=>self.current_measure.measure_date + 5.minute, :end_at => Time.now)
-      measurements.each do |measurement|
-        measure = Measure.new
-        measure.person_id = self.id
-        measure.weight = measurement.weight * 2.20462262
-        measure.fat = measurement.fat * 2.20462262
-        measure.measure_date = measurement.taken_at if measurement.taken_at
-        measure.save if measurement.taken_at
-      end    
-    end
   end
 
   private

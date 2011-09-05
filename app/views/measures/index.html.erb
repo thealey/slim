@@ -1,4 +1,4 @@
-<div class="page-header"> 
+<div class="page-header">
   <h1><%= image_tag @person.gravatar_url %>&nbsp;<%= @person.username %>&nbsp;<small>Goal:<strong> <%= @person.goal.to_s %></strong>. 
       Trend in 3 months:<strong><%= Utility.floatformat % @in3months if @in3months %></strong>
       Karma rank: <strong><%= @karma_rank if @karma_rank %></strong>. 
@@ -9,8 +9,7 @@
 <% if person_signed_in? && current_person == @person %>
   <% if @measures.size == 0 %>
     <div class="alert-message"> 
-      If you have no measures yet you might want to <%= link_to "Import All from Withings",  :controller=>"measures", :action=>"importall" %>
-
+      If you have no measures yet you might want to <%= link_to "Update from Withings",  :controller=>"measures", :action=>"refresh" %>
     </div>
   <% end %>
 <% end %>
