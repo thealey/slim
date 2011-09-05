@@ -7,19 +7,10 @@ class Person < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   is_gravtastic
-
-#  has_many :client_applications
-#  has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
-
-  # new columns need to be added here to be writable through mass assignment
-  #attr_accessible :username, :email, :password, :password_confirmation
   attr_accessible :remember_me,:username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage, :measures_to_show
 
- # attr_accessor :password
- # before_save :prepare_password
 
   has_many      :measures
-
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :allow_blank => true
   validates_format_of :username, :with => /^[-\w\._@]+$/i, :allow_blank => true, :message => "should only contain letters, numbers, or .-_@"
@@ -117,6 +108,46 @@ class Person < ActiveRecord::Base
 
   def get_measures(num)
     Measure.where(:person_id => self.id).order('measure_date desc').limit(num)
+  end
+
+  def importall
+    wuser = Withings::User.info(self.withings_id, self.withings_api_key)
+    wuser.share()
+
+    page = 1
+
+    begin 
+      measurements = wuser.measurement_groups(:per_page => 50, :page => page, :end_at => Time.now)
+
+      measurements.each do |measurement|
+        if measurement.weight and measurement.fat and measurement.taken_at
+          measure = Measure.new
+          measure.person_id = self.id
+          measure.weight = measurement.weight * 2.20462262
+          measure.fat = measurement.fat * 2.20462262
+          measure.measure_date = measurement.taken_at
+          measure.save
+        end
+      end    
+      page = page + 1
+    end while measurements.size > 0
+  end
+
+  def updateall
+    wuser = Withings::User.info(self.withings_id, self.withings_api_key)
+    wuser.share()
+
+    if (self.current_measure)
+      measurements = wuser.measurement_groups(:start_at=>self.current_measure.measure_date + 5.minute, :end_at => Time.now)
+      measurements.each do |measurement|
+        measure = Measure.new
+        measure.person_id = self.id
+        measure.weight = measurement.weight * 2.20462262
+        measure.fat = measurement.fat * 2.20462262
+        measure.measure_date = measurement.taken_at if measurement.taken_at
+        measure.save if measurement.taken_at
+      end    
+    end
   end
 
   private

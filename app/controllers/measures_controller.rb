@@ -87,46 +87,14 @@ class MeasuresController < ApplicationController
 
   def importall
     if (person_signed_in?)
-      wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
-      wuser.share()
-
-      page = 1
-
-      begin 
-        measurements = wuser.measurement_groups(:per_page => 50, :page => page, :end_at => Time.now)
-
-        measurements.each do |measurement|
-          if measurement.weight and measurement.fat and measurement.taken_at
-            measure = Measure.new
-            measure.person_id = current_person.id
-            measure.weight = measurement.weight * 2.20462262
-            measure.fat = measurement.fat * 2.20462262
-            measure.measure_date = measurement.taken_at
-            measure.save
-          end
-        end    
-        page = page + 1
-      end while measurements.size > 0
+      current_person.importall
     end
     update_trend
   end
 
   def updateall
     if (person_signed_in?)
-      wuser = Withings::User.info(current_person.withings_id, current_person.withings_api_key)
-      wuser.share()
-
-      if (current_person.current_measure)
-        measurements = wuser.measurement_groups(:start_at=>current_person.current_measure.measure_date + 5.minute, :end_at => Time.now)
-        measurements.each do |measurement|
-          measure = Measure.new
-          measure.person_id = current_person.id
-          measure.weight = measurement.weight * 2.20462262
-          measure.fat = measurement.fat * 2.20462262
-          measure.measure_date = measurement.taken_at if measurement.taken_at
-          measure.save if measurement.taken_at
-        end    
-      end
+      
       update_trend
     else
       redirect_to measures_url, :notice => "You must import before you can update."
