@@ -4,8 +4,7 @@ Slim::Application.routes.draw do
   resources :posts
 
   match 'measures/deleteall' => 'measures#deleteall'
-  match 'measures/importall' => 'measures#importall'
-  match 'measures/updateall' => 'measures#updateall'
+  match 'measures/refresh' => 'measures#refresh'
   match 'measures/update_trend' => 'measures#update_trend'
 
   resources :measures

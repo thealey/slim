@@ -116,11 +116,14 @@ class Person < ActiveRecord::Base
 
     page = 1
 
+    has_measures = self.current_measure
+    measures_count = 0
+
     begin 
-      if self.current_measure
-        measurements = wuser.measurement_groups(:start_at=>self.current_measure.measure_date + 5.minute, :end_at => Time.now)
+      if has_measures
+        measurements = wuser.measurement_groups(:start_at=>self.current_measure.measure_date + 1.minute, :end_at => Time.now)
       else
-        measurements = wuser.measurement_groups(:per_page => 50, :page => page, :end_at => Time.now)
+        measurements = wuser.measurement_groups(:per_page => 100, :page => page, :end_at => Time.now)
       end
 
       measurements.each do |measurement|
@@ -131,10 +134,13 @@ class Person < ActiveRecord::Base
           measure.fat = measurement.fat * 2.20462262
           measure.measure_date = measurement.taken_at
           measure.save
+          measures_count = measures_count + 1
         end
       end    
       page = page + 1
     end while measurements.size > 0
+    
+    return measures_count
   end
 
   private
