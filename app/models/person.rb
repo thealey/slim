@@ -23,7 +23,7 @@ class Person < ActiveRecord::Base
   validates_numericality_of :height_inches, :greater_than_or_equal_to => 0, :less_than => 12
   validates_numericality_of :alpha, :greater_than_or_equal_to => 0.1, :less_than => 0.3
   validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
-  validates_numericality_of :measures_to_show, :only_integer => true
+  validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
   def has_trend
     self.measures.size > 6
