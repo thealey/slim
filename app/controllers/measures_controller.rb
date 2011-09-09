@@ -36,6 +36,10 @@ class MeasuresController < ApplicationController
         @all_measures = @person.get_measures(@person.measures.size) if @lastall
 
         @karma_rank = @person.karma_rank
+        
+        if params['m']
+         render 'mobile' 
+        end
       end
     else
       redirect_to people_url
