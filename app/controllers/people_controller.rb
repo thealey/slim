@@ -30,7 +30,7 @@ class PeopleController < ApplicationController
   def update
     @person = current_person
     if @person.update_attributes(params[:person])
-      redirect_to :controller=>'measures', :action=>'update_trend', :notice => "Your profile has been updated."
+      redirect_to :controller=>'measures', :action=>'index', :notice => "Your profile has been updated."
     else
       render :action => 'edit'
     end

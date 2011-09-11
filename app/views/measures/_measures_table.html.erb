@@ -11,7 +11,7 @@
     <th>Measure Date</th>
   </tr>
   <% counter = 1 %>
-  <% @measures.all do |measure| %>
+  <% @measures.each do |measure| %>
     <tr>
       <td><%= counter %><% counter = counter + 1 %></td>
       <td <%= "class='binge'" if measure and measure.is_binge? %>><%= Utility.floatformat % measure.weight %></td>
