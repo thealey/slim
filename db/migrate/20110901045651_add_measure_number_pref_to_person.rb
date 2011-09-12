@@ -1,8 +1,5 @@
 class AddMeasureNumberPrefToPerson < ActiveRecord::Migration
-  def self.up
+  def change 
     add_column :people, :measures_to_show, :integer
-  end
-
-  def self.down
   end
 end

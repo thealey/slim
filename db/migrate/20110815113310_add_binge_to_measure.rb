@@ -1,8 +1,5 @@
 class AddBingeToMeasure < ActiveRecord::Migration
-  def self.up
+  def change 
     add_column :people, :binge_percentage, :integer, :default => 99
-  end
-
-  def self.down
   end
 end

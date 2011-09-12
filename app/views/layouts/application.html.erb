@@ -2,6 +2,7 @@
 <html>
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Slim" %></title>
+    <%= javascript_include_tag :application %>
     <%= stylesheet_link_tag "bootstrap-1.1.1.min.css" %>
     <%= stylesheet_link_tag "slim.css" %>
     <%= csrf_meta_tag %>

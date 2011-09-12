@@ -1,6 +1,5 @@
 class CreateOauthConsumerTokens < ActiveRecord::Migration
-  def self.up
-    
+  def change 
     create_table :consumer_tokens do |t|
       t.integer :user_id
       t.string :type, :limit => 30
@@ -9,13 +8,6 @@ class CreateOauthConsumerTokens < ActiveRecord::Migration
       t.timestamps
     end
     execute 'alter table consumer_tokens charset=utf8;'
-    
     #add_index :consumer_tokens, :token, :unique => true
-    
   end
-
-  def self.down
-    drop_table :consumer_tokens
-  end
-
 end
