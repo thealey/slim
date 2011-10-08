@@ -1,3 +1,6 @@
+require 'withings'
+include Withings
+
 class Person < ActiveRecord::Base
   include Gravtastic
 
@@ -7,8 +10,12 @@ class Person < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   is_gravtastic
-  attr_accessible :remember_me,:username, :email, :password, :password_confirmation, :withings_id, :withings_api_key, :height_feet, :height_inches, :goal,:goal_type,:private, :alpha, :binge_percentage, :measures_to_show
 
+  attr_accessible :remember_me,:username, :email, :password, 
+    :password_confirmation, :withings_id, :withings_api_key, 
+    :height_feet, :height_inches, :goal,:goal_type,
+    :private, :alpha, :binge_percentage, :measures_to_show, :time_to_send_email,
+    :send_email
 
   has_many      :measures
   validates_presence_of :username

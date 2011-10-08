@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110901045651) do
+ActiveRecord::Schema.define(:version => 20111008133650) do
 
   create_table "consumer_tokens", :force => true do |t|
     t.integer  "user_id"
@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20110901045651) do
     t.string   "last_sign_in_ip"
     t.string   "encrypted_password"
     t.integer  "measures_to_show"
+    t.time     "time_to_send_email"
+    t.boolean  "send_email"
   end
 
   add_index "people", ["reset_password_token"], :name => "index_people_on_reset_password_token", :unique => true

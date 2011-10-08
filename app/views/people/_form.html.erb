@@ -52,11 +52,27 @@
           <%= f.text_field :alpha %><br/>
         </p>
         <p>
-          <strong>Binge detection<strong><br />
-              <%= f.text_field :binge_percentage %><br/>
-            </p>
-          </td>
-        </tr>
+          <strong>
+            Binge detection
+          </strong>
+          <br>
+          <%= f.text_field :binge_percentage %>
+          </br>
+        </p>
+        <p>
+          Email a daily report
+          <br>
+          <%= f.check_box :send_email %>
+          </br>
+        </p>
+        <p>
+            Time for daily email:
+          <br>
+          <%= f.time_select :time_to_send_email %>
+          </br>
+        </p>
+      </td>
+    </tr>
         <tr>
           <td colspan='2'>
             To get your withings data, hit the Share button in your dashboard, and pick the Share on the web option.</br>
