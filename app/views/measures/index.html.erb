@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1><%= image_tag @person.gravatar_url %>&nbsp;<%= @person.username %>&nbsp;<small>Goal:<strong> <%= @person.goal.to_s %></strong>. 
+  <h1><%= image_tag @person.gravatar_url %>&nbsp;<%= @person.name! %>&nbsp;<small>Goal:<strong> <%= @person.goal.to_s %></strong>. 
       Trend in 3 months:<strong><%= Utility.floatformat % @in3months if @in3months %></strong>
       Karma rank: <strong><%= @karma_rank if @karma_rank %></strong>. 
       Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>

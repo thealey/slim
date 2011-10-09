@@ -22,7 +22,7 @@
         <%= image_tag(person.gravatar_url) %><br/>
       </td>
       <td>
-        <%= link_to person.username, :controller=>"measures", :action=>"index", :person_id=>person.id %> 
+        <%= link_to person.name!, :controller=>"measures", :action=>"index", :person_id=>person.id %> 
         <% if person.private %>
           <br>
           <%= image_tag("lock-icon-small.png") %>
