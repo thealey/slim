@@ -32,6 +32,10 @@ class Person < ActiveRecord::Base
   validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
   validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
+  def name!
+    return self.username.titleize
+  end
+
   def has_trend
     self.measures.size > 6
   end
