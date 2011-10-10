@@ -110,51 +110,6 @@ class MeasuresController < ApplicationController
   end
 
   def update_trend
-    ActiveRecord::Base.connection.execute('update measures set trend = null, karma=null, trend = null, delta=null;')
-    Person.all.each do |person|
-      @measures = Measure.where(:person_id=>person.id).order('measure_date asc')
-      counter = 0
-      trend_days = 6
-      alpha = person.alpha
-      weightmult = 2
-      trendmult = 10
-
-      trend = 0
-      delta = 0
-      karma = 0
-      previous_trend = 0
-
-      if @measures.size > 6
-        @measures.each do |measure|
-          if counter == 0
-            forecast = 0
-            @measures[0..6].each do |m|
-              forecast+= m.item
-            end
-            forecast = forecast / 7
-            measure.forecast = forecast
-          else
-            forecast = @measures[counter - 1].trend
-          end
-
-          trend = (alpha * measure.item) + (1 - alpha) * forecast
-          trenddiff = (trend - previous_trend)
-          diff = measure.item - person.goal
-          unless counter == 0
-            measure.karma = 100 - (diff * weightmult) - (trenddiff * trendmult)
-            measure.karma = 100 if measure.karma > 100
-          end
-
-          measure.trend = trend
-          previous_trend = trend
-
-          delta = measure.item - forecast
-          measure.forecast = forecast
-          measure.delta = delta
-          measure.save
-          counter = counter + 1
-        end
-      end
-    end
+    Measure.update_trend
   end
 end
