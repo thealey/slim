@@ -1,6 +1,11 @@
 table,tr, td {
   vertical-align: top;
   white-space: nowrap;
+  border-left: none;
+}
+
+table th + th, table td + td {
+  border-left: none;
 }
 
 .measure {

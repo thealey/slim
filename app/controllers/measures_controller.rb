@@ -93,7 +93,7 @@ class MeasuresController < ApplicationController
     if (person_signed_in?)
       measures_count = current_person.refresh
     end
-    update_trend
+    Measure.update_trend
     redirect_to measures_url, :notice => 'Retrieved ' + measures_count.to_s + ' measures.'
   end
 
@@ -105,11 +105,12 @@ class MeasuresController < ApplicationController
   def destroy
     @measure = Measure.find(params[:id])
     @measure.destroy
-    update_trend
+    Measure.update_trend
     redirect_to measures_url, :notice => "Successfully destroyed measure."
   end
 
   def update_trend
     Measure.update_trend
+    redirect_to measures_url, :notice => "Successfully updated trends."
   end
 end
