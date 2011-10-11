@@ -49,3 +49,13 @@ module Slim
     config.assets.version = '1.0'
   end
 end
+
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :address  => "localhost",
+  :domain => "flunkyism.com",
+  :port  => 25,
+}
+
+

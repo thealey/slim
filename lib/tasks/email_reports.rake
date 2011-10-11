@@ -2,16 +2,20 @@ desc 'Update withings and send email reports'
 
 namespace :slim do
   task :email_reports => :environment do
-    
+
     people_changed_list = Array.new
 
     while true
       Person.all.each do |person|
         if person.withings_id and person.withings_id.size > 0
-          new_measure_count = person.refresh
-          puts person.username + ' got ' + new_measure_count.to_s + ' measures'
-          if new_measure_count > 0
-            people_changed_list << person
+          begin
+            new_measure_count = person.refresh
+            puts person.username + ' got ' + new_measure_count.to_s + ' measures'
+            if new_measure_count > 0
+              people_changed_list << person
+            end
+          rescue Error => error
+            puts 'Error getting measures: ' + error
           end
         else
           puts person.username + ' not a withings user'
@@ -24,9 +28,10 @@ namespace :slim do
       end
 
       Person.all.each do |person|
+        #if person.send_email
         if people_changed_list.include? person and person.send_email
           puts 'Emailing ' + person.username
-          #ReportMailer.report_notification(person).deliver
+          ReportMailer.report_notification(person).deliver
         end
       end
 

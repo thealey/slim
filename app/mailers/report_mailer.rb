@@ -2,7 +2,8 @@ class ReportMailer < ActionMailer::Base
   default from: "noreply@slim.flunkyism.com"
 
   def report_notification(person)
-    subject = person.karma_grade(person.current_measure) + ' '
+    subject = 'Slim: ' + Utility.floatformat % person.current_measure.karma + ' '
+    subject = subject + person.karma_grade(person.current_measure) + ' '
     subject = subject + 'Rank: ' + person.karma_rank.to_s + '/' + person.measures.size.to_s + ' '  
     subject = subject + 'Now ' + Utility.floatformat % person.current_measure.item.to_s + ' ' 
     subject = subject + 'Trend ' + Utility.floatformat % person.current_measure.trend.to_s + ' ' 
