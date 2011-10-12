@@ -9,6 +9,7 @@ namespace :slim do
       Person.all.each do |person|
         if person.withings_id and person.withings_id.size > 0
           begin
+            new_measure_count = 0
             new_measure_count = person.refresh
             puts person.username + ' got ' + new_measure_count.to_s + ' measures'
             if new_measure_count > 0
