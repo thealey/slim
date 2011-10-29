@@ -105,11 +105,9 @@ class Person < ActiveRecord::Base
 
   def karma_rank
     karma_rank = 1
-    #measures = Measure.where(:person_id => self.id)
-    measures = self.measures
+    measures = Measure.where(:person_id => self.id)
 
     measures.each do |measure|
-      #debugger
       if measure.karma 
         if current_measure.karma
           if measure.karma > current_measure.karma
@@ -117,8 +115,8 @@ class Person < ActiveRecord::Base
           end
         end
       end
+      return karma_rank
     end
-    return karma_rank
   end
 
   def leanbodymass
