@@ -9,14 +9,14 @@ namespace :slim do
       Person.all.each do |person|
         if person.withings_id and person.withings_id.size > 0
           begin
-            new_measure_count = 0
-            new_measure_count = person.refresh
-            puts person.username + ' got ' + new_measure_count.to_s + ' measures'
-            if new_measure_count > 0
+            latest_measure_date = person.current_measure.created_at
+            person.refresh
+            puts person.username + ' refreshed'
+            unless person.current_measure.created_at == latest_measure_date
               people_changed_list << person
             end
-          rescue Error => error
-            puts 'Error getting measures: ' + error
+          rescue 
+            puts 'Error getting measures'
           end
         else
           puts person.username + ' not a withings user'
@@ -29,7 +29,6 @@ namespace :slim do
       end
 
       Person.all.each do |person|
-        #if person.send_email
         if people_changed_list.include? person and person.send_email
           puts 'Emailing ' + person.username
           ReportMailer.report_notification(person).deliver
