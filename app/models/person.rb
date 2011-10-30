@@ -130,33 +130,23 @@ class Person < ActiveRecord::Base
   def refresh
     wuser = Withings::User.info(self.withings_id, self.withings_api_key)
     wuser.share()
-
-    page = 1
-
-    has_measures = self.current_measure
+    self.measures.delete_all
     measures_count = 0
 
-    begin 
-      if has_measures
-        measurements = wuser.measurement_groups(:start_at=>self.current_measure.measure_date + 1.minute, :end_at => Time.now)
-      else
-        measurements = wuser.measurement_groups(:per_page => 100, :page => page, :end_at => Time.now)
-      end
+    measurements = wuser.measurement_groups(:per_page=>100)
 
-      measurements.each do |measurement|
-        if measurement.weight and measurement.fat and measurement.taken_at
-          measure = Measure.new
-          measure.person_id = self.id
-          measure.weight = measurement.weight * 2.20462262
-          measure.fat = measurement.fat * 2.20462262
-          measure.measure_date = measurement.taken_at
-          measure.save
-          measures_count = measures_count + 1
-        end
-      end    
-      page = page + 1
-    end while measurements.size > 0
-    
+    measurements.each do |measurement|
+      if measurement.weight and measurement.fat and measurement.taken_at
+        measure = Measure.new
+        measure.person_id = self.id
+        measure.weight = measurement.weight * 2.20462262
+        measure.fat = measurement.fat * 2.20462262
+        measure.measure_date = measurement.taken_at
+        measure.save
+        measures_count = measures_count + 1
+      end
+    end    
+
     return measures_count
   end
 
