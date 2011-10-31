@@ -150,6 +150,17 @@ class Person < ActiveRecord::Base
     return measures_count
   end
 
+  def email_subject
+    subject = 'Slim: ' + Utility.floatformat % self.current_measure.karma + ' '
+    subject = subject + self.karma_grade(self.current_measure) + ' '
+    subject = subject + 'Rank: ' + self.karma_rank.to_s + '/' + self.measures.size.to_s + ' '  
+    subject = subject + 'Now ' + Utility.floatformat % self.current_measure.item.to_s + ' ' 
+    subject = subject + 'Trend ' + Utility.floatformat % self.current_measure.trend.to_s + ' ' 
+    subject = subject + Utility.floatstringlbs(self.last(7).to_s) + ', '
+    subject = subject + Utility.floatformat % self.in3months + ' in 3 months'
+    return subject
+  end
+
   private
 
   def prepare_password
