@@ -115,8 +115,8 @@ class Person < ActiveRecord::Base
           end
         end
       end
-      return karma_rank
     end
+    return karma_rank
   end
 
   def leanbodymass
