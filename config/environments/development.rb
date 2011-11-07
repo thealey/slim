@@ -14,7 +14,7 @@ Slim::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  #config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -28,4 +28,5 @@ Slim::Application.configure do
   # Expands the lines which load the assets
   #config.assets.debug = true
   #ActionMailer::Base.delivery_method = :test
+  config.action_mailer.default_url_options = { :host => "railsdev" }
 end

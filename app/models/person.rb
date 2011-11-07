@@ -127,8 +127,49 @@ class Person < ActiveRecord::Base
     Measure.where(:person_id => self.id).order('measure_date desc').limit(num)
   end
 
-  def refresh
+  def wuser
     wuser = Withings::User.info(self.withings_id, self.withings_api_key)
+  end
+
+  def refresh_all
+    wuser = self.wuser
+    wuser.share()
+    old_measures = self.measures
+    self.measures.delete_all
+    measures_count = 0
+    last_measures_count = 0
+    page = 1
+
+    begin
+      #measurements = wuser.measurement_groups(:per_page=>10, :page => page, :end_at=>Time.now)
+      measurements = wuser.measurement_groups(:limit=>10, :offset=>last_measures_count, :end_at=>Time.now)
+
+      measurements.each do |measurement|
+        if measurement.weight and measurement.fat and measurement.taken_at
+          measure = Measure.new
+          measure.person_id = self.id
+          measure.weight = measurement.weight * 2.20462262
+          measure.fat = measurement.fat * 2.20462262
+          measure.measure_date = measurement.taken_at
+          measure.save
+          measures_count = measures_count + 1
+        end
+      end    
+      page = page + 1
+      last_measures_count = measurements.size
+    end while measurements.size == 0 or page == 5
+
+    #Idk why this can fail but if it does restore last set of valid measures
+    #    if old_measures.size > self.measures.size
+    #      self.measures = old_measures
+    #      self.measures.save_all
+    #    end
+
+    return measures_count
+  end
+
+  def refresh
+    wuser = self.wuser
     wuser.share()
     old_measures = self.measures
     self.measures.delete_all
@@ -144,7 +185,7 @@ class Person < ActiveRecord::Base
         measure.fat = measurement.fat * 2.20462262
         measure.measure_date = measurement.taken_at
         measure.save
-        measures_count = measures_count + 1
+            measures_count = measures_count + 1
       end
     end    
 

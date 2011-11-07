@@ -9,10 +9,10 @@ namespace :slim do
       Person.all.each do |person|
         if person.withings_id and person.withings_id.size > 0
           begin
-            latest_measure_date = person.current_measure.created_at
+            latest_measure_date = person.current_measure.measure_date
             person.refresh
             puts person.username + ' refreshed'
-            unless person.current_measure.created_at == latest_measure_date
+            unless person.current_measure.measure_date == latest_measure_date
               people_changed_list << person
             end
           rescue 
