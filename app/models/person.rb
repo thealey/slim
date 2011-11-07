@@ -130,6 +130,7 @@ class Person < ActiveRecord::Base
   def refresh
     wuser = Withings::User.info(self.withings_id, self.withings_api_key)
     wuser.share()
+    old_measures = self.measures
     self.measures.delete_all
     measures_count = 0
 
@@ -146,6 +147,12 @@ class Person < ActiveRecord::Base
         measures_count = measures_count + 1
       end
     end    
+
+    #Idk why this can fail but if it does restore last set of valid measures
+    if old_measures.size > self.measures.size
+      self.measures = old_measures
+      self.measures.save_all
+    end
 
     return measures_count
   end
