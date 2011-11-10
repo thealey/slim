@@ -21,6 +21,13 @@ class PeopleController < ApplicationController
   end
 
   def show
+    @person = Person.find(params[:id])
+    @measures = @person.measures.order('measure_date desc').paginate :per_page=> (@person.measures_to_show || 7), :page => params[:page]
+  end
+
+  def dashboard
+    @person = Person.find(params[:id])
+    render :layout => 'mobile'
   end
 
   def edit

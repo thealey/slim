@@ -1,5 +1,6 @@
 module MeasuresHelper
-  def getchart(max_days, measures, title, daylimit, person)
+  def getchart(measures, title, daylimit, person)
+    max_days = person.measures.size
     trends = Array.new
     weights = Array.new
     fats = Array.new

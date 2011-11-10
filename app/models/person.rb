@@ -18,6 +18,7 @@ class Person < ActiveRecord::Base
     :send_email
 
   has_many      :measures
+  has_many      :posts
   validates_presence_of :username
   validates_uniqueness_of :username, :email, :allow_blank => true
   validates_format_of :username, :with => /^[-\w\._@]+$/i, :allow_blank => true, :message => "should only contain letters, numbers, or .-_@"
@@ -82,6 +83,7 @@ class Person < ActiveRecord::Base
     return (weight * 703 / height**2)
   end
 
+  #This method returns the average over some number of days
   def last(days)
     m = Measure.where(:person_id=>self.id).order('measure_date desc')
 

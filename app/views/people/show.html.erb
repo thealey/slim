@@ -1,1 +1,42 @@
-hi!
+<div class="page-header">
+  <h1><%= image_tag @person.gravatar_url %>&nbsp;<%= @person.name! %>&nbsp;<small>Goal:<strong> <%= @person.goal.to_s %></strong>. 
+      Trend in 3 months:<strong><%= Utility.floatformat % @person.in3months if @person.in3months %></strong>
+      Karma rank: <strong><%= @person.karma_rank if @person.karma_rank %></strong>.
+      Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
+    </small> 
+  </h1>
+</div> 
+<% if person_signed_in? && current_person == @person %>
+  <% if @measures.size == 0 %>
+    <div class="alert-message"> 
+      If you have no measures yet you might want to <%= link_to "Update from Withings",  :controller=>"measures", :action=>"refresh" %>
+    </div>
+  <% end %>
+<% end %>
+<div class='row'>
+  <div class='span5 columns'>
+    <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
+    <% if @person.get_measures(7) %>
+      <img src=<%= getchart(@person.get_measures(7), "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person) %>/>
+    <% end %>
+  </div>
+  <div class='span5 columns'>
+    <% if @person.last(30) %>
+      <img src=<%=  getchart(@person.get_measures(30), "30 Day Trend " + Utility.floatstringlbs(@person.last(30).to_s), 30, @person) %>/>
+    <% end %>
+  </div>
+  <div class='span5 columns'>
+    <% if @person.measures.size %>
+        <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @max_days, @person) %>/>
+      <% end %>
+    </div>
+  </div>
+  <div class='row'> 
+    <div class='span16 columns'>
+      <%= render 'measures_table' %>
+    </div>
+  </div>
+</div>
+<% @posts = @person.posts %>
+<%= render 'posts' %>
+

@@ -8,6 +8,10 @@ table th + th, table td + td {
   border-left: none;
 }
 
+.dashboard table {
+  font-size: 24px;
+}
+
 .measure {
   white-space: nowrap;
 }

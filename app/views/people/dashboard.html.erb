@@ -1,0 +1,54 @@
+<table>
+  <tr>
+    <td>
+      <%= image_tag @person.gravatar_url %>
+    </td>
+    <td>
+      <table class='dashboard'>
+        <tr>
+          <td><%= @person.name! %></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Karma grade:</td>
+          <td><%= @person.karma_grade @person.current_measure %></td>
+        </tr>
+        <tr>
+          <td>Weight</td>
+          <td><%= Utility.floatformat % @person.current_measure.weight %></td>
+        </tr>
+        <tr>
+          <td>Trend Weight</td>
+          <td><%= Utility.floatformat % @person.current_measure.trend %></td>
+        </tr>
+        <tr>
+          <td>Goal</td>
+          <td><%= @person.goal.to_s %> (<%= Utility.floatformat % (@person.current_measure.weight - @person.goal) %>)</td>
+        </tr>
+        <tr>
+          <td>Trend in 3 months</td>
+          <td> <%= Utility.floatformat % @person.in3months if @person.in3months %></td>
+        </tr>
+        <tr>
+          <td>Karma rank</td>
+          <td><%= @person.karma_rank if @person.karma_rank %>/<%= @person.measures.size.to_s %></td>
+        </tr>
+        <tr>
+          <td>As of</td>
+          <td><%= time_ago_in_words @person.current_measure.measure_date %> ago</td>
+        </tr>
+        </table>
+          <%= 'You need at least 7 measures to derive trend data.' if @person.measures.size < 7 %>
+        </td>
+        <td>
+          <p/>
+            <% if @person.get_measures(7) %>
+              <img src=<%= getchart(@person.get_measures(7), "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person) %>/>
+            <% end %>
+            <p/>
+              <% if @person.last(30) %>
+                <img src=<%=  getchart(@person.get_measures(30), "30 Day Trend " + Utility.floatstringlbs(@person.last(30).to_s), 30, @person) %>/>
+              <% end %>
+            </td>
+          </tr>
+        </table>

@@ -21,21 +21,21 @@ class MeasuresController < ApplicationController
       @max_days = @person.measures.size
 
       if @person.has_trend
-        @last7 = @person.last(7)
-        @last30 = @person.last(30)
-        @lastall = @person.last(@max_days)
-        @in3months = @person.in3months
+        #@last7 = @person.last(7)
+        #@last30 = @person.last(30)
+        #@lastall = @person.last(@max_days)
+        #@in3months = @person.in3months
 
-        if @measures[0] and @last7
-          @week_measures = @person.get_measures(7)
-        else
-          @goaldate = "Not enough data"
-        end
+        #if @measures[0] and @person.last(7)
+        #  @week_measures = @person.get_measures(7)
+        #else
+        #  @goaldate = "Not enough data"
+        #end
 
-        @month_measures = @person.get_measures(30) if @last30
-        @all_measures = @person.get_measures(@person.measures.size) if @lastall
+        #@month_measures = @person.get_measures(30) if @person.
+        #@all_measures = @person.get_measures(@person.measures.size) if @lastall
 
-        @karma_rank = @person.karma_rank
+        #@karma_rank = @person.karma_rank
         
         if params['m']
          render 'mobile' 
@@ -43,7 +43,6 @@ class MeasuresController < ApplicationController
       end
     else
       redirect_to people_url
-      #redirect_to people_url, :notice => "Select a person."
     end
   end
 

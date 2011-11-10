@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Slim" %></title>
+    <%= javascript_include_tag :defaults %>
+    <%= stylesheet_link_tag "bootstrap.min.css" %>
+    <%= stylesheet_link_tag "slim.css" %>
+    <%= csrf_meta_tag %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="fill">
+        <div id="container">
+          <table>
+            <tr>
+              <td>
+                <h3><a href="#">Slim</a></h3>
+              </td>
+              <td>
+                <%= link_to "People", '/people' %>
+              </td>
+              <td>
+                <%= link_to "Sign in", :controller=>'devise/sessions', :action=>'new' %>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    &nbsp;
+
+    <%= yield %>
+    <hr/>
+    @2011 Ted Healey<br/>
+  </body>
+</html>

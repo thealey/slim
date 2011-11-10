@@ -22,7 +22,7 @@
         <%= image_tag(person.gravatar_url) %><br/>
       </td>
       <td>
-        <%= link_to person.name!, :controller=>"measures", :action=>"index", :person_id=>person.id %> 
+        <%= link_to person.name!, person %>
         <% if person.private %>
           <br>
           <%= image_tag("lock-icon-small.png") %>
@@ -45,7 +45,7 @@
         </td>
         <td>
           <strong>
-            <%= person.karma_grade person.current_measure if person.current_measure %>
+            <%= link_to(person.karma_grade(person.current_measure), :controller=>"people", :action=>"dashboard", :id=>person.id) if person.current_measure %>
           </strong>
         </td>
       <% end %>
