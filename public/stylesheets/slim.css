@@ -8,8 +8,9 @@ table th + th, table td + td {
   border-left: none;
 }
 
-.dashboard table {
-  font-size: 24px;
+.dashboard {
+  font-size: 60px;
+  margin: 50px;
 }
 
 .measure {
