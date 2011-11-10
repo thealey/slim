@@ -3,36 +3,29 @@
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Slim" %></title>
     <%= javascript_include_tag :defaults %>
+    <!--
     <%= stylesheet_link_tag "bootstrap.min.css" %>
+    -->
     <%= stylesheet_link_tag "slim.css" %>
     <%= csrf_meta_tag %>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" />
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js"></script>
     <%= yield(:head) %>
   </head>
   <body>
-    <div class="topbar">
-      <div class="fill">
-        <div id="container">
-          <table>
-            <tr>
-              <td>
-                <h3><a href="#">Slim</a></h3>
-              </td>
-              <td>
-                <%= link_to "People", '/people' %>
-              </td>
-              <td>
-                <%= link_to "Sign in", :controller=>'devise/sessions', :action=>'new' %>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    <div class="ui-body ui-body-a">
+      <div data-role="header"> 
+        <table>
+          <tr>
+            <td>
+              <h1><%= link_to "Slim", :people %></a></h1>
+          </td>
+        </tr>
+      </table>
     </div>
-
     &nbsp;
-
     <%= yield %>
-    <hr/>
-    @2011 Ted Healey<br/>
-  </body>
+  </div>
+</body>
 </html>

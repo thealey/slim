@@ -1,5 +1,5 @@
 module MeasuresHelper
-  def getchart(measures, title, daylimit, person)
+  def getchart(measures, title, daylimit, person, size)
     max_days = person.measures.size
     trends = Array.new
     weights = Array.new
@@ -33,7 +33,7 @@ module MeasuresHelper
     #scaled_karmas.reverse!
     scaled_goals = scale_array(goals, min, max)
 
-    GoogleChart::LineChart.new('300x150', title, false) do |lc|
+    GoogleChart::LineChart.new(size, title, false) do |lc|
       lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
       if person.goal_type == 'lbs'

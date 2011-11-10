@@ -45,6 +45,10 @@ class Person < ActiveRecord::Base
     BCrypt::Engine.hash_secret(pass, password_salt)
   end
 
+  def current_karma_grade
+    karma_grade self.current_measure
+  end
+
   def karma_grade(measure)
     if measure == nil
       return "NA"

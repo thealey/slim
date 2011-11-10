@@ -1,3 +1,7 @@
+.ui-body-c {
+  background-color:#ffffff;
+}
+
 table,tr, td {
   vertical-align: top;
   white-space: nowrap;
@@ -8,10 +12,21 @@ table th + th, table td + td {
   border-left: none;
 }
 
-.dashboard {
+.dashboard_title {
   font-size: 60px;
-  margin: 50px;
 }
+
+.dashboard {
+  font-size: 40px;
+  margin: 50px;
+  padding: 50;
+  text-align: center;
+}
+
+#.dashboard td {
+#  padding: 10px;
+#  line-height: 20;
+#}
 
 .measure {
   white-space: nowrap;

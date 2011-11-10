@@ -5,22 +5,6 @@ class MeasuresController < ApplicationController
   helper :measures
 
   def index
-    if current_person or params["person_id"]
-      @person = current_person if current_person
-      if params['person_id']
-        person_id = Person.find params['person_id']
-        @person = Person.find person_id
-        if @person.private
-          redirect_to people_url, :notice => "Sorry that data is private."
-        end
-      end
-
-      @posts = Post.where(:person_id=>@person.id).order('created_at desc').limit(5)
-      @measures = @person.measures.order('measure_date desc').paginate :per_page=> (@person.measures_to_show || 7), :page => params[:page]
-      @allmeasures = @person.measures
-      @max_days = @person.measures.size
-
-      unless @person.has_trend redirect_to people_url
   end
 
   def chart
@@ -70,23 +54,23 @@ class MeasuresController < ApplicationController
       measures_count = current_person.refresh
     end
     Measure.update_trend
-    redirect_to measures_url, :notice => 'Retrieved ' + measures_count.to_s + ' measures.'
+    redirect_to people_url, :notice => 'Retrieved ' + measures_count.to_s + ' measures.'
   end
 
   def deleteall
     Measure.destroy_all
-    redirect_to measures_url, :notice => "Successfully destroyed all measures."
+    redirect_to people_url, :notice => "Successfully destroyed all measures."
   end
 
   def destroy
     @measure = Measure.find(params[:id])
     @measure.destroy
     Measure.update_trend
-    redirect_to measures_url, :notice => "Successfully destroyed measure."
+    redirect_to people_url, :notice => "Successfully destroyed measure."
   end
 
   def update_trend
     Measure.update_trend
-    redirect_to measures_url, :notice => "Successfully updated trends."
+    redirect_to people_url, :notice => "Successfully updated trends."
   end
 end
