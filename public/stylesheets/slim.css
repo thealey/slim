@@ -1,3 +1,11 @@
+.person_name {
+  font-size: 30px;
+}
+
+.person_headline {
+  font-size: 20px;
+}
+
 .ui-body-c {
   background-color:#ffffff;
 }

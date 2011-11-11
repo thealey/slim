@@ -1,11 +1,12 @@
-<div class="page-header">
-  <h1><%= image_tag @person.gravatar_url %>&nbsp;<%= @person.name! %>&nbsp;<small>Goal:<strong> <%= @person.goal.to_s %></strong>. 
+    <h1>
+    <%= image_tag @person.gravatar_url %>&nbsp;<%= @person.name! %>&nbsp;
+    <small>
+      Goal:<strong> <%= @person.goal.to_s %></strong>. 
       Trend in 3 months:<strong><%= Utility.floatformat % @person.in3months if @person.in3months %></strong>
       Karma rank: <strong><%= @person.karma_rank if @person.karma_rank %></strong>.
       Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
-    </small> 
-  </h1>
-</div> 
+      </small>
+    </h1>
 <% if person_signed_in? && current_person == @person %>
   <% if @measures.size == 0 %>
     <div class="alert-message"> 
@@ -13,7 +14,7 @@
     </div>
   <% end %>
 <% end %>
-  <% size = '300x150' %>
+<% size = '300x150' %>
 <div class='row'>
   <div class='span5 columns'>
     <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
@@ -28,15 +29,18 @@
   </div>
   <div class='span5 columns'>
     <% if @person.measures.size %>
-        <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @person.measures.size,@person, size) %>/>
-      <% end %>
-    </div>
+      <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @person.measures.size,@person, size) %>/>
+    <% end %>
   </div>
-  <div class='row'> 
-    <div class='span16 columns'>
-      <%= render 'measures_table' %>
-    </div>
+</div>
+<center>
+<%= render 'new_measure' %>
+</center>
+<div class='row'> 
+  <div class='span16 columns'>
+    <%= render 'measures_table' %>
   </div>
+</div>
 </div>
 <% @posts = @person.posts %>
 <%= render 'posts' %>
