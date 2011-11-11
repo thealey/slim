@@ -23,6 +23,12 @@ class PeopleController < ApplicationController
   def show
     @person = Person.find(params[:id])
     @measures = @person.measures.order('measure_date desc').paginate :per_page=> (@person.measures_to_show || 7), :page => params[:page]
+
+    if @person.nil?
+      redirect_to root_url, :notice=>'?'
+    else
+      render
+    end
   end
 
   def dashboard
@@ -37,7 +43,7 @@ class PeopleController < ApplicationController
   def update
     @person = current_person
     if @person.update_attributes(params[:person])
-      redirect_to :controller=>'measures', :action=>'index', :notice => "Your profile has been updated."
+      redirect_to root_url, :notice => "Your profile has been updated."
     else
       render :action => 'edit'
     end
