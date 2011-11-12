@@ -1,0 +1,11 @@
+<% if current_person %>
+  <%= form_for Measure.new do |f| %>
+    <%= f.error_messages %>
+
+    <%= f.hidden_field :person_id, :value=>current_person.id %>
+    <%= f.hidden_field :measure_date, :value=>Time.now %> 
+    <%= f.text_field :weight %>
+    <%= f.submit 'Add new measure', :class=>'btn' %>
+  <% end %>
+<% end %>
+

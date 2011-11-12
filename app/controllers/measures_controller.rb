@@ -30,7 +30,8 @@ class MeasuresController < ApplicationController
   def create
     @measure = Measure.new(params[:measure])
     if @measure.save
-      update_trend
+    Measure.update_trend
+    redirect_to @measure.person, :notice=>'Created new measure.'
     else
       render :action => 'new'
     end

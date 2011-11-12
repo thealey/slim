@@ -1,9 +1,11 @@
 Slim::Application.routes.draw do
   devise_for :people
-
-  #match 'people/dashboard' => 'peopLE#dashboard'
-
   resources :people
+
+  devise_scope :person do
+    get "/logout" => "devise/sessions#destroy"
+  end
+
   resources :posts
 
   match 'measures/deleteall' => 'measures#deleteall'
