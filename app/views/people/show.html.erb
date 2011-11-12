@@ -17,7 +17,7 @@
 <div class='row'>
   <div class='span5 columns'>
     <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
-    <% if @person.get_measures(7) %>
+    <% if @person.get_measures(7) and @person.last(7)%>
       <img src=<%= getchart(@person.get_measures(7), "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person, size) %>/>
     <% end %>
   </div>
@@ -27,7 +27,7 @@
     <% end %>
   </div>
   <div class='span5 columns'>
-    <% if @person.measures.size %>
+    <% if @person.measures.size and @person.last(@person.measures.size) %>
         <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @max_days, @person, size) %>/>
       <% end %>
     </div>

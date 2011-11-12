@@ -44,7 +44,7 @@
                    <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>
                  </td>
                  <td>
-                   <%= link_to "Sign out", '/people/sign_out', :method=>:delete %>
+                   <%= link_to "Sign out", destroy_person_session_path, :method=>'destroy' %> 
                  </td>
                <% else %>
                  <td>

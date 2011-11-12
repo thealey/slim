@@ -14,18 +14,9 @@
     <%= yield(:head) %>
   </head>
   <body>
-    <div class="ui-body ui-body-a">
-      <div data-role="header"> 
-        <table>
-          <tr>
-            <td>
-              <h1><%= link_to "Slim", :people %></a></h1>
-          </td>
-        </tr>
-      </table>
-    </div>
     &nbsp;
     <%= yield %>
-  </div>
+    <h1><%= link_to "Slim", :people %></a></h1>
+</div>
 </body>
 </html>
