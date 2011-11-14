@@ -97,7 +97,11 @@ class Person < ActiveRecord::Base
     else
       last = nil 
     end
-    return 0 - last if last
+    if last
+    return 0 - last
+    else
+     return 0
+    end
   end
 
   def in3months
@@ -157,6 +161,7 @@ class Person < ActiveRecord::Base
           measure.weight = measurement.weight * 2.20462262
           measure.fat = measurement.fat * 2.20462262
           measure.measure_date = measurement.taken_at
+          measure.manual = false
           measure.save
           measures_count = measures_count + 1
         end
