@@ -51,16 +51,21 @@ class Measure < ActiveRecord::Base
       karma = 0
       previous_trend = 0
 
+      #Need a week to get going
       if @measures.size > 6
         @measures.each do |measure|
+          #I guess can't have a measure for the first day?
+          #Yeah have to make a trend of the 7 just by averaging
+          #Then from there can make a trend
           if counter == 0
             forecast = 0
             @measures[0..6].each do |m|
-              forecast+= m.item
+              forecast = forecast +  m.item
             end
             forecast = forecast / 7
             measure.forecast = forecast
           else
+            #Ok so 1st measure has no forecast, subsequent ones will
             forecast = @measures[counter - 1].trend
           end
 
