@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111008133650) do
+ActiveRecord::Schema.define(:version => 20111110171610) do
 
   create_table "consumer_tokens", :force => true do |t|
     t.integer  "user_id"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20111008133650) do
     t.float    "forecast"
     t.float    "delta"
     t.float    "karma"
+    t.boolean  "manual",       :default => true
   end
 
   create_table "people", :force => true do |t|

@@ -10,6 +10,9 @@
       Last Measure
     </th>
     <th>
+      Measures
+    </th>
+    <th>
       Last Weight
     </th>
     <th>
@@ -39,6 +42,9 @@
         </td>
         <td>
           <%= person.current_measure.measure_date.to_s(:short) if person.current_measure %>
+        </td>
+        <td>
+          <%= person.measures.size.to_s %>
         </td>
         <td>
           <%= Utility.floatformat % person.current_measure.weight if person.current_measure %>

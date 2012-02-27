@@ -12,6 +12,8 @@ namespace :slim do
             latest_measure_date = person.current_measure.measure_date
             person.refresh
             puts person.username + ' refreshed'
+            puts 'Updating trend'
+            Measure.update_trend
             unless person.current_measure.measure_date == latest_measure_date
               people_changed_list << person
             end
@@ -23,10 +25,10 @@ namespace :slim do
         end
       end
 
-      if people_changed_list.size > 0
-        puts 'Updating trend'
-        Measure.update_trend
-      end
+      #      if people_changed_list.size > 0
+      #        puts 'Updating trend'
+      #        Measure.update_trend
+      #      end
 
       Person.all.each do |person|
         if people_changed_list.include? person and person.send_email

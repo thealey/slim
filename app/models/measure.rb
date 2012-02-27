@@ -17,7 +17,12 @@ class Measure < ActiveRecord::Base
   end
   
   def trend_percentage
-    ((self.trend / self.weight) * 100)  
+    unless self.trend and self.weight
+      Measure.update_trend
+      return 0
+    else
+      return ((self.trend / self.weight) * 100)
+    end
   end
 
   def is_binge?

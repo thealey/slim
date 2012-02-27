@@ -28,7 +28,7 @@
     <% end %>
   </div>
   <div class='span5 columns'>
-    <% if @person.measures.size %>
+    <% if @person.measures.size and @person.last(@person.measures.size) %>
       <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @person.measures.size,@person, size) %>/>
     <% end %>
   </div>

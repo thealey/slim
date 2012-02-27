@@ -2,4 +2,13 @@
 
 <%= render 'form' %>
 
+</hr>
+
+<h2>Or, add many at once</h2>
+<%= form_tag("/measures", :method => "get") do %>
+  <%= text_area_tag(:bulk, '', :size=>'60x30') %>
+  <br/>
+  <%= submit_tag("Post") %>
+<% end %>
+
 <p><%= link_to "Back to List", measures_path %></p>
