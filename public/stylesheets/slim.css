@@ -102,6 +102,7 @@ form label {
 
 body {
   padding:50px;
+  background: url(/images/bright_squares.png); 
 }
 
 form input[type="text"], form textarea {
