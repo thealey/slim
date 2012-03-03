@@ -11,9 +11,9 @@
 }
 
 table,tr, td {
-  vertical-align: top;
+#  vertical-align: top;
   white-space: nowrap;
-  border-left: none;
+#  border-left: none;
 }
 
 table th + th, table td + td {

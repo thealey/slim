@@ -52,7 +52,7 @@ class MeasuresController < ApplicationController
 
   def refresh
     if (person_signed_in?)
-      measures_count = current_person.refresh
+      measures_count = current_person.refresh_all
     end
     Measure.update_trend
     redirect_to people_url, :notice => 'Retrieved ' + measures_count.to_s + ' measures.'

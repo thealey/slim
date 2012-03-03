@@ -1,9 +1,10 @@
-<table class="zebra-striped">
+<table width='100%' class="table-striped">
   <tr>
     <th>#</th>
     <th>Weight</th>
     <th>Trend</th>
     <th>Karma *</th>
+    <th>Grade</th>
     <th>Trend %</th>
     <th>Fat %</th>
     <th>BMI</th>
@@ -17,12 +18,13 @@
       <td><%= counter %><% counter = counter + 1 %></td>
       <td <%= "class='binge'" if measure and measure.is_binge? %>><%= Utility.floatformat % measure.weight %></td>
       <td><%= Utility.floatformat % measure.trend if measure.trend %></td>
-      <td><%= Utility.floatformat % measure.karma if measure.karma %> &nbsp; <strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
+      <td><%= Utility.floatformat % measure.karma if measure.karma %></td>
+      <td><strong><%= @person.karma_grade(measure) if measure.karma %></strong></td>
       <td>
         <% if (Utility.floatformat % measure.trend_percentage).to_i >= 100 %>
-          <div class='label success'>
+          <div class='label label-success'>
           <% else %>
-            <div class='label important'>
+            <div class='label label-important'>
             <% end %>
             <%= Utility.floatformat % measure.trend_percentage if measure %>
           </div>
