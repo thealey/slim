@@ -93,6 +93,7 @@ table th + th, table td + td {
 
 th {
   white-space: nowrap;
+  text-align: left;
 }
 
 form label {
