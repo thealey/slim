@@ -43,7 +43,7 @@ module MeasuresHelper
         #lc.data "%Fat", scaled_fats, 'BDBDBD'
       end
       lc.data "Goal", scaled_goals, '254117'
-      lc.fill(:background, :solid, {:color => 'efefef'})
+      lc.fill(:background, :solid, {:color => 'ffffff'})
       #lc.data "Karma", scaled_karmas, 'B8B8B8'
       lc.axis :y, :range => [min, max], :color => '667B99', :font_size => 10, :alignment => :center
       lc.axis :x, :range => [daylimit,1], :color => '667B99', :font_size => 10, :alignment => :center
