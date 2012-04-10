@@ -55,7 +55,7 @@ class MeasuresController < ApplicationController
       measures_count = current_person.refresh_all
     end
     Measure.update_trend
-    redirect_to people_url, :notice => 'Retrieved ' + measures_count.to_s + ' measures.'
+    redirect_to current_user, :notice => 'Retrieved ' + measures_count.to_s + ' measures.'
   end
 
   def deleteall

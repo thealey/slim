@@ -5,7 +5,7 @@ gem 'rails', '3.2.2'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-#gem 'thin'
+gem 'thin'
 gem 'mysql2', '> 0.3'
 gem 'simplificator-withings', '0.4.5'
 gem 'nifty-generators'
@@ -19,7 +19,7 @@ gem 'newrelic_rpm'
 gem 'devise'
 gem 'json'
 gem "bcrypt-ruby", :require => "bcrypt"
-gem "mocha", :group => :test
+#gem "mocha", :group => :test
 
 # Gems used only for assets and not required
 # in production environments by default.

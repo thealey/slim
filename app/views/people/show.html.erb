@@ -1,12 +1,12 @@
-    <h1>
-    <%= image_tag @person.gravatar_url %>&nbsp;<%= @person.name! %>&nbsp;
-    <small>
-      Goal:<strong> <%= @person.goal.to_s %></strong>. 
-      Trend in 3 months:<strong><%= Utility.floatformat % @person.in3months if @person.in3months %></strong>
-      Karma rank: <strong><%= @person.karma_rank if @person.karma_rank %></strong>.
-      Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
-      </small>
-    </h1>
+<h1>
+  <%= image_tag @person.gravatar_url %> <%= @person.name! %> 
+  <small>
+    Goal:<strong> <%= @person.goal.to_s %></strong>. 
+    Trend in 3 months:<strong><%= Utility.floatformat % @person.in3months if @person.in3months %></strong>
+    Karma rank: <strong><%= @person.karma_rank if @person.karma_rank %></strong>.
+    Karma grade: <strong><%= @person.karma_grade @person.current_measure %></strong>
+  </small>
+</h1>
 
 <% if person_signed_in? && current_person == @person %>
   <% if @measures.size == 0 %>
@@ -35,15 +35,13 @@
     <% end %>
   </div>
 
-<center>
-<% render 'new_measure' %>
-</center>
-<div class='row'> 
-  <div class='span12'>
-    <%= render 'measures_table' %>
+  div class='row'> 
+    <div class='span12'>
+      <%= render 'measures_table' %>
+    </div>
   </div>
 </div>
-</div>
+<%= render 'new_measure' %>
 <% @posts = @person.posts %>
 <%= render 'posts' %>
 
