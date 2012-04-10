@@ -2,11 +2,11 @@
   <%= f.error_messages %>
   <p>
     <%= f.label "Title" %><br />
-    <%= f.text_field :name, :size => 80 %>
+    <%= f.text_field :name, :size => 100 %>
   </p>
   <p>
     <%= f.label :body %><br />
-    <%= f.text_area :body %>
+    <%= f.text_area :body, :size => '100x10' %>
   </p>
   <p>
     <% f.select :person_id,Person.order('username').collect{|p| [p.username, p.id]} %>

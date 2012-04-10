@@ -19,7 +19,7 @@ gem 'newrelic_rpm'
 gem 'devise'
 gem 'json'
 gem "bcrypt-ruby", :require => "bcrypt"
-#gem "mocha", :group => :test
+gem 'simple_form'
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -31,12 +31,6 @@
                 <%= link_to "Update Withings", :controller=>"measures", :action=>"refresh"   %>
               </li>
               <li>
-                <%= link_to "New Measure", new_measure_path %>
-              </li>
-              <li>
-                <%= link_to "Update trends",  :controller=>"measures", :action=>"update_trend" %>
-              </li>
-              <li>
                 <%= link_to "Signed in as " + current_person.username, :controller=>'people', :action=>'edit' %>
               </li>
               <li>
