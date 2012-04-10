@@ -1,9 +1,6 @@
 <table width='800'>
   <tr>
     <th>
-      Gravatar
-    </th>
-    <th>
       Person
     </th>
     <th>
@@ -22,9 +19,7 @@
   <% @people.each do |person|%>
     <tr>
       <td>
-        <%= image_tag(person.gravatar_url) %><br/>
-      </td>
-      <td>
+        <%= image_tag(person.gravatar_url) %>
         <%= link_to person.name!, person %>
       </td>
       <td>
