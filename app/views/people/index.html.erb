@@ -19,7 +19,7 @@
   <% @people.each do |person|%>
     <tr>
       <td>
-        <%= image_tag(person.gravatar_url) %>
+        <%= image_tag(person.gravatar_url) if Person.online %>
         <%= link_to person.name!, person %>
       </td>
       <td>

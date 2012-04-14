@@ -1,5 +1,5 @@
 <h1>
-  <%= image_tag @person.gravatar_url %> <%= @person.name! %> 
+  <%= image_tag @person.gravatar_url if Person.online %> <%= @person.name! %> 
   <small>
     Goal:<strong> <%= @person.goal.to_s %></strong>. 
     Trend in 3 months:<strong><%= Utility.floatformat % @person.in3months if @person.in3months %></strong>
@@ -17,25 +17,27 @@
 <% end %>
 <% size = '300x150' %>
 
-<div class='row'>
-  <div class='span4'>
-    <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
-    <% if @person.get_measures(7) and @person.last(7)%>
-      <img src=<%= getchart(@person.get_measures(7), "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person, size) %>/>
-    <% end %>
-  </div>
-  <div class='span4'>
-    <% if @person.last(30) %>
-      <img src=<%=  getchart(@person.get_measures(30), "30 Day Trend " + Utility.floatstringlbs(@person.last(30).to_s), 30, @person, size) %>/>
-    <% end %>
-  </div>
-  <div class='span4'>
-    <% if @person.measures.size and @person.last(@person.measures.size) %>
-      <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @person.measures.size,@person, size) %>/>
-    <% end %>
-  </div>
+<% if Person.online %>
+  <div class='row'>
+    <div class='span4'>
+      <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
+      <% if @person.get_measures(7) and @person.last(7)%>
+        <img src=<%= getchart(@person.get_measures(7), "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person, size) %>/>
+      <% end %>
+    </div>
+    <div class='span4'>
+      <% if @person.last(30) %>
+        <img src=<%=  getchart(@person.get_measures(30), "30 Day Trend " + Utility.floatstringlbs(@person.last(30).to_s), 30, @person, size) %>/>
+      <% end %>
+    </div>
+    <div class='span4'>
+      <% if @person.measures.size and @person.last(@person.measures.size) %>
+        <img src=<%=  getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @person.measures.size,@person, size) %>/>
+      <% end %>
+    </div>
+  <% end %>
 
- <div class='row'> 
+  <div class='row'> 
     <div class='span12'>
       <%= render 'measures_table' %>
     </div>

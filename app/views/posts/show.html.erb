@@ -1,28 +1,16 @@
-<% title "Post" %>
+<h1>
+  <%= @post.name %>
+  <small>
+    <br>
+    <%= @post.person.username %> - <%= @post.created_at.to_s(:long) %>
+    </br>
+  </small>
+</h2>
 
-<table width='80%'>
-  <tr>
-    <td>
-      <strong>
-        <%= @post.name %><br/>
-        <%= @post.created_at.to_s(:long) %>
-      </strong>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= @post.person.username %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-  <%= raw RDiscount.new(@post.body).to_html %>
-    </td>
-  </tr>
-</table>
+<%= raw RDiscount.new(@post.body).to_html %>
 
 <p>
   <%= link_to "Edit", edit_post_path(@post) %> |
-  <%= link_to "Destroy", @post, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "Delete", @post, :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to "View All", posts_path %>
 </p>
