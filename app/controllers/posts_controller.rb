@@ -20,7 +20,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to @post, :notice => "Successfully created post."
     else
-      render :action => 'new'
+      render :action => 'new', :notice => 'Problem'
     end
   end
 
