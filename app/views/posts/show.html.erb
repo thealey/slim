@@ -10,15 +10,16 @@
 <% size = '600x250' %>
 
 <center>
-<img src='<%= getchart(@measures, @measures.size.to_s + " Day Trend " + 
-                      Utility.floatstringlbs(@post.person.last(7).to_s), 7, 
-                      @post.person, size) %>'/>
-                      <br>
-                      <%= @post.start_date.to_s(:long) %> - <%= @post.end_date.to_s(:long) %>
-                      </br>
-                    </center>
+  <img src='<%= getchart(@measures, @measures.size.to_s + " Day Trend " + 
+                         Utility.floatstringlbs(@post.person.trend_range(@measures).to_s), 
+                         @measures.size, 
+                         @post.person, size) %>'/>
+                         <br>
+                         <%= @post.start_date.to_s(:long) %> - <%= @post.end_date.to_s(:long) %>
+                         </br>
+                       </center>
 
-                      <%= raw RDiscount.new(@post.body).to_html %>
+                       <%= raw RDiscount.new(@post.body).to_html %>
 
                       <p>
                         <%= link_to "Edit", edit_post_path(@post) %> |
