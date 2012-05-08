@@ -20,6 +20,9 @@ module MeasuresHelper
 
       min = measure.item if measure.item < min
       max = measure.item if measure.item > max
+
+      min = measure.trend if measure.trend < min
+      max = measure.trend if measure.trend > max
       goals << person.goal
     end
     #max = max + 1

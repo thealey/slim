@@ -34,7 +34,7 @@ class Person < ActiveRecord::Base
   validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
   def self.online
-    return false
+    return true
   end
 
   def name!
