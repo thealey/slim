@@ -29,6 +29,7 @@ gem 'simple_form'
 #gem 'uglifier'
 
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 group :test do
   # Pretty printed test output

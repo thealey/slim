@@ -7,10 +7,21 @@
   </small>
 </h2>
 
-<%= raw RDiscount.new(@post.body).to_html %>
+<% size = '600x250' %>
 
-<p>
-  <%= link_to "Edit", edit_post_path(@post) %> |
-  <%= link_to "Delete", @post, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", posts_path %>
-</p>
+<center>
+<img src=<%= getchart(@measures, @measures.size.to_s + " Day Trend " + 
+                      Utility.floatstringlbs(@post.person.last(7).to_s), 7, 
+                      @post.person, size) %>/>
+                      <br>
+                      <%= @post.start_date.to_s(:long) %> - <%= @post.end_date.to_s(:long) %>
+                      </br>
+                    </center>
+
+                      <%= raw RDiscount.new(@post.body).to_html %>
+
+                      <p>
+                        <%= link_to "Edit", edit_post_path(@post) %> |
+                        <%= link_to "Delete", @post, :confirm => 'Are you sure?', :method => :delete %> |
+                        <%= link_to "View All", posts_path %>
+                      </p>

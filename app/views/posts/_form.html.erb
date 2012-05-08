@@ -1,9 +1,11 @@
+
 <% @post.person_id = current_person.id %>
 <%= simple_form_for @post do |f| %>
   <%= f.input :name, :input_html => { :size => 100 } %>
   <%= f.input :body, :input_html => { :size => '100x10' } %>
-  <%= f.input :start_date %>
-  <%= f.input :end_date %>
+  <%= f.input :start_date, :order => [:month, :day, :year] %>
+  <%= f.input :end_date, :order => [:month, :day, :year] %>
   <%= f.input :person_id, :as => :hidden %>
   <%= f.button :submit %>
 <% end %>
+

@@ -91,10 +91,9 @@ class Person < ActiveRecord::Base
     return (weight * 703 / height**2)
   end
 
-  #This method returns the average over some number of days
-  def last(days)
-    m = Measure.where(:person_id=>self.id).order('measure_date desc')
-
+  #This method returns the trend over some number of days
+  def trend_range(m)
+    days = m.size
     if m[0] and m[days-1] and  m[0].trend and m[days - 1].trend
       diff = m[days - 1].trend - m[0].trend 
       last = diff / (days / 7)
@@ -106,6 +105,11 @@ class Person < ActiveRecord::Base
     else
      return 0
     end
+  end
+
+  def last(days)
+    m = Measure.where(:person_id=>self.id).order('measure_date desc')
+    return trend_range(m)
   end
 
   def in3months
