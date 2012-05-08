@@ -10,9 +10,9 @@
 <% size = '600x250' %>
 
 <center>
-<img src=<%= getchart(@measures, @measures.size.to_s + " Day Trend " + 
+<img src='<%= getchart(@measures, @measures.size.to_s + " Day Trend " + 
                       Utility.floatstringlbs(@post.person.last(7).to_s), 7, 
-                      @post.person, size) %>/>
+                      @post.person, size) %>'/>
                       <br>
                       <%= @post.start_date.to_s(:long) %> - <%= @post.end_date.to_s(:long) %>
                       </br>
