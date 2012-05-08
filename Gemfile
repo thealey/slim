@@ -26,8 +26,7 @@ gem 'simple_form'
 #gem 'sass-rails', " ~> 3.1.0"
 #gem 'sass-rails', "  ~> 3.1.0"
 #gem 'coffee-rails', "~> 3.1.0"
-#gem 'uglifier'
-
+gem 'uglifier'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 

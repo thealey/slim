@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(:version => 20120508135519) do
     t.string   "type",       :limit => 30
     t.string   "token",      :limit => 1024
     t.string   "secret"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "measures", :force => true do |t|
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20120508135519) do
     t.float    "weight"
     t.float    "fat"
     t.datetime "measure_date"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.float    "trend"
     t.float    "forecast"
     t.float    "delta"
@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(:version => 20120508135519) do
     t.string   "email"
     t.string   "password_hash"
     t.string   "password_salt"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "withings_id"
     t.string   "withings_api_key"
     t.integer  "height_feet"
@@ -72,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20120508135519) do
     t.string   "name"
     t.text     "body"
     t.integer  "person_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.date     "start_date"
     t.date     "end_date"
   end
