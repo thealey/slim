@@ -108,7 +108,7 @@ class Person < ActiveRecord::Base
   end
 
   def last(days)
-    m = Measure.where(:person_id=>self.id).order('measure_date desc')
+    m = Measure.where(:person_id=>self.id).order('measure_date desc').limit(days)
     return trend_range(m)
   end
 
