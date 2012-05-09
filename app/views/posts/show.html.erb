@@ -10,7 +10,7 @@
 <% size = '600x250' %>
 
 <center>
-  <img src=<%= getchart(@measures, @measures.size.to_s + " Day Trend " + 
+  <img src=<%= Measure.getchart(@measures, @measures.size.to_s + " Day Trend " + 
                          Utility.floatstringlbs(@post.person.trend_range(@measures).to_s), 
                          @measures.size, 
                          @post.person, size) %>>
