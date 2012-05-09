@@ -94,6 +94,8 @@ class Person < ActiveRecord::Base
   #This method returns the trend over some number of days
   def trend_range(m)
     days = m.size
+    return 0 if days < 7 
+
     if m[0] and m[days-1] and  m[0].trend and m[days - 1].trend
       diff = m[days - 1].trend - m[0].trend 
       last = diff / (days / 7)

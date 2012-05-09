@@ -14,7 +14,7 @@ class PostsController < ApplicationController
       redirect_to :posts, :notice => "You must be logged in."
     end
     @post = Post.new
-    @post.start_date = Time.now.to_date - 7.days
+    @post.start_date = Time.now.to_date - 14.days
     @post.end_date = Time.now.to_date
   end
 

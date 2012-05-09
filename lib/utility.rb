@@ -1,7 +1,7 @@
 module Utility
   class << self
     def floatstringlbs(f)
-      return "%.2f" % f.to_s + "/week" if f 
+      return "%.2f" % f.to_s + "/week" if f and Float(f)
     end
     def floatformat
       "%.2f"
