@@ -7,6 +7,9 @@ class MeasuresController < ApplicationController
   def index
   end
 
+  def import
+  end
+
   def chart
     @person = Person.find params[:person_id]
     #TODO deal with what if the persons data is private, only show it to them

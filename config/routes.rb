@@ -10,6 +10,7 @@ Slim::Application.routes.draw do
 
   match 'measures/deleteall' => 'measures#deleteall'
   match 'measures/refresh' => 'measures#refresh'
+  match 'measures/import' => 'measures#import'
   match 'measures/update_trend' => 'measures#update_trend'
 
   resources :measures
