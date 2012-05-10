@@ -1,8 +1,8 @@
 <h1>
-  Import measures
+  Import measures <small>This replaces any current measures</small>
 </h1>
 
-<%= form_tag do %>
+<%= form_tag('/measures/import', :method => :post) do %>
   <br>
   <%= text_area_tag 'ms', nil, :size => '80x20' %>
   </br>

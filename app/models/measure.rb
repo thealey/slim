@@ -1,3 +1,5 @@
+require 'csv'
+
 class Measure < ActiveRecord::Base
   attr_accessible :weight, :person_id, :measure_date, :fat
 
@@ -162,4 +164,46 @@ class Measure < ActiveRecord::Base
     end
     return scaled_array
   end  
+
+  def self.import_test
+    Measure.import(File.read("./misc/imports.csv"), 1)
+  end
+
+  def self.eval_date(s)
+    return Chronic::parse(s).to_date
+  end
+
+  def self.eval_float(s)
+    begin
+      return Float(s)
+    rescue ArgumentError
+    end
+  end
+
+  def self.import(csv, person_id)
+    return unless p = Person.find(person_id)
+
+    rows = CSV.parse(csv)
+    p.measures.delete_all
+
+    rows.each do |row|
+      m = Measure.new
+
+      if eval_float(row[0])
+        m.weight = eval_float(row[0])
+      else
+        m.measure_date = eval_date(row[0]) if eval_date(row[0])
+      end
+      if eval_float(row[1])
+        m.weight = eval_float(row[1])
+      else
+        m.measure_date = eval_date(row[1]) if eval_date(row[1])
+      end
+
+      if m.weight and m.measure_date
+        m.person_id = p.id
+        m.save!
+      end
+    end
+  end
 end

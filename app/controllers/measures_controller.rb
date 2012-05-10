@@ -8,6 +8,10 @@ class MeasuresController < ApplicationController
   end
 
   def import
+    if params[:ms]
+      Measure.import(params[:ms], current_person.id)
+      redirect_to current_person
+    end
   end
 
   def chart
