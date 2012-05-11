@@ -1,5 +1,5 @@
 <%= simple_form_for @bp do |f| %>
-  <%= f.input :person, :as => :hidden %>
+  <%= f.association :person, :as => :hidden %>
   <%= f.input :dia, :label => 'Diastolic' %>
   <%= f.input :sys, :label => 'Systolic' %>
   <%= f.button :submit, :class => 'btn-primary' %>

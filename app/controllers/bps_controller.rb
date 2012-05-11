@@ -25,6 +25,7 @@ class BpsController < ApplicationController
   # GET /bps/new.json
   def new
     @bp = Bp.new
+    @bp.person_id = current_person.id
 
     respond_to do |format|
       format.html # new.html.erb
