@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Dia:</b>
+  <%= @bp.dia %>
+</p>
+
+<p>
+  <b>Person:</b>
+  <%= @bp.person_id %>
+</p>
+
+<p>
+  <b>Sys:</b>
+  <%= @bp.sys %>
+</p>
+
+<p>
+  <b>Measure date:</b>
+  <%= @bp.measure_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_bp_path(@bp) %> |
+<%= link_to 'Back', bps_path %>

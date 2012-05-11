@@ -1,0 +1,29 @@
+<h1>Listing bps</h1>
+
+<table class='table'>
+  <tr>
+    <th>Person</th>
+    <th>Dia</th>
+    <th>Sys</th>
+    <th>Measure date</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @bps.each do |bp| %>
+  <tr>
+    <td><%= bp.dia %></td>
+    <td><%= bp.person_id %></td>
+    <td><%= bp.sys %></td>
+    <td><%= bp.measure_date %></td>
+    <td><%= link_to 'Show', bp %></td>
+    <td><%= link_to 'Edit', edit_bp_path(bp) %></td>
+    <td><%= link_to 'Destroy', bp, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Bp', new_bp_path %>

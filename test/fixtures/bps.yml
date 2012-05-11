@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  dia: 1
+  person_id: 1
+  sys: 1
+  measure_date: 2012-05-10
+
+two:
+  dia: 1
+  person_id: 1
+  sys: 1
+  measure_date: 2012-05-10

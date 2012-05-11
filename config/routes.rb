@@ -1,4 +1,6 @@
 Slim::Application.routes.draw do
+  resources :bps
+
   devise_for :people
   resources :people
 

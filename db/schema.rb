@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120508135519) do
+ActiveRecord::Schema.define(:version => 20120511001842) do
+
+  create_table "bps", :force => true do |t|
+    t.integer  "dia"
+    t.integer  "person_id"
+    t.integer  "sys"
+    t.date     "measure_date"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "consumer_tokens", :force => true do |t|
     t.integer  "user_id"

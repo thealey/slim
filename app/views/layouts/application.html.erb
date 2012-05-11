@@ -25,6 +25,9 @@
             </li>
             <% if person_signed_in? %>
               <li>
+                <%= link_to "BP", :bps %>
+              </li>
+              <li>
                 <%= link_to "Update Withings", :controller=>"measures", :action=>"refresh"   %>
               </li>
               <li>
