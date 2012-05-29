@@ -192,44 +192,6 @@ class Person < ActiveRecord::Base
     measures_count
   end
 
-  def refresh_all_2
-    wuser = self.wuser
-    wuser.share()
-    old_measures = self.measures
-    self.measures.delete_all
-    measures_count = 0
-    last_measures_count = 0
-    page = 1
-
-    begin
-      #measurements = wuser.measurement_groups(:per_page=>10, :page => page, :end_at=>Time.now)
-      measurements = wuser.measurement_groups(:limit=>10, :offset=>last_measures_count, :end_at=>Time.now)
-
-      measurements.each do |measurement|
-        if measurement.weight and measurement.fat and measurement.taken_at
-          measure = Measure.new
-          measure.person_id = self.id
-          measure.weight = measurement.weight * 2.20462262
-          measure.fat = measurement.fat * 2.20462262
-          measure.measure_date = measurement.taken_at
-          measure.manual = false
-          measure.save
-          measures_count = measures_count + 1
-        end
-      end    
-      page = page + 1
-      last_measures_count = measurements.size
-    end while measurements.size == 0 or page == 5
-
-    #Idk why this can fail but if it does restore last set of valid measures
-    #    if old_measures.size > self.measures.size
-    #      self.measures = old_measures
-    #      self.measures.save_all
-    #    end
-
-    return measures_count
-  end
-
   def refresh
     wuser = self.wuser
     wuser.share()
@@ -288,9 +250,10 @@ class Person < ActiveRecord::Base
       body = body + ' trend weight of ' + measure.trend.to_s + '.'
       body = body + ' This represents a karma score of ' + measure.karma.to_s + ', which is a grade of '
       body = body + self.karma_grade(measure) + '.'
+      charts[measure.measure_date] = Measure.getchart(self.get_measures(7), 
+      "7 Day Trend " + Utility.floatstringlbs(self.last(7).to_s), 7, self, '600x400')
+      body = body + ' At this rate in 3 months Ted will weigh ' + self.in3months.to_s + '.'
       reports[measure.measure_date] = body
-      charts[measure.measure_date] = Measure.getchart(@person.get_measures(7), 
-      "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person, '600x400')
     end
     reports
   end
