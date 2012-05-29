@@ -6,6 +6,15 @@ class PeopleController < ApplicationController
     @people = Person.all
   end
 
+  def rss
+    @person = Person.find params[:id]
+    @reports = @person.progress_report
+    @measures = @person.get_measures(7)
+
+    render :layout => false
+    response.headers["Content-Type"] = "application/xml; charset=utf-8"
+  end
+
   def new
     @person = Person.new
   end

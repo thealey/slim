@@ -1,3 +1,6 @@
-<img src=<%=  getchart(@max_days, @measures, "7 Day Trend " + Utility.floatstringlbs(@last.to_s), @limit, @person) %>/>
+def self.getchart(measures, title, daylimit, person, size)
+<% @limit = 7 %>
+
+<%= image_tag Measure.getchart(@measures, "7 Day Trend " + Utility.floatstringlbs(@last.to_s), @limit, @person, '400x200') %>
+
 <%= @measuredate.to_s(:long) %>
-<%= render('measures/measures_table') %>

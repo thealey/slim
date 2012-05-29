@@ -59,6 +59,9 @@ class Person < ActiveRecord::Base
     end
 
     case measure.karma
+    when 100..1000
+      karma_grade = 'A+'
+      remainder = 5
     when 90..100
       karma_grade = 'A'
       remainder = measure.karma - 90
@@ -266,6 +269,30 @@ class Person < ActiveRecord::Base
     subject = subject + Utility.floatstringlbs(self.last(7).to_s) + ', '
     subject = subject + Utility.floatformat % self.in3months + ' in 3 months'
     return subject
+  end
+
+  def progress_report
+    reports = Hash.new
+    charts = Hash.new
+    self.measures.order('measure_date desc').limit(10).each do |measure|
+      body = ''
+      body = body + self.username + ' weighed in on ' + measure.measure_date.to_date.to_s(:long) + ','
+      body = body + ' at ' + measure.weight.to_s + '.'
+      body = body + ' This is ' + Utility.floatformat % (measure.weight - measure.trend).to_s
+      if measure.weight > measure.trend
+      body = body + ' more '
+      else 
+      body = body + ' less '
+      end
+      body = body + 'than ' + self.username + '\'s' 
+      body = body + ' trend weight of ' + measure.trend.to_s + '.'
+      body = body + ' This represents a karma score of ' + measure.karma.to_s + ', which is a grade of '
+      body = body + self.karma_grade(measure) + '.'
+      reports[measure.measure_date] = body
+      charts[measure.measure_date] = Measure.getchart(@person.get_measures(7), 
+      "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person, '600x400')
+    end
+    reports
   end
 
   private

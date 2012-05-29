@@ -1,6 +1,7 @@
 Slim::Application.routes.draw do
   resources :bps
 
+  match 'people/rss/:id' => 'people#rss'
   devise_for :people
   resources :people
 
