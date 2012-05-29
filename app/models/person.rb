@@ -112,13 +112,24 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def last(days)
-    m = Measure.where(:person_id=>self.id).order('measure_date desc').limit(days)
+  def last(d)
+    m = measure_range(Time.now - d.days, Time.now)
     return trend_range(m)
   end
 
+  def measure_range(start_date, end_date)
+    Measure.where('person_id = ? and measure_date >= ? and measure_date <= ?',
+                  self.id, start_date.to_s(:db), end_date.to_s(:db)).order('measure_date desc')
+  end
+
   def in3months
-    @in3months = current_measure.item + (last(7) * 4 * 3) if last(7) and current_measure
+    three_month_trend current_measure
+  end
+  
+  def three_month_trend(measure)
+    ms = self.measure_range(measure.measure_date, measure.measure_date - 10.days)
+    tr = trend_range(ms)
+    measure.item + (tr * 4 * 3) if tr and measure
   end
 
   def current_measure
@@ -236,7 +247,7 @@ class Person < ActiveRecord::Base
   def progress_report
     reports = Hash.new
     charts = Hash.new
-    self.measures.order('measure_date desc').limit(10).each do |measure|
+    self.measures.order('measure_date desc').limit(30).each do |measure|
       body = ''
       body = body + self.username + ' weighed in on ' + measure.measure_date.to_date.to_s(:long) + ','
       body = body + ' at ' + measure.weight.to_s + '.'
@@ -250,9 +261,14 @@ class Person < ActiveRecord::Base
       body = body + ' trend weight of ' + measure.trend.to_s + '.'
       body = body + ' This represents a karma score of ' + measure.karma.to_s + ', which is a grade of '
       body = body + self.karma_grade(measure) + '.'
-      charts[measure.measure_date] = Measure.getchart(self.get_measures(7), 
-      "7 Day Trend " + Utility.floatstringlbs(self.last(7).to_s), 7, self, '600x400')
-      body = body + ' At this rate in 3 months Ted will weigh ' + self.in3months.to_s + '.'
+      #charts[measure.measure_date] = Measure.getchart(self.get_measures(7), '600x400')
+
+      ms = self.measure_range(measure.measure_date - 14.days, measure.measure_date)
+      body = body + ' 14 day trend is ' + self.trend_range(ms).round(3).to_s + '.'
+      
+      #measure.item + (tr * 4 * 3) if tr and measure
+      body = body + ' At this rate in 3 months Ted will weigh ' + (measure.weight + self.trend_range(ms) * 4 * 3).round(2).to_s
+      body = body + '.'
       reports[measure.measure_date] = body
     end
     reports

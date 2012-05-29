@@ -22,17 +22,17 @@
     <div class='span4'>
       <%= 'You need at least 7 measures to derive trend data.' if @measures.size < 7 %>
       <% if @person.get_measures(7) and @person.last(7)%>
-        <img src=<%= Measure.getchart(@person.get_measures(7), "7 Day Trend " + Utility.floatstringlbs(@person.last(7).to_s), 7, @person, size) %>/>
+        <img src=<%= Measure.getchart(@person.get_measures(10), size) %>/>
       <% end %>
     </div>
     <div class='span4'>
       <% if @person.last(30) %>
-        <img src=<%= Measure.getchart(@person.get_measures(30), "30 Day Trend " + Utility.floatstringlbs(@person.last(30).to_s), 30, @person, size) %>/>
+        <img src=<%= Measure.getchart(@person.get_measures(30), size) %>/>
       <% end %>
     </div>
     <div class='span4'>
       <% if @person.measures.size and @person.last(@person.measures.size) %>
-        <img src=<%= Measure.getchart(@person.get_measures(@person.measures.size), @person.measures.size.to_s + " Day Trend " + Utility.floatstringlbs(@person.last(@person.measures.size).to_s), @person.measures.size,@person, size) %>/>
+        <img src=<%= Measure.getchart(@person.get_measures(@person.measures.size), size) %>/>
       <% end %>
     </div>
   <% end %>

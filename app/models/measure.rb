@@ -97,14 +97,16 @@ class Measure < ActiveRecord::Base
     end
   end
 
-  def self.getchart(measures, title, daylimit, person, size)
+  def self.getchart(measures, chartsize)
+    person = measures.first.person
     max_days = person.measures.size
     trends = Array.new
     weights = Array.new
     fats = Array.new
     goals = Array.new
     karmas = Array.new
-
+    daylimit = measures.size
+    title = measures.size.to_s + ' Day Trend ' + Utility.floatstringlbs(person.trend_range(measures).to_s)
     max = 0
     min = 1000
     lcurl = ''
@@ -134,7 +136,7 @@ class Measure < ActiveRecord::Base
     #scaled_karmas.reverse!
     scaled_goals = scale_array(goals, min, max)
 
-    GoogleChart::LineChart.new(size, title, false) do |lc|
+    GoogleChart::LineChart.new(chartsize, title, false) do |lc|
       lc.show_legend = true
       lc.data "Trend", scaled_trends, 'D80000'
       if person.goal_type == 'lbs'
