@@ -274,6 +274,12 @@ class Person < ActiveRecord::Base
     reports
   end
 
+  def stats(start_from)
+    ms = Measure.where('measure_date <= ? and person_id = ?', start_from.to_s(:db), self.id)
+    ms.each do |m|
+    end
+  end
+
   private
 
   def prepare_password
