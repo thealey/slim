@@ -106,7 +106,7 @@ class Measure < ActiveRecord::Base
     goals = Array.new
     karmas = Array.new
     daylimit = measures.size
-    title = measures.size.to_s + ' Day Trend ' + Utility.floatstringlbs(person.trend_range(measures).to_s)
+    title = measures.size.to_s + ' Measure Trend ' + Utility.floatstringlbs(person.trend_range(measures).to_s)
     max = 0
     min = 1000
     lcurl = ''

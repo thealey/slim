@@ -9,8 +9,10 @@
     <th>Fat %</th>
     <th>BMI</th>
     <th>Measure Date</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
+    <% if person_signed_in? and current_person == @person %>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    <% end %>
   </tr>
   <% counter = 1 %>
   <% @measures.each do |measure| %>

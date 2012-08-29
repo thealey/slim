@@ -276,7 +276,12 @@ class Person < ActiveRecord::Base
 
   def stats(start_from)
     ms = Measure.where('measure_date <= ? and person_id = ?', start_from.to_s(:db), self.id)
+
+    grades = [ 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F' ]
+    grade = self.karma_grade(self.current_measure)
+
     ms.each do |m|
+
     end
   end
 
