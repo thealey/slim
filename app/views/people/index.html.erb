@@ -7,13 +7,7 @@
       Last Measure
     </th>
     <th>
-      Measures
-    </th>
-    <th>
-      Last Weight
-    </th>
-    <th>
-      Karma score
+      Last Workout
     </th>
   </tr>
   <% @people.each do |person|%>
@@ -23,21 +17,22 @@
         <%= link_to person.name!, person %>
       </td>
       <td>
-        <%= person.current_measure.measure_date.to_s(:short) if person.current_measure %>
         <% if person.current_measure %>
-          (<%= time_ago_in_words(person.current_measure.measure_date) if person.current_measure %> ago)
+          <%= link_to person do %>
+            <%= person.current_measure.measure_date.to_s(:short) %>
+            (<%= time_ago_in_words(person.current_measure.measure_date) if person.current_measure %> ago)
+          <% end %>
         <% end %>
       </td>
       <td>
-        <%= person.measures.size.to_s %>
-      </td>
-      <td>
-        <%= Utility.floatformat % person.current_measure.weight if person.current_measure %>
-      </td>
-      <td>
-        <strong>
-          <%= link_to(person.karma_grade(person.current_measure), :controller=>"people", :action=>"dashboard", :id=>person.id) if person.current_measure %>
-        </strong>
+        <%= link_to person_workouts_path(person) do %>
+          <% if person.workouts.size > 0 %>
+            <%= person.workouts.last.created_at.to_s(:short) %>
+            (<%= time_ago_in_words(person.workouts.last.created_at) %> ago)
+          <% else %>
+            -
+          <% end %>
+        <% end %>
       </td>
     </tr>
   <% end %>

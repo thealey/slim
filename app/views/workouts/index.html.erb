@@ -1,0 +1,30 @@
+<h1>Workouts</h1>
+
+<table class='table'>
+  <tr>
+    <th>When</th>
+    <th>Rating</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+
+  <% @workouts.each do |workout| %>
+    <tr>
+      <td><%= workout.workout_date.to_s(:slim) %></td>
+      <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
+      <td><%= workout.description.nil? ? '-' : workout.description %></td>
+      <% if person_signed_in? and current_person.id == workout.person.id %>
+        <td>
+          <%= link_to 'Edit', edit_workout_path(workout) %> |
+          <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <%= will_paginate @workouts %>
+  <br />
+
+  <% if person_signed_in? %>
+    <%= link_to 'New Workout', new_workout_path %>
+  <% end %>

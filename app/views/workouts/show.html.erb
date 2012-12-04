@@ -1,0 +1,16 @@
+<p>
+  <b>Rating:</b>
+  <%= @workout.rating.nil? ? '-' : @workout.rating %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @workout.description.nil? ? '-' : @workout.description %>
+</p>
+
+<p>
+  <b>When:</b>
+  <%= @workout.workout_date.to_s(:slim) %>
+</p>
+
+<%= link_to 'Back', person_workouts_path(:person_id => @workout.person.id) %>
