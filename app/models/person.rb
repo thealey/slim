@@ -35,6 +35,36 @@ class Person < ActiveRecord::Base
   validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
   validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
+  def all_workout_days
+    workout_day = self.workouts.last.workout_date
+    workout_days = Array.new
+    score = Hash.new
+
+    while workout_day <= Time.now.to_date do
+      w = Workout.where('person_id = ? and date(workout_date) = ?',
+                        self.id, workout_day.to_date.to_s(:db)).order('workout_date asc')
+      if w.size == 0
+         current_workout = Workout.new
+         current_workout.workout_date = workout_day
+         current_workout.person_id = self.id
+         current_workout.rating = 0
+      else
+        #TODO: No double sessions!
+        current_workout = w.first
+      end
+
+    #  w.number_grade = number_grade.map { |n| n.rating }.sum
+      score[workout_day] = workout_days.map { |workout| workout.rating }.sum
+      workout_days << current_workout
+      workout_day = workout_day + 1.day
+    end
+
+    {
+      :workouts => workout_days.reverse!.flatten,
+      :score => score
+    }
+  end
+
   def self.online
     return true
   end
