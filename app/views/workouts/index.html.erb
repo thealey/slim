@@ -24,8 +24,10 @@
       <td><%= @score[workout.workout_date].to_s %></td>
       <% if person_signed_in? and current_person.id == workout.person.id %>
         <td>
-          <%= link_to 'Edit', edit_workout_path(workout) %> |
-          <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% if workout.id %>
+            <%= link_to 'Edit', edit_workout_path(workout) %> |
+            <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
         </td>
       <% end %>
     </tr>
