@@ -1,11 +1,25 @@
-<h1>Workouts</h1>
+<h1>
+  <%= image_tag @person.gravatar_url if Person.online %> <%= @person.name! %> 
+  <small>
+    <% workout_goal = @person.workout_goal || 300 %>
+    7 day workout goal:<strong> <%= workout_goal.to_s %></strong>
+  </small>
+</h1>
+
+<% if person_signed_in? %>
+  <span class='pull-right'>
+    <p>
+    <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-primary' %>
+    </p>
+  </span>
+<% end %>
 
 <table class='table'>
   <tr>
     <th>When</th>
     <th>Rating</th>
     <th>Description</th>
-    <th>Score</th>
+    <th>7 Day Score</th>
     <th>Grade</th>
     <th></th>
   </tr>
@@ -37,7 +51,3 @@
 </table>
 <%= paginate @workouts %>
 <br />
-
-<% if person_signed_in? %>
-  <%= link_to 'New Workout', new_workout_path %>
-<% end %>
