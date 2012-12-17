@@ -5,7 +5,7 @@ class WorkoutsController < ApplicationController
     @person = Person.find params[:person_id]
 
     all_workout_days = @person.all_workout_days
-    @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(50)
+    @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(40)
     @scores = all_workout_days[:scores]
 
     respond_to do |format|

@@ -15,7 +15,7 @@ class Person < ActiveRecord::Base
     :password_confirmation, :withings_id, :withings_api_key, 
     :height_feet, :height_inches, :goal,:goal_type,
     :private, :alpha, :binge_percentage, :measures_to_show, :time_to_send_email,
-    :send_email
+    :send_email, :workout_goal
 
   has_many      :measures
   has_many      :posts
@@ -61,8 +61,8 @@ class Person < ActiveRecord::Base
       end
 
       workout_days_range << current_workout
-      if workout_days_range.size == 7
-        workout_days_range = workout_days_range[1..7]
+      if workout_days_range.size == 8
+        workout_days_range = workout_days_range.slice(1,7)
       end
 
       workout_goal = self.workout_goal || 300
