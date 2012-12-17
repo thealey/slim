@@ -2,11 +2,11 @@ class WorkoutsController < ApplicationController
   # GET /workouts
   # GET /workouts.json
   def index
-    person = Person.find params[:person_id]
+    @person = Person.find params[:person_id]
 
-    all_workout_days = person.all_workout_days
-    @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(10)
-    @score = all_workout_days[:score]
+    all_workout_days = @person.all_workout_days
+    @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(50)
+    @scores = all_workout_days[:scores]
 
     respond_to do |format|
       format.html # index.html.erb

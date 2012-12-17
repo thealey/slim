@@ -1,3 +1,19 @@
+<%= simple_form_for @person do |f| %>
+  <%= f.input :username, :label => 'Your username please' %>
+  <%= f.input :private %>
+  <%= f.input :email %>
+  <%= f.input :measures_to_show %>
+  <%= f.input :height_feet %>
+  <%= f.input :height_inches %>
+  <%= f.input :alpha %>
+  <%= f.input :binge_percentage %>
+  <%= f.input :goal %>
+  <%= f.input :workout_goal %>
+  <%= f.input :withings_id %>
+  <%= f.input :withings_api_key %>
+  <%= f.button :submit %>
+<% end %>
+
 <%= form_for @person do |f| %>
   <p><%= f.submit (@person.new_record? ? "Sign up" : "Update") , :class=>'btn large primary' %></p>
   <%= f.error_messages %>

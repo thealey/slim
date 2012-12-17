@@ -6,6 +6,7 @@
     <th>Rating</th>
     <th>Description</th>
     <th>Score</th>
+    <th>Grade</th>
     <th></th>
   </tr>
 
@@ -21,7 +22,8 @@
       </td>
       <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
       <td><%= workout.description.nil? ? '-' : workout.description %></td>
-      <td><%= @score[workout.workout_date].to_s %></td>
+      <td><%= @scores[workout.workout_date.to_date].to_s %></td>
+      <td><strong><%= Person.grade(@scores[workout.workout_date.to_date]) %></strong></td>
       <% if person_signed_in? and current_person.id == workout.person.id %>
         <td>
           <% if workout.id %>

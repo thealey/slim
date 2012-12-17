@@ -31,7 +31,7 @@ class PeopleController < ApplicationController
 
   def show
     @person = Person.find(params[:id])
-    @measures = @person.measures.order('measure_date desc').paginate :per_page=> (@person.measures_to_show || 7), :page => params[:page]
+    @measures = @person.measures.order('measure_date desc').page(params[:page]).per(@person.measures_to_show || 7)
 
     if @person.nil?
       redirect_to root_url, :notice=>'?'

@@ -36,8 +36,15 @@ class Person < ActiveRecord::Base
   validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
   def all_workout_days
-    workout_day = self.workouts.last.workout_date
+    first_workout = Workout.where(:person_id => self.id).order('workout_date asc').first
+    workout_day = Time.now.to_date
+
+    if first_workout
+      workout_day = first_workout.workout_date.to_date
+    end 
+
     workout_days = Array.new
+    workout_days_range = Array.new
     score = Hash.new
 
     while workout_day <= Time.now.to_date do
@@ -53,15 +60,24 @@ class Person < ActiveRecord::Base
         current_workout = w.first
       end
 
-    #  w.number_grade = number_grade.map { |n| n.rating }.sum
-      score[workout_day] = workout_days.map { |workout| workout.rating }.sum
+      workout_days_range << current_workout
+      if workout_days_range.size == 7
+        workout_days_range = workout_days_range[1..7]
+      end
+
+      workout_goal = self.workout_goal || 300
+      current_score = workout_days_range.map { |workout| workout.rating }.sum
+      workout_grade = ((current_score.to_f / workout_goal.to_f) * 100).to_i
+      workout_grade = 100 if workout_grade > 100
+
+      score[workout_day] = workout_grade
       workout_days << current_workout
       workout_day = workout_day + 1.day
     end
 
     {
       :workouts => workout_days.reverse!.flatten,
-      :score => score
+      :scores => score
     }
   end
 
@@ -89,27 +105,23 @@ class Person < ActiveRecord::Base
     karma_grade self.current_measure
   end
 
-  def karma_grade(measure)
-    if measure == nil
-      return "NA"
-    end
-
-    case measure.karma
+  def self.grade(grade_number)
+    case grade_number
     when 100..1000
       karma_grade = 'A+'
       remainder = 5
     when 90..100
       karma_grade = 'A'
-      remainder = measure.karma - 90
+      remainder = grade_number - 90
     when 80..90
       karma_grade = 'B'
-      remainder = measure.karma - 80
+      remainder = grade_number - 80
     when 70..80
       karma_grade = 'C'
-      remainder = measure.karma - 70
+      remainder = grade_number - 70
     when 60..70
       karma_grade = 'D'
-      remainder = measure.karma - 60
+      remainder = grade_number - 60
     else
       karma_grade = 'F'
       remainder = 5
@@ -121,8 +133,15 @@ class Person < ActiveRecord::Base
     when 0..4
       karma_grade += '-'
     end 
+    karma_grade
+  end
 
-    return karma_grade
+  def karma_grade(measure)
+    if measure == nil
+      return "NA"
+    end
+
+    return Person.grade(measure.karma)
   end
 
   def get_bmi(weight)

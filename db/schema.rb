@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204220953) do
+ActiveRecord::Schema.define(:version => 20121217181555) do
 
   create_table "bps", :force => true do |t|
     t.integer  "dia"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20121204220953) do
     t.integer  "measures_to_show"
     t.time     "time_to_send_email"
     t.boolean  "send_email"
+    t.integer  "workout_goal"
   end
 
   add_index "people", ["reset_password_token"], :name => "index_people_on_reset_password_token", :unique => true
