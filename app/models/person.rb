@@ -46,6 +46,7 @@ class Person < ActiveRecord::Base
     workout_days = Array.new
     workout_days_range = Array.new
     score = Hash.new
+    against_goal = Hash.new
 
     while workout_day <= Time.now.to_date do
       w = Workout.where('person_id = ? and date(workout_date) = ?',
@@ -70,6 +71,7 @@ class Person < ActiveRecord::Base
       workout_grade = ((current_score.to_f / workout_goal.to_f) * 100).to_i
       workout_grade = 100 if workout_grade > 100
 
+      against_goal[workout_day] = current_score 
       score[workout_day] = workout_grade
       workout_days << current_workout
       workout_day = workout_day + 1.day
@@ -77,7 +79,8 @@ class Person < ActiveRecord::Base
 
     {
       :workouts => workout_days.reverse!.flatten,
-      :scores => score
+      :scores => score,
+      :against_goal => against_goal
     }
   end
 

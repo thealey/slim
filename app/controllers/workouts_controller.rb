@@ -7,6 +7,7 @@ class WorkoutsController < ApplicationController
     all_workout_days = @person.all_workout_days
     @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(40)
     @scores = all_workout_days[:scores]
+    @against_goal = all_workout_days[:against_goal]
 
     respond_to do |format|
       format.html # index.html.erb
