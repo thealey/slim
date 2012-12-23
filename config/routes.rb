@@ -11,9 +11,9 @@ Slim::Application.routes.draw do
 
   #match 'people/rss/:id' => 'people#rss'
 
-  #devise_scope :person do
-  #  get "/logout" => "devise/sessions#destroy"
-  #end
+  devise_scope :person do
+    get "/logout" => "devise/sessions#destroy"
+  end
 
   resources :posts
 
