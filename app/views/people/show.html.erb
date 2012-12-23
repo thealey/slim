@@ -8,6 +8,16 @@
   </small>
 </h1>
 
+<ul class="nav nav-pills">
+  <li>
+  <%= link_to 'Workouts', workouts_path(:person_id => @person.id) %>
+  </li>
+  <li class="active">
+  <%= link_to 'Weight', @person %>
+  </li>
+</ul>
+
+
 <% if person_signed_in? && current_person == @person %>
   <% if @measures.size == 0 %>
     <div class="alert-message"> 

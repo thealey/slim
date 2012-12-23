@@ -6,6 +6,7 @@ gem 'rails', '3.2.8'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 group :development, :test do
   gem 'debugger'
+  gem 'rack-mini-profiler'
 end
 
 gem 'thin'
@@ -19,6 +20,7 @@ gem 'rdiscount'
 gem 'taps'
 gem 'devise'
 gem 'json'
+gem 'pjax_rails'
 gem "bcrypt-ruby", :require => "bcrypt"
 gem 'simple_form'
 gem 'chronic'
