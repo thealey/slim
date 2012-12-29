@@ -16,7 +16,7 @@
 </ul>
 
 <%
-  @scorepoints = @against_goal.map{|d, v| v}
+  @scorepoints = @all_workout_days[:against_goal].map{|d, v| v}
   scoregoals = Array.new
   @scorepoints.each do |p|
     scoregoals << (@person.workout_goal || 300)
@@ -47,6 +47,7 @@
 <table class='table'>
   <tr>
     <th>When</th>
+    <th>Weight</th>
     <th>Rating</th>
     <th>Description</th>
     <th>7 Day Score</th>
@@ -64,23 +65,26 @@
           -
         <% end %>
       </td>
-      <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
-      <td><%= workout.description.nil? ? '-' : workout.description %></td>
+    <td>
+      <%= @measures[:weight][workout.workout_date.to_date] %>
+    </td>
+    <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
+    <td><%= workout.description.nil? ? '-' : workout.description %></td>
+    <td>
+      <%= @all_workout_days[:against_goal][workout.workout_date.to_date].to_s %> /
+      <%= @all_workout_days[:scores][workout.workout_date.to_date].to_s %>
+    </td>
+    <td><strong><%= Person.grade(@all_workout_days[:scores][workout.workout_date.to_date]) %></strong></td>
+    <% if person_signed_in? and current_person.id == workout.person.id %>
       <td>
-        <%= @against_goal[workout.workout_date.to_date].to_s %> /
-        <%= @scores[workout.workout_date.to_date].to_s %>
-      </td>
-      <td><strong><%= Person.grade(@scores[workout.workout_date.to_date]) %></strong></td>
-      <% if person_signed_in? and current_person.id == workout.person.id %>
-        <td>
-          <% if workout.id %>
-            <%= link_to 'Edit', edit_workout_path(workout) %> |
-            <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% if workout.id %>
+          <%= link_to 'Edit', edit_workout_path(workout) %> |
+          <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
         <% end %>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
+      </td>
+    <% end %>
+  </tr>
+<% end %>
 </table>
 <%= paginate @workouts %>
 <br />

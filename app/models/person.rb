@@ -35,45 +35,85 @@ class Person < ActiveRecord::Base
   validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
   validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
-  def all_workout_days
+  def first_record_date
+    frd = Time.now.to_date
     first_workout = Workout.where(:person_id => self.id).order('workout_date asc').first
-    workout_day = Time.now.to_date
+    first_measure = Measure.where(:person_id => self.id).order('measure_date asc').first
 
-    if first_workout
-      workout_day = first_workout.workout_date.to_date
-    end 
+    if first_workout and first_workout.workout_date.to_date < frd
+      frd = first_workout.workout_date.to_date
+    end
+
+    if first_measure and first_measure.measure_date < frd
+      frd = first_measure.measure_date.to_date
+    end
+    frd
+  end
+
+  def get_current_measure(record_day)
+    measures = self.measures.select{|m| m.measure_date.to_date == record_day}
+    if measures.size == 0
+      current_measure = Measure.new :measure_date => record_day,
+        :person_id => self.id
+    else
+      #TODO: No double sessions!
+      current_measure = measures.first
+    end
+    current_measure
+  end
+
+
+  def get_current_workout(workout_day)
+    workouts = self.workouts.select{|w| w.workout_date.to_date == workout_day}
+    if workouts.size == 0
+      current_workout = Workout.new
+      current_workout.workout_date = workout_day
+      current_workout.person_id = self.id
+      current_workout.rating = 0
+    else
+      #TODO: No double sessions!
+      current_workout = workouts.first
+    end
+    current_workout
+  end
+
+  def grade_workout_range(workouts)
+    workout_range = get_workout_range(workouts)
+    workout_goal = self.workout_goal || 300
+    current_score = workout_range.map { |workout| workout.rating }.sum
+    workout_grade = ((current_score.to_f / workout_goal.to_f) * 100).to_i
+    workout_grade = 100 if workout_grade > 100
+
+    {
+      :current_score => current_score,
+      :workout_grade => workout_grade
+    }
+  end
+
+  def get_workout_range(workouts)
+    if workouts.size > 7
+      workout_range = workouts[workouts.size - 7,
+        workouts.size]
+    else
+      workout_range = Array.new
+    end
+    workout_range
+  end
+
+  def all_workout_days
+    workout_day = self.first_record_date
 
     workout_days = Array.new
-    workout_days_range = Array.new
     score = Hash.new
     against_goal = Hash.new
 
     while workout_day <= Time.now.to_date do
-      w = Workout.where('person_id = ? and date(workout_date) = ?',
-                        self.id, workout_day.to_date.to_s(:db)).order('workout_date asc')
-      if w.size == 0
-         current_workout = Workout.new
-         current_workout.workout_date = workout_day
-         current_workout.person_id = self.id
-         current_workout.rating = 0
-      else
-        #TODO: No double sessions!
-        current_workout = w.first
-      end
-
-      workout_days_range << current_workout
-      if workout_days_range.size == 8
-        workout_days_range = workout_days_range.slice(1,7)
-      end
-
-      workout_goal = self.workout_goal || 300
-      current_score = workout_days_range.map { |workout| workout.rating }.sum
-      workout_grade = ((current_score.to_f / workout_goal.to_f) * 100).to_i
-      workout_grade = 100 if workout_grade > 100
-
-      against_goal[workout_day] = current_score 
-      score[workout_day] = workout_grade
+      current_workout = get_current_workout(workout_day)
       workout_days << current_workout
+
+      gwr = grade_workout_range(workout_days)
+      against_goal[workout_day] = gwr[:current_score]
+      score[workout_day] = gwr[:workout_grade]
       workout_day = workout_day + 1.day
     end
 
@@ -81,6 +121,24 @@ class Person < ActiveRecord::Base
       :workouts => workout_days.reverse!.flatten,
       :scores => score,
       :against_goal => against_goal
+    }
+  end
+
+  def all_measure_days
+    measure_day = self.first_record_date
+    measure_days = Array.new
+    weight_days = Hash.new
+
+    while measure_day <= Time.now.to_date do
+      current_measure = get_current_measure(measure_day)
+      measure_days << current_measure
+      weight_days[measure_day] = current_measure.weight.to_s
+      measure_day = measure_day + 1.day
+    end
+
+    {
+      :measures => measure_days.reverse!.flatten,
+      :weight => weight_days
     }
   end
 
@@ -164,9 +222,9 @@ class Person < ActiveRecord::Base
       last = nil 
     end
     if last
-    return 0 - last
+      return 0 - last
     else
-     return 0
+      return 0
     end
   end
 
@@ -183,7 +241,7 @@ class Person < ActiveRecord::Base
   def in3months
     three_month_trend current_measure
   end
-  
+
   def three_month_trend(measure)
     ms = self.measure_range(measure.measure_date, measure.measure_date - 10.days)
     tr = trend_range(ms)
@@ -222,7 +280,7 @@ class Person < ActiveRecord::Base
   def wuser
     wuser = Withings::User.info(self.withings_id, self.withings_api_key)
   end
-  
+
   def refresh_all
     page = 1
     per_page = 40
@@ -278,7 +336,7 @@ class Person < ActiveRecord::Base
         measure.fat = measurement.fat * 2.20462262
         measure.measure_date = measurement.taken_at
         measure.save
-            measures_count = measures_count + 1
+        measures_count = measures_count + 1
       end
     end    
 
@@ -311,9 +369,9 @@ class Person < ActiveRecord::Base
       body = body + ' at ' + measure.weight.to_s + '.'
       body = body + ' This is ' + Utility.floatformat % (measure.weight - measure.trend).to_s
       if measure.weight > measure.trend
-      body = body + ' more '
+        body = body + ' more '
       else 
-      body = body + ' less '
+        body = body + ' less '
       end
       body = body + 'than ' + self.username + '\'s' 
       body = body + ' trend weight of ' + measure.trend.to_s + '.'
@@ -323,7 +381,7 @@ class Person < ActiveRecord::Base
 
       ms = self.measure_range(measure.measure_date - 14.days, measure.measure_date)
       body = body + ' 14 day trend is ' + self.trend_range(ms).round(3).to_s + '.'
-      
+
       #measure.item + (tr * 4 * 3) if tr and measure
       body = body + ' At this rate in 3 months Ted will weigh ' + (measure.weight + self.trend_range(ms) * 4 * 3).round(2).to_s
       body = body + '.'

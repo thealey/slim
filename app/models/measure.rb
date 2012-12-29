@@ -8,6 +8,14 @@ class Measure < ActiveRecord::Base
   validates_presence_of :person_id
   validates_presence_of :measure_date
 
+  def display
+    if self.weight.nil?
+      return '-'
+    else
+      return self.weight.to_i.to_s
+    end
+  end
+
   def item
     if person.goal_type == "lbs"
       return weight

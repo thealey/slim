@@ -8,6 +8,9 @@ class Workout < ActiveRecord::Base
     return grades(workouts)
   end
 
+  def self.grade_range(workout_range)
+  end
+
   def self.grades(workouts)
     return workouts
   end
