@@ -5,6 +5,7 @@ Slim::Application.routes.draw do
     resources :workouts
     member do
       get 'dashboard'
+      get 'overview'
     end
   end
   resources :bps

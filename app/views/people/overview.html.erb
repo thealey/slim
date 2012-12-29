@@ -1,0 +1,86 @@
+<h1>
+  <%= image_tag @person.gravatar_url if Person.online %> <%= @person.name! %> 
+  <small>
+    <% workout_goal = @person.workout_goal || 300 %>
+    7 day workout goal:<strong> <%= workout_goal.to_s %></strong>
+  </small>
+</h1>
+
+<ul class="nav nav-pills">
+  <li class="active">
+  <%= link_to 'Workouts', '#' %>
+  </li>
+  <li>
+  <%= link_to 'Weight', @person %>
+  </li>
+</ul>
+
+<%
+  @scorepoints = @against_goal.map{|d, v| v}
+  scoregoals = Array.new
+  @scorepoints.each do |p|
+    scoregoals << (@person.workout_goal || 300)
+  end
+  max = (@person.workout_goal || 300)
+  if @scorepoints.max > max
+    max = @scorepoints.max
+  end
+
+  GoogleChart::LineChart.new('1000x200', "Workout Points", false) do |lc|
+    lc.data "Points", @scorepoints, '667B99'
+    lc.data "Goal", scoregoals, '254117'
+    lc.axis :y, :range => [0, max], :color => '667B99', :font_size => 10, :alignment => :center
+    lc.axis :x, :range => [@scorepoints.size,0], :color => '667B99', :font_size => 10, :alignment => :center
+  %>
+  <%= image_tag lc.to_url %>
+  <%
+  end
+%>
+<% if person_signed_in? %>
+  <span class='pull-right'>
+    <p>
+    <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-primary' %>
+    </p>
+  </span>
+<% end %>
+
+<table class='table'>
+  <tr>
+    <th>When</th>
+    <th>Rating</th>
+    <th>Description</th>
+    <th>7 Day Score</th>
+    <th>Grade</th>
+    <th></th>
+  </tr>
+
+  <% @workouts.each do |workout| %>
+    <tr>
+      <td>
+        <% if workout.workout_date %>
+          <%= workout.workout_date.to_s(:slim) %>
+          (<%= time_ago_in_words workout.workout_date %> ago)
+        <% else %>
+          -
+        <% end %>
+      </td>
+      <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
+      <td><%= workout.description.nil? ? '-' : workout.description %></td>
+      <td>
+        <%= @against_goal[workout.workout_date.to_date].to_s %> /
+        <%= @scores[workout.workout_date.to_date].to_s %>
+      </td>
+      <td><strong><%= Person.grade(@scores[workout.workout_date.to_date]) %></strong></td>
+      <% if person_signed_in? and current_person.id == workout.person.id %>
+        <td>
+          <% if workout.id %>
+            <%= link_to 'Edit', edit_workout_path(workout) %> |
+            <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+<%= paginate @workouts %>
+<br />

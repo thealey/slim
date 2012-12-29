@@ -30,10 +30,6 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal ["can't be blank","can't be blank"], new_person(:password => '').errors[:password]
   end
 
-  def test_require_well_formed_email
-    assert_equal ["is invalid"], new_person(:email => 'foo@bar@example.com').errors[:email]
-  end
-
   def test_validate_uniqueness_of_email
     new_person(:email => 'bar@example.com').save!
     assert_equal ["has already been taken"], new_person(:email => 'bar@example.com').errors[:email]

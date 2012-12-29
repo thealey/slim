@@ -19,6 +19,14 @@ class PeopleController < ApplicationController
     @person = Person.new
   end
 
+  def overview
+    @person = Person.find(params[:id])
+    all_workout_days = @person.all_workout_days
+    @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(40)
+    @scores = all_workout_days[:scores]
+    @against_goal = all_workout_days[:against_goal]
+  end
+
   def create
     @person = Person.new(params[:person])
     if @person.save
