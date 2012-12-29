@@ -62,7 +62,6 @@ class Person < ActiveRecord::Base
     current_measure
   end
 
-
   def get_current_workout(workout_day)
     workouts = self.workouts.select{|w| w.workout_date.to_date == workout_day}
     if workouts.size == 0
@@ -77,6 +76,7 @@ class Person < ActiveRecord::Base
     current_workout
   end
 
+  #Make sure they are padded for days with no workouts
   def grade_workout_range(workouts)
     workout_range = get_workout_range(workouts)
     workout_goal = self.workout_goal || 300
@@ -124,21 +124,40 @@ class Person < ActiveRecord::Base
     }
   end
 
-  def all_measure_days
-    measure_day = self.first_record_date
-    measure_days = Array.new
-    weight_days = Hash.new
+  def get_measures_hash
+    mh = Hash.new
 
-    while measure_day <= Time.now.to_date do
-      current_measure = get_current_measure(measure_day)
-      measure_days << current_measure
-      weight_days[measure_day] = current_measure.weight.to_s
-      measure_day = measure_day + 1.day
+    self.measures.each do |m|
+      mh[m.measure_date.to_date] = m
+    end
+    mh
+  end
+
+  def all_measure_days
+    loop_measure_day = self.first_record_date
+    weight_days = Hash.new
+    karma_days = Hash.new
+
+    measures_hash = get_measures_hash
+
+    while loop_measure_day <= Time.now.to_date do
+      current_measure = measures_hash[loop_measure_day.to_date]
+      if current_measure.nil?
+        current_measure = Measure.new :measure_date => loop_measure_day,
+          :person_id => self.id
+      end
+
+      if current_measure.weight
+        weight_days[loop_measure_day] = current_measure.weight
+        karma_days[loop_measure_day] = current_measure.karma
+      end
+      loop_measure_day = loop_measure_day + 1.day
     end
 
     {
-      :measures => measure_days.reverse!.flatten,
-      :weight => weight_days
+      :measures_hash => measures_hash,
+      :weight => weight_days,
+      :karma => karma_days
     }
   end
 

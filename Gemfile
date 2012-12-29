@@ -28,6 +28,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'simple_form'
+gem 'lazy_high_charts'
 
 group :test do
   # Pretty printed test output

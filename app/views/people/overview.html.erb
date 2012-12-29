@@ -8,52 +8,40 @@
 
 <ul class="nav nav-pills">
   <li class="active">
-  <%= link_to 'Workouts', '#' %>
+  <%= link_to 'Overview', '#' %>
+  </li>
+  <li>
+  <%= link_to 'Workouts', person_workouts_path(@person) %> 
   </li>
   <li>
   <%= link_to 'Weight', @person %>
   </li>
+  <li>
+  <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-small' %>
+  </li>
 </ul>
 
-<%
-  @scorepoints = @all_workout_days[:against_goal].map{|d, v| v}
-  scoregoals = Array.new
-  @scorepoints.each do |p|
-    scoregoals << (@person.workout_goal || 300)
-  end
-  max = (@person.workout_goal || 300)
-  if @scorepoints.max > max
-    max = @scorepoints.max
-  end
+<% render 'workout_chart' %>
 
-  GoogleChart::LineChart.new('1000x200', "Workout Points", false) do |lc|
-    lc.data "Points", @scorepoints, '667B99'
-    lc.data "Goal", scoregoals, '254117'
-    lc.axis :y, :range => [0, max], :color => '667B99', :font_size => 10, :alignment => :center
-    lc.axis :x, :range => [@scorepoints.size,0], :color => '667B99', :font_size => 10, :alignment => :center
-  %>
-  <%= image_tag lc.to_url %>
-  <%
-  end
-%>
-<% if person_signed_in? %>
-  <span class='pull-right'>
-    <p>
-    <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-primary' %>
-    </p>
-  </span>
-<% end %>
-
-<table class='table'>
+<table class='table table-compressed table-striped'>
+  <thead>
+  <tr>
+    <th></th>
+    <th colspan='3'><center>Weight Overview</center></th>
+    <th colspan='4'><center>Workout Overview</center></th>
+  </tr>
   <tr>
     <th>When</th>
     <th>Weight</th>
+    <th>Karma</th>
+    <th>Grade</th>
     <th>Rating</th>
     <th>Description</th>
     <th>7 Day Score</th>
     <th>Grade</th>
     <th></th>
   </tr>
+  </thead>
 
   <% @workouts.each do |workout| %>
     <tr>
@@ -66,10 +54,16 @@
         <% end %>
       </td>
     <td>
-      <%= @measures[:weight][workout.workout_date.to_date] %>
+      <% w = @measures[:weight][workout.workout_date.to_date] %>
+      <%= Utility.floatformat % w.to_f if w %>
     </td>
+    <td>
+      <% m = @measures[:measures_hash][workout.workout_date.to_date] %>
+      <%= Utility.floatformat % m.karma if m %>
+    </td>
+    <td><strong><%= @person.karma_grade(m) if m %></strong></td>
     <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
-    <td><%= workout.description.nil? ? '-' : workout.description %></td>
+    <td><%= workout.description.nil? ? '-' : truncate(workout.description) %></td>
     <td>
       <%= @all_workout_days[:against_goal][workout.workout_date.to_date].to_s %> /
       <%= @all_workout_days[:scores][workout.workout_date.to_date].to_s %>

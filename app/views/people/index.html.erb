@@ -1,38 +1,9 @@
-<table width='800'>
-  <tr>
-    <th>
-      Person
-    </th>
-    <th>
-      Last Measure
-    </th>
-    <th>
-      Last Workout
-    </th>
-  </tr>
+<table width='800' class='table'>
   <% @people.each do |person|%>
     <tr>
       <td>
         <%= image_tag(person.gravatar_url) if Person.online %>
-        <%= link_to person.name!, person %>
-      </td>
-      <td>
-        <% if person.current_measure %>
-          <%= link_to person do %>
-            <%= person.current_measure.measure_date.to_s(:short) %>
-            (<%= time_ago_in_words(person.current_measure.measure_date) if person.current_measure %> ago)
-          <% end %>
-        <% end %>
-      </td>
-      <td>
-        <%= link_to person_workouts_path(person) do %>
-          <% if person.workouts.size > 0 %>
-            <%= person.workouts.last.created_at.to_s(:short) %>
-            (<%= time_ago_in_words(person.workouts.last.created_at) %> ago)
-          <% else %>
-            -
-          <% end %>
-        <% end %>
+        <%= link_to person.name!, overview_person_path(person) %>
       </td>
     </tr>
   <% end %>
