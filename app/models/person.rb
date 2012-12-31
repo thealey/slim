@@ -140,6 +140,7 @@ class Person < ActiveRecord::Base
     loop_measure_day = self.first_record_date
     weight_days = Hash.new
     karma_days = Hash.new
+    trend_days = Hash.new
     measures_hash = get_measures_hash
     last_real_measure = nil
 
@@ -150,6 +151,7 @@ class Person < ActiveRecord::Base
           :person_id => self.id, :karma => last_real_measure.karma
         weight_days[loop_measure_day] = last_real_measure.weight
         karma_days[loop_measure_day] = last_real_measure.karma
+        trend_days[loop_measure_day] = last_real_measure.trend
       else
         last_real_measure = current_measure
       end
@@ -157,6 +159,7 @@ class Person < ActiveRecord::Base
       if current_measure.weight
         weight_days[loop_measure_day] = current_measure.weight
         karma_days[loop_measure_day] = current_measure.karma
+        trend_days[loop_measure_day] = current_measure.karma
       end
       loop_measure_day = loop_measure_day + 1.day
     end

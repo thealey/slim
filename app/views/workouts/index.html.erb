@@ -18,27 +18,6 @@
   </li>
 </ul>
 
-<%
-  @scorepoints = @against_goal.map{|d, v| v}
-  scoregoals = Array.new
-  @scorepoints.each do |p|
-    scoregoals << (@person.workout_goal || 300)
-  end
-  max = (@person.workout_goal || 300)
-  if @scorepoints.max > max
-    max = @scorepoints.max
-  end
-
-  GoogleChart::LineChart.new('1000x200', "Workout Points", false) do |lc|
-    lc.data "Points", @scorepoints, '667B99'
-    lc.data "Goal", scoregoals, '254117'
-    lc.axis :y, :range => [0, max], :color => '667B99', :font_size => 10, :alignment => :center
-    lc.axis :x, :range => [@scorepoints.size,0], :color => '667B99', :font_size => 10, :alignment => :center
-  %>
-  <%= image_tag lc.to_url %>
-  <%
-  end
-%>
 <% if person_signed_in? %>
   <span class='pull-right'>
     <p>
