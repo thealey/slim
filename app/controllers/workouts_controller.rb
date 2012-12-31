@@ -4,7 +4,7 @@ class WorkoutsController < ApplicationController
   def index
     @person = Person.find params[:person_id]
 
-    all_workout_days = @person.all_workout_days
+    all_workout_days = @person.all_workout_days(@person.first_workout_date)
     @workouts = Kaminari.paginate_array(all_workout_days[:workouts]).page(params[:page]).per(40)
     @scores = all_workout_days[:scores]
     @against_goal = all_workout_days[:against_goal]

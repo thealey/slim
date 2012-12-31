@@ -35,13 +35,18 @@ class Person < ActiveRecord::Base
   validates_numericality_of :binge_percentage, :greater_than_or_equal_to => 90, :less_than => 110
   validates_numericality_of :measures_to_show, :only_integer => true, :on => :update
 
+  def first_workout_date
+    if self.workouts.size > 0
+      Workout.where(:person_id => self.id).order('workout_date asc').first.workout_date.to_date
+    end
+  end
+
   def first_record_date
     frd = Time.now.to_date
-    first_workout = Workout.where(:person_id => self.id).order('workout_date asc').first
     first_measure = Measure.where(:person_id => self.id).order('measure_date asc').first
 
-    if first_workout and first_workout.workout_date.to_date < frd
-      frd = first_workout.workout_date.to_date
+    if first_workout_date and first_workout_date < frd
+      frd = first_workout_date
     end
 
     if first_measure and first_measure.measure_date < frd
@@ -100,9 +105,7 @@ class Person < ActiveRecord::Base
     workout_range
   end
 
-  def all_workout_days
-    workout_day = self.first_record_date
-
+  def all_workout_days(workout_day = self.first_record_date)
     workout_days = Array.new
     score = Hash.new
     against_goal = Hash.new
@@ -137,14 +140,18 @@ class Person < ActiveRecord::Base
     loop_measure_day = self.first_record_date
     weight_days = Hash.new
     karma_days = Hash.new
-
     measures_hash = get_measures_hash
+    last_real_measure = nil
 
     while loop_measure_day <= Time.now.to_date do
       current_measure = measures_hash[loop_measure_day.to_date]
       if current_measure.nil?
         current_measure = Measure.new :measure_date => loop_measure_day,
-          :person_id => self.id
+          :person_id => self.id, :karma => last_real_measure.karma
+        weight_days[loop_measure_day] = last_real_measure.weight
+        karma_days[loop_measure_day] = last_real_measure.karma
+      else
+        last_real_measure = current_measure
       end
 
       if current_measure.weight

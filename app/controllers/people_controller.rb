@@ -21,21 +21,9 @@ class PeopleController < ApplicationController
 
   def overview
     @person = Person.find(params[:id])
-    @all_workout_days = @person.all_workout_days
+    @all_workout_days = @person.all_workout_days(@person.first_workout_date)
     @workouts = Kaminari.paginate_array(@all_workout_days[:workouts]).page(params[:page]).per(40)
     @measures = @person.all_measure_days
-
-    respond_to do |format|
-      format.html 
-      format.json { render json: 
-        { 
-        :workout_scores => @all_workout_days[:scores], 
-        :workout_against_goal => @all_workout_days[:against_goal], 
-        :weights => @measures[:weight],
-        :karmas => @measures[:karma]
-      }
-      }
-    end
   end
 
   def create

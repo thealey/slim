@@ -21,7 +21,14 @@
   </li>
 </ul>
 
-<% render 'workout_chart' %>
+<div class='row'>
+  <div class='span6'>
+    <%= render 'weight_chart' %>
+  </div>
+  <div class='span6'>
+    <%= render 'workout_chart' %>
+  </div>
+</div>
 
 <table class='table table-compressed table-striped'>
   <thead>
@@ -58,10 +65,10 @@
       <%= Utility.floatformat % w.to_f if w %>
     </td>
     <td>
-      <% m = @measures[:measures_hash][workout.workout_date.to_date] %>
-      <%= Utility.floatformat % m.karma if m %>
+      <% k = @measures[:karma][workout.workout_date.to_date] %>
+      <%= Utility.floatformat % k if k %>
     </td>
-    <td><strong><%= @person.karma_grade(m) if m %></strong></td>
+    <td><strong><%= Person.grade(k) if k %></strong></td>
     <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
     <td><%= workout.description.nil? ? '-' : truncate(workout.description) %></td>
     <td>

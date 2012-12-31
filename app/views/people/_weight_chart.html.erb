@@ -16,24 +16,25 @@ function drawChart() {
   // Create the data table.
   var data = new google.visualization.DataTable();
   data.addColumn('date', 'Date');
-  data.addColumn('number', 'Workout Points');
-  data.addColumn('number', 'Workout Goal');
+  data.addColumn('number', 'Weight');
+  data.addColumn('number', 'Goal');
   data.addRows([
-      <% @all_workout_days[:against_goal].each do |score| %>
+      <% @measures[:weight].each do |score| %>
         [new Date(<%= score[0].to_date.year.to_s + ',' + 
                   score[0].to_date.month.to_s + ',' +
-                  score[0].to_date.day.to_s %>), <%= score[1] %>,
+                  score[0].to_date.day.to_s %>), <%= score[1].to_i %>,
         <%= @person.goal %>],
       <% end %>
       ]);
+
   // Set chart options
-  var options = {'title':'Workouts',
+  var options = {'title':'Weight',
     'width':600,
     'height':300};
 
   // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.LineChart(document.getElementById('workout_chart_div'));
+  var chart = new google.visualization.LineChart(document.getElementById('weight_chart_div'));
   chart.draw(data, options);
 }
 </script>
-<div id="workout_chart_div" style="width:600; height:300"></div>
+<div id="weight_chart_div" style="width:600; height:300"></div>
