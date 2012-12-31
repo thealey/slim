@@ -159,7 +159,7 @@ class Person < ActiveRecord::Base
       if current_measure.weight
         weight_days[loop_measure_day] = current_measure.weight
         karma_days[loop_measure_day] = current_measure.karma
-        trend_days[loop_measure_day] = current_measure.karma
+        trend_days[loop_measure_day] = current_measure.trend
       end
       loop_measure_day = loop_measure_day + 1.day
     end
@@ -167,7 +167,8 @@ class Person < ActiveRecord::Base
     {
       :measures_hash => measures_hash,
       :weight => weight_days,
-      :karma => karma_days
+      :karma => karma_days,
+      :trend_days => trend_days
     }
   end
 
