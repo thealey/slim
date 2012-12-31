@@ -1,7 +1,7 @@
 require 'csv'
 
 class Measure < ActiveRecord::Base
-  attr_accessible :weight, :person_id, :measure_date, :fat
+  attr_accessible :weight, :person_id, :measure_date, :fat, :karma
 
   belongs_to :person
   validates_presence_of :weight
