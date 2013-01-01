@@ -23,7 +23,7 @@ function drawChart() {
         [new Date(<%= score[0].to_date.year.to_s + ',' + 
                   score[0].to_date.month.to_s + ',' +
                   score[0].to_date.day.to_s %>), <%= score[1] %>,
-        <%= @person.goal %>],
+        <%= @person.workout_goal || 300 %>],
       <% end %>
       ]);
   // Set chart options
