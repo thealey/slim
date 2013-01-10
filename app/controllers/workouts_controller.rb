@@ -50,7 +50,7 @@ class WorkoutsController < ApplicationController
 
     respond_to do |format|
       if @workout.save
-        format.html { redirect_to person_workouts_path(@workout.person), notice: 'Workout was successfully created.' }
+        format.html { redirect_to overview_person_path(@workout.person), notice: 'Workout was successfully created.' }
       else
         format.html { render action: "new" }
       end

@@ -12,12 +12,14 @@
   <li>
   <%= link_to 'Overview', overview_person_path(@person) %>
   </li>
-  <li>
-  <%= link_to 'Workouts', workouts_path(:person_id => @person.id) %>
-  </li>
   <li class="active">
   <%= link_to 'Weight', @person %>
   </li>
+  <% if current_person %>
+    <li>
+    <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-small' %>
+    </li>
+  <% end %>
 </ul>
 
 

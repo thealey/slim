@@ -7,21 +7,20 @@
   <%= link_to 'Overview', '#' %>
   </li>
   <li>
-  <%= link_to 'Workouts', person_workouts_path(@person) %> 
-  </li>
-  <li>
   <%= link_to 'Weight', @person %>
   </li>
-  <li>
-  <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-small' %>
-  </li>
+  <% if current_person %>
+    <li>
+    <%= link_to 'New Workout', new_workout_path, :class => 'btn btn-small' %>
+    </li>
+  <% end %>
 </ul>
 
 <div class='row'>
-  <div class='span6'>
+  <div class='span5 offset1'>
     <%= render 'weight_chart' %>
   </div>
-  <div class='span6'>
+  <div class='span5'>
     <%= render 'workout_chart' %>
   </div>
 </div>
