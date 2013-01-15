@@ -136,8 +136,8 @@ class Person < ActiveRecord::Base
     mh
   end
 
-  def all_measure_days
-    loop_measure_day = self.first_record_date
+  def all_measure_days(loop_measure_day = self.first_record_date)
+    #loop_measure_day = self.first_record_date
     weight_days = Hash.new
     karma_days = Hash.new
     trend_days = Hash.new
@@ -146,12 +146,15 @@ class Person < ActiveRecord::Base
 
     while loop_measure_day <= Time.now.to_date do
       current_measure = measures_hash[loop_measure_day.to_date]
+      #debugger
       if current_measure.nil?
-        current_measure = Measure.new :measure_date => loop_measure_day,
-          :person_id => self.id, :karma => last_real_measure.karma
-        weight_days[loop_measure_day] = last_real_measure.weight
-        karma_days[loop_measure_day] = last_real_measure.karma
-        trend_days[loop_measure_day] = last_real_measure.trend
+        unless last_real_measure.nil?
+          current_measure = Measure.new :measure_date => loop_measure_day,
+            :person_id => self.id, :karma => last_real_measure.karma
+          weight_days[loop_measure_day] = last_real_measure.weight
+          karma_days[loop_measure_day] = last_real_measure.karma
+          trend_days[loop_measure_day] = last_real_measure.trend
+        end
       else
         last_real_measure = current_measure
       end

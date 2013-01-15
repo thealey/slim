@@ -21,7 +21,7 @@ function drawChart() {
   data.addRows([
       <% @all_workout_days[:against_goal].each do |score| %>
         [new Date(<%= score[0].to_date.year.to_s + ',' + 
-                  score[0].to_date.month.to_s + ',' +
+                  (score[0].to_date.month - 1).to_s + ',' +
                   score[0].to_date.day.to_s %>), <%= score[1] %>,
         <%= @person.workout_goal || 300 %>],
       <% end %>
