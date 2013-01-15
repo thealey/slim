@@ -21,9 +21,11 @@ class PeopleController < ApplicationController
 
   def overview
     @person = Person.find(params[:id])
-    @all_workout_days = @person.all_workout_days(@person.first_workout_date)
+    #@all_workout_days = @person.all_workout_days(@person.first_workout_date)
+    @all_workout_days = @person.all_workout_days(Time.now.to_date - 30.days)
     @workouts = Kaminari.paginate_array(@all_workout_days[:workouts]).page(params[:page]).per(40)
-    @measures = @person.all_measure_days
+    @month_measures = @person.all_measure_days(Time.now.to_date - 30.days)
+    @all_measures = @person.all_measure_days
   end
 
   def create

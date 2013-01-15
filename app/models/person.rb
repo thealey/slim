@@ -144,9 +144,11 @@ class Person < ActiveRecord::Base
     measures_hash = get_measures_hash
     last_real_measure = nil
 
+    #Problem is there may not be data for the random
+    #day in the range where you start
+
     while loop_measure_day <= Time.now.to_date do
       current_measure = measures_hash[loop_measure_day.to_date]
-      #debugger
       if current_measure.nil?
         unless last_real_measure.nil?
           current_measure = Measure.new :measure_date => loop_measure_day,
@@ -159,7 +161,7 @@ class Person < ActiveRecord::Base
         last_real_measure = current_measure
       end
 
-      if current_measure.weight
+      if current_measure and current_measure.weight
         weight_days[loop_measure_day] = current_measure.weight
         karma_days[loop_measure_day] = current_measure.karma
         trend_days[loop_measure_day] = current_measure.trend

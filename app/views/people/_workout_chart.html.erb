@@ -29,11 +29,11 @@ function drawChart() {
   // Set chart options
   var options = {'title':'Workouts',
     'width':500,
-    'height':300};
+    'height':200};
 
   // Instantiate and draw our chart, passing in some options.
   var chart = new google.visualization.LineChart(document.getElementById('workout_chart_div'));
   chart.draw(data, options);
 }
 </script>
-<div id="workout_chart_div" style="width:500; height:300"></div>
+<div id="workout_chart_div" style="width:500; height:200"></div>
