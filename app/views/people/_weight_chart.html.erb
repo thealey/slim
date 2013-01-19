@@ -17,16 +17,16 @@ function drawChart() {
   var data = new google.visualization.DataTable();
   data.addColumn('date', 'Date');
   data.addColumn('number', 'Weight');
-  data.addColumn('number', 'Trend');
   data.addColumn('number', 'Goal');
+  data.addColumn('number', 'Trend');
   data.addRows([
       <% measures[:weight].each do |score| %>
         [new Date(<%= score[0].to_date.year.to_s + ',' + 
                   (score[0].to_date.month - 1).to_s + ',' +
                   score[0].to_date.day.to_s %>), 
         <%= score[1] %>,
-        <%= measures[:trend_days][score[0]] %>, 
-        <%= @person.goal %>],
+        <%= @person.goal %>,
+        <%= measures[:trend_days][score[0]] %>],
       <% end %>
       ]);
 
