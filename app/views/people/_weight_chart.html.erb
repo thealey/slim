@@ -24,7 +24,7 @@ function drawChart() {
         [new Date(<%= score[0].to_date.year.to_s + ',' + 
                   (score[0].to_date.month - 1).to_s + ',' +
                   score[0].to_date.day.to_s %>), 
-        <%= score[1].to_i %>,
+        <%= score[1] %>,
         <%= measures[:trend_days][score[0]] %>, 
         <%= @person.goal %>],
       <% end %>
