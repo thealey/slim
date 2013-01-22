@@ -17,11 +17,13 @@
 </ul>
 
 <div class='row'>
-  <div class='span5 offset1'>
+  <div class='span4'>
     <%= render :partial => 'weight_chart', :locals => { :measures => @all_measures } %>
-    <%= render :partial => 'weight_chart', :locals => { :measures => @month_measures } %>
   </div>
-  <div class='span5'>
+  <div class='span4'>
+    <%= render :partial => 'weight_chart_all', :locals => { :measures => @month_measures } %>
+  </div>
+  <div class='span4'>
     <%= render 'workout_chart' %>
   </div>
 </div>
@@ -41,6 +43,7 @@
     <th>Grade</th>
     <th>Rating</th>
     <th>Description</th>
+    <th>Streak</th>
     <th>7 Day Score</th>
     <th>Grade</th>
     <th></th>
@@ -73,6 +76,7 @@
     <td><strong><%= Person.grade(k) if k %></strong></td>
     <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
     <td><%= workout.description.nil? ? '-' : truncate(workout.description) %></td>
+    <td><%= @all_workout_days[:streak][workout.workout_date.to_date] %></td>
     <td>
       <%= @all_workout_days[:against_goal][workout.workout_date.to_date].to_s %> /
       <%= @all_workout_days[:scores][workout.workout_date.to_date].to_s %>

@@ -109,12 +109,20 @@ class Person < ActiveRecord::Base
     workout_days = Array.new
     score = Hash.new
     against_goal = Hash.new
+    streak = Hash.new
+    streak_counter = 0
 
     while workout_day <= Time.now.to_date do
       current_workout = get_current_workout(workout_day)
       workout_days << current_workout
+      if current_workout.rating > 0
+        streak_counter = streak_counter + 1
+      else
+        streak_counter = 0
+      end
 
       gwr = grade_workout_range(workout_days)
+      streak[workout_day] = streak_counter
       against_goal[workout_day] = gwr[:current_score]
       score[workout_day] = gwr[:workout_grade]
       workout_day = workout_day + 1.day
@@ -123,6 +131,7 @@ class Person < ActiveRecord::Base
     {
       :workouts => workout_days.reverse!.flatten,
       :scores => score,
+      :streak => streak,
       :against_goal => against_goal
     }
   end

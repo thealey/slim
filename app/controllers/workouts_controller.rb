@@ -26,10 +26,20 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  # GET /workouts/new
-  # GET /workouts/new.json
+def clone
+  recent_workout = Workout.find(params[:id])
+  new_workout = Workout.new
+  new_workout.person_id = current_person.id
+  new_workout.rating = recent_workout.rating
+  new_workout.description = recent_workout.description
+  new_workout.workout_date = Time.now
+  new_workout.save
+  redirect_to overview_person_path(current_person), notice: 'Workout was successfully cloned.'
+end
+
   def new
     @workout = Workout.new
+    @recent_workouts = Workout.where(:person_id => current_person.id).order('workout_date desc').limit(10)
 
     respond_to do |format|
       format.html # new.html.erb

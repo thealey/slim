@@ -1,6 +1,21 @@
-<%= simple_form_for @workout do |f| %>
-  <%= f.input :rating %>
-  <%= f.input :description %>
-  <%= f.input :workout_date %>
-  <%= f.button :submit %>
-<% end %>
+<div class='row'>
+  <div class='span6'>
+    <%= simple_form_for @workout do |f| %>
+      <%= f.input :rating %>
+      <%= f.input :description %>
+      <%= f.input :workout_date %>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+  <div class='span6'>
+    <h3>Clone a recent workout</h3>
+    <ul>
+      <% @recent_workouts.each do |workout| %>
+        <li style='padding-bottom:20px;'>
+        <%= link_to 'Clone', clone_workout_path(workout.id), :class=>'btn btn-primary' %>
+        <%= workout.rating.to_s + ' ' + workout.description %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

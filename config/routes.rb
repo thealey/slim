@@ -1,5 +1,10 @@
 Slim::Application.routes.draw do
-  resources :workouts
+  resources :workouts do
+    member do
+      get 'clone'
+    end
+  end
+
   devise_for :people
   resources :people do
     resources :workouts
