@@ -16,17 +16,11 @@
   <% end %>
 </ul>
 
-<div class='row'>
-  <div class='span4'>
-    <%= render :partial => 'weight_chart', :locals => { :measures => @all_measures } %>
-  </div>
-  <div class='span4'>
-    <%= render :partial => 'weight_chart_all', :locals => { :measures => @month_measures } %>
-  </div>
-  <div class='span4'>
-    <%= render 'workout_chart' %>
-  </div>
-</div>
+<%= render :partial => 'weight_chart', :locals => { :measures => @month_measures } %>
+<br/>
+<%= render :partial => 'weight_chart_all', :locals => { :measures => @all_measures } %>
+<br/>
+<%= render 'workout_chart' %>
 
 <table class='table table-compressed table-striped'>
   <thead>
