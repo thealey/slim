@@ -190,6 +190,13 @@ class Person < ActiveRecord::Base
     return true
   end
 
+  def workout_percentage_this_year
+    days_this_year = (Time.now.to_date - Date.parse('1/1/' + Time.now.year.to_s)).to_i
+    year = Time.now.year
+    Workout.where(:person_id => 1).select{|w| w.workout_date.year == year}.count
+    return days_this_year
+  end
+
   def name
     self.username
   end
