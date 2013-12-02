@@ -115,6 +115,7 @@ class Person < ActiveRecord::Base
     while workout_day <= Time.now.to_date do
       current_workout = get_current_workout(workout_day)
       workout_days << current_workout
+      current_workout.rating == 0 if current_workout.rating.nil? or current_workout.nil?
       if current_workout.rating > 0
         streak_counter = streak_counter + 1
       else
