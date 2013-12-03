@@ -16,11 +16,13 @@
   <% end %>
 </ul>
 
-<%= render :partial => 'weight_chart', :locals => { :measures => @month_measures } %>
-<br/>
-<%= render :partial => 'weight_chart_all', :locals => { :measures => @all_measures } %>
-<br/>
-<%= render 'workout_chart' %>
+<% if false %>
+  <%= render :partial => 'weight_chart', :locals => { :measures => @month_measures } %>
+  <br/>
+  <%= render :partial => 'weight_chart_all', :locals => { :measures => @all_measures } %>
+  <br/>
+  <%= render 'workout_chart' %>
+<% end %>
 
 <table class='table table-compressed table-striped'>
   <thead>

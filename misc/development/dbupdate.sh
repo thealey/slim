@@ -1,4 +1,4 @@
-mysql -uroot -pbondaxe -e 'drop database slim;'
-mysql -uroot -pbondaxe -e 'create database slim;'
-mysql -uroot -pbondaxe slim < slim.sql
+mysql -uroot -pbondaxe -e 'drop database slim_development;'
+mysql -uroot -pbondaxe -e 'create database slim_development;'
+mysql -uroot -pbondaxe slim_development < slim.sql
 
