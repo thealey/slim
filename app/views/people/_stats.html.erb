@@ -1,0 +1,40 @@
+<% all_day_count = @person.days_since_first_workout %>
+<% all_workouts = @person.workouts.where('rating > 0') %>
+<% workouts_30 = @person.workouts_in_last_days(30) %>
+
+<table class="table">
+  <tr>
+    <td>
+      First recorded workout:
+    </td>
+    <td>
+        <%= @person.days_since_first_workout %> days ago
+    </td>
+    <td>
+        <%= all_workouts.first.workout_date.to_s(:long) %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Ever:
+    </td>
+    <td>
+      <%= ((all_workouts.size.to_f / all_day_count.to_f) * 100).round(2).to_s %>%
+    </td>
+    <td>
+      <%= all_workouts.size %>
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td>
+      30 Days:
+    </td>
+    <td>
+      <%= ((workouts_30.size.to_f / 30.to_f) * 100).round(2).to_s %>%
+    </td>
+    <td>
+      <%= workouts_30.size %>
+    </td>
+  </tr>
+</table>

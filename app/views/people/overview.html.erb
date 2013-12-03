@@ -24,26 +24,31 @@
   <%= render 'workout_chart' %>
 <% end %>
 
+
+<%= Time.now.to_s(:long) %>
+
+<%= render 'stats' %>
+
 <table class='table table-compressed table-striped'>
   <thead>
-  <tr>
-    <th></th>
-    <th colspan='3'><center>Weight Overview</center></th>
-    <th colspan='4'><center>Workout Overview</center></th>
-  </tr>
-  <tr>
-    <th>When</th>
-    <th>Weight</th>
-    <th>Goal</th>
-    <th>Karma</th>
-    <th>Grade</th>
-    <th>Rating</th>
-    <th>Description</th>
-    <th>Streak</th>
-    <th>7 Day Score</th>
-    <th>Grade</th>
-    <th></th>
-  </tr>
+    <tr>
+      <th></th>
+      <th colspan='3'><center>Weight Overview</center></th>
+      <th colspan='4'><center>Workout Overview</center></th>
+    </tr>
+    <tr>
+      <th>When</th>
+      <th>Weight</th>
+      <th>Goal</th>
+      <th>Karma</th>
+      <th>Grade</th>
+      <th>Rating</th>
+      <th>Description</th>
+      <th>Streak</th>
+      <th>7 Day Score</th>
+      <th>Grade</th>
+      <th></th>
+    </tr>
   </thead>
 
   <% @measures = @all_measures %>
@@ -58,36 +63,36 @@
           -
         <% end %>
       </td>
-    <td>
-      <% w = @measures[:weight][workout.workout_date.to_date] %>
-      <%= Utility.floatformat % w.to_f if w %>
-    </td>
-    <td>
-      <%= Utility.floatformat % (w - @person.goal).to_f if w %>
-    </td>
-    <td>
-      <% k = @measures[:karma][workout.workout_date.to_date] %>
-      <%= Utility.floatformat % k if k %>
-    </td>
-    <td><strong><%= Person.grade(k) if k %></strong></td>
-    <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
-    <td><%= workout.description.nil? ? '-' : truncate(workout.description) %></td>
-    <td><%= @all_workout_days[:streak][workout.workout_date.to_date] %></td>
-    <td>
-      <%= @all_workout_days[:against_goal][workout.workout_date.to_date].to_s %> /
-      <%= @all_workout_days[:scores][workout.workout_date.to_date].to_s %>
-    </td>
-    <td><strong><%= Person.grade(@all_workout_days[:scores][workout.workout_date.to_date]) %></strong></td>
-    <% if person_signed_in? and current_person.id == workout.person.id %>
       <td>
-        <% if workout.id %>
-          <%= link_to 'Edit', edit_workout_path(workout) %> |
-          <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
-        <% end %>
+        <% w = @measures[:weight][workout.workout_date.to_date] %>
+        <%= Utility.floatformat % w.to_f if w %>
       </td>
-    <% end %>
-  </tr>
-<% end %>
+      <td>
+        <%= Utility.floatformat % (w - @person.goal).to_f if w %>
+      </td>
+      <td>
+        <% k = @measures[:karma][workout.workout_date.to_date] %>
+        <%= Utility.floatformat % k if k %>
+      </td>
+      <td><strong><%= Person.grade(k) if k %></strong></td>
+      <td><%= workout.rating.nil? ? '-' : workout.rating %></td>
+      <td><%= workout.description.nil? ? '-' : truncate(workout.description) %></td>
+      <td><%= @all_workout_days[:streak][workout.workout_date.to_date] %></td>
+      <td>
+        <%= @all_workout_days[:against_goal][workout.workout_date.to_date].to_s %> /
+        <%= @all_workout_days[:scores][workout.workout_date.to_date].to_s %>
+      </td>
+      <td><strong><%= Person.grade(@all_workout_days[:scores][workout.workout_date.to_date]) %></strong></td>
+      <% if person_signed_in? and current_person.id == workout.person.id %>
+        <td>
+          <% if workout.id %>
+            <%= link_to 'Edit', edit_workout_path(workout) %> |
+            <%= link_to 'Delete', workout, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
 </table>
 <%= paginate @workouts %>
 <br />

@@ -453,6 +453,18 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def workouts_year(year)
+    self.workouts.collect{|w| w if w.workout_date.year == year}
+  end
+
+  def days_since_first_workout
+    (Time.now.to_date - self.workouts.first.workout_date.to_date).to_i
+  end
+
+  def workouts_in_last_days(days)
+    self.workouts.where('rating > 0 and workout_date between curdate() - interval 30 day and curdate()')
+  end
+
   private
 
   def prepare_password
