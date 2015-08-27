@@ -1,1 +1,1 @@
-mysqldump -uroot -pbondaxe slim_production > slim.sql
+mysqldump -uroot -pbondaxe slim > slim.sql
